@@ -1,0 +1,47 @@
+GIT 
+
+
+1. Comando para enlistar archivos de la carpeta 
+	ls
+
+2. Comando para buscar carpeta
+	cd nombre de tu carpeta
+
+
+3. Comando para ver el estatus de los archivos 
+	git status
+
+4. Comando para agregar todos los archivos 
+	git add .
+
+5. Comando para agregar 1 archivo o ciertos archivos 
+	git add nombre del archivo 
+
+6. Comando para hacer un commit 
+	git commit -m "Comentario de lo que realizaste"
+
+7. Comando para subir los archivos 
+	git push 
+
+8. Comando para descargar los archivos 
+	git pull 
+
+//Los comando estan acomodados en el orden que se deben ejecutar
+
+//Instalar entorno virtual y descargar requerimientos 
+Terminal Visual 
+
+Descargar entorno virtual 
+	python -m venv env
+Activar entorno virtual
+	env\Scripts\activate
+
+Descargar requerimientos del proyecto 
+	1. Activar entorno virtual 
+	2. pip install -r nombre del archivo 
+
+//Crear archivo de requerimientos 
+
+1. En la terminal de visual poner 
+	pip freeze > requirements.txt
+
