@@ -4,7 +4,8 @@ class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", "secretacontraseña")
     SQLALCHEMY_DATABASE_URI = os.getenv(
         "DATABASE_URI",
-        "postgresql+psycopg2://postgres:postgres@localhost:5432/LuzVioleta"
+        ##"postgresql+psycopg2://postgres:postgres@localhost:5432/LuzVioleta"
+        "postgresql+psycopg2://postgres:lenovoblue@localhost:5432/luzvioleta"
     )
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
