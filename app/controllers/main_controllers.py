@@ -4,11 +4,11 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():
-    return render_template('inicio.html')
+    return render_template('index.html')
 
 @main.route('/Quienes_somos')
 def quienes_somos():
-    return render_template('index.html')
+    return render_template('inicio.html')
 
 @main.route('/albergues')
 def albergues():
