@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luz Violeta - Apoyo a la Mujer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Importa la fuente Inter de Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #e8d5f7; /* Un tono lila claro */
+        }
+
+        /* Animación para los elementos decorativos de fondo */
+        .decorative-element {
+            animation: float 15s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0.4;
+            }
+            25% {
+                transform: translateY(-15px) translateX(10px) rotate(5deg);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-30px) translateX(-10px) rotate(-5deg);
+                opacity: 0.4;
+            }
+            75% {
+                transform: translateY(-15px) translateX(10px) rotate(5deg);
+                opacity: 0.6;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <span class="decorative-element absolute top-[10%] left-[20%] text-violet-400 text-5xl opacity-40">🌸</span>
+    <span class="decorative-element absolute top-[60%] left-[70%] text-violet-300 text-6xl opacity-40" style="animation-delay: 2s;">✨</span>
+    <span class="decorative-element absolute top-[80%] left-[30%] text-violet-400 text-4xl opacity-40" style="animation-delay: 4s;">✨</span>
+    <span class="decorative-element absolute top-[40%] left-[5%] text-violet-300 text-3xl opacity-40" style="animation-delay: 6s;">🌸</span>
+    <span class="decorative-element absolute top-[50%] left-[90%] text-violet-400 text-2xl opacity-40" style="animation-delay: 8s;">✨</span>
+    <span class="decorative-element absolute top-[25%] left-[80%] text-violet-300 text-xl opacity-40" style="animation-delay: 10s;">🌸</span>
+    <span class="decorative-element absolute top-[75%] left-[15%] text-violet-400 text-xl opacity-40" style="animation-delay: 12s;">✨</span>
+    <span class="decorative-element absolute top-[30%] left-[45%] text-violet-300 text-4xl opacity-40" style="animation-delay: 14s;">🌸</span>
+    <span class="decorative-element absolute top-[85%] left-[50%] text-violet-400 text-3xl opacity-40" style="animation-delay: 16s;">✨</span>
+
+    <header class="bg-white shadow-md rounded-b-2xl px-4 py-4 flex items-center justify-between relative z-10">
+        <a href="/" class="flex items-center space-x-2">
+            <img src="https://placehold.co/60x60/a78bfa/ffffff?text=LV" alt="Logo Luz Violeta" class="rounded-xl shadow-lg">
+            <span class="text-3xl font-extrabold text-purple-700 hidden md:block">Luz Violeta</span>
+        </a>
+
+        <nav class="flex space-x-2 sm:space-x-4">
+            <a href="/Quienes_somos" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
+                Quiénes somos
+            </a>
+            <a href="/albergues" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
+                Albergues
+            </a>
+            <a href="/apoyo_legal" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
+                Apoyo legal
+            </a>
+            <a href="/apoyo_psicologico" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
+                Apoyo psicológico
+            </a>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8 relative">
+        <div class="bg-white p-6 md:p-10 rounded-xl shadow-lg relative z-10">
+            <h1 class="text-3xl sm:text-4xl font-bold text-center text-violet-800 mb-6">Un Faro de Esperanza para la Mujer</h1>
+            
+            <section class="grid md:grid-cols-3 gap-8">
+                <div class="p-6 bg-violet-50 rounded-lg shadow-sm flex flex-col items-center text-center">
+                    <img src="https://placehold.co/80x80/d3c6e9/6d4c8e?text=💡" alt="Icono de Propósito" class="mb-4">
+                    <h2 class="text-xl font-bold text-violet-600 mb-3 border-b-2 border-violet-300 pb-2 w-full">Propósito</h2>
+                    <p class="text-gray-700">Iluminar el camino hacia la libertad y el bienestar de las mujeres. Buscamos no solo mitigar el daño causado por la violencia, sino también educar a la sociedad, prevenir futuras agresiones y fomentar una cultura de respeto e igualdad. Cada acción que tomamos está guiada por la convicción de que cada mujer merece ser valorada y protegida.</p>
+                </div>
+                
+                <div class="p-6 bg-violet-50 rounded-lg shadow-sm flex flex-col items-center text-center">
+                    <img src="https://placehold.co/80x80/d3c6e9/6d4c8e?text=🔭" alt="Icono de Visión" class="mb-4">
+                    <h2 class="text-xl font-bold text-violet-600 mb-3 border-b-2 border-violet-300 pb-2 w-full">Visión</h2>
+                    <p class="text-gray-700">Ser la organización líder en la defensa de los derechos de las mujeres en nuestra comunidad, reconocida por nuestro impacto positivo en la erradicación de la violencia de género, promoviendo una sociedad más justa, equitativa y segura para todas las personas.</p>
+                </div>
+                
+                <div class="p-6 bg-violet-50 rounded-lg shadow-sm flex flex-col items-center text-center">
+                    <img src="https://placehold.co/80x80/d3c6e9/6d4c8e?text=🎯" alt="Icono de Misión" class="mb-4">
+                    <h2 class="text-xl font-bold text-violet-600 mb-3 border-b-2 border-violet-300 pb-2 w-full">Misión</h2>
+                    <p class="text-gray-700">Proporcionar apoyo integral y seguro a mujeres y niñas en situación de vulnerabilidad, ofreciendo servicios de albergue, asesoría legal y acompañamiento psicológico, con el fin de empoderarlas para que recuperen su autonomía y construyan un futuro digno y libre de violencia.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="bg-violet-900 text-white text-center py-4 mt-8 shadow-inner">
+        <p>&copy; 2024 Luz Violeta. Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>
