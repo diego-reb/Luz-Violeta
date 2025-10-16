@@ -5,6 +5,7 @@ Buscamos proporcionar ayuda de las mujeres que sufren violencia, compartiendo ma
 PASOS PARA INICIALIZAR EL PROYECTO;
 
 1. Dirijace a microsoft store y descargue python la version mas reciente y descargue el proyecto 
+    Tambien en visual studio code vaya a extensiones y descargue las extensiones de python
 
 2. Una vez descargado el proyecto debe crear un entorno virtual 
         °si esta en visual studio code habra una terminal 
@@ -18,3 +19,5 @@ PASOS PARA INICIALIZAR EL PROYECTO;
 
         °°°°Una vez completados los pasos anteriores debe instalar los requerimientos
         pip install -r requirements.txt
+
+3. Para iniciar el proyecto abra el archivo App.py y ejecutelo 
