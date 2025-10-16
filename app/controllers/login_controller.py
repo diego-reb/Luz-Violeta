@@ -7,8 +7,8 @@ login_bp = Blueprint('login_bp', __name__)
 @login_bp.route('/login', methods = ['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        identificador = request.form.get['identificador']
-        password = request.form.get['password']
+        identificador = request.form.get('identificador')
+        password = request.form.get('password')
 
         if not identificador or not password:
             return render_template("login.html", mensaje = "Faltan campos")

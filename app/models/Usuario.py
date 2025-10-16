@@ -16,11 +16,10 @@ class Usuario(db.Model):
     rol = relationship('Rol', back_populates = 'usuarios')
 
     def set_password(self, password):
-        self.contraseña_hash = generate_password_hash(password)
+        self.contrasena = generate_password_hash(password)
 
-
-    def check_password (self, password):
-        return check_password_hash(self.contrasela_hash, password)
+    def check_password(self, password):
+        return check_password_hash(self.contrasena, password)
 
 
 
