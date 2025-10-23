@@ -3,10 +3,8 @@ from app.extensiones import db
 from app.models.usuario import Usuario
 from werkzeug.security import generate_password_hash
 
-# Inicializa la app
 app = Luzvioleta()
 
-# Crear contexto de aplicación
 with app.app_context():
     usuarios = Usuario.query.all()
 

@@ -4,6 +4,7 @@ from app.extensiones import db, migrate
 from app.controllers.main_controllers import main
 from app.controllers.login_controller import login_bp
 from app.controllers.adminController import admin_bp
+from app.controllers.registro_controllers import registro_bp
 
 def Luzvioleta():
     app = Flask(__name__)
@@ -20,5 +21,6 @@ def Luzvioleta():
     app.register_blueprint(main)
     app.register_blueprint(login_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(registro_bp)
 
     return app
