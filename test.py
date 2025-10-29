@@ -16,5 +16,5 @@ def probar_conexion():
     except Exception as e:
         print("Error de conexion:", e)
 
-if __name__ == "__main__":
+if __name__ == "__main__":  
     probar_conexion()

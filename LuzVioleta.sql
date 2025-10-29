@@ -79,3 +79,10 @@ CREATE TABLE Ayuda_legal (
     costo NUMERIC(10,2),
     activo BOOLEAN DEFAULT TRUE
 );
+select * from usuarios
+
+ALTER TABLE Centros_ayuda
+ALTER COLUMN fecha_actualizacion TYPE TIMESTAMP;
+
+ALTER TABLE Centros_ayuda
+ADD COLUMN fuente VARCHAR(100) DEFAULT 'INEGI';

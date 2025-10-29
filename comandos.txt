@@ -45,3 +45,6 @@ Descargar requerimientos del proyecto
 1. En la terminal de visual poner 
 	pip freeze > requirements.txt
 
+//Eliminar entorno virtual 
+
+1. remove-Item -Recurse -Force .\env
