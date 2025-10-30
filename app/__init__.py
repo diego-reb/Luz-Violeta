@@ -7,6 +7,7 @@ from app.controllers.admin.adminController import admin_bp
 from app.controllers.admin import admin_bp
 from app.controllers.registro_controllers import registro_bp
 from app.controllers.telefono_controllers import telefono_bp
+from app.controllers.admin.usuarios_controllers import gestion_usuarios_bp
 
 def Luzvioleta():
     app = Flask(__name__)
@@ -25,6 +26,7 @@ def Luzvioleta():
     app.register_blueprint(admin_bp)
     app.register_blueprint(registro_bp)
     app.register_blueprint(telefono_bp)
+    app.register_blueprint(gestion_usuarios_bp)
 
 
     @app.after_request

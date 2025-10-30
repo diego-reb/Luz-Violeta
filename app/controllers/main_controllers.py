@@ -6,10 +6,6 @@ main = Blueprint('main', __name__)
 def index():
     return render_template('index.html')
 
-@main.route('/Quienes_somos')
-def quienes_somos():
-    return render_template('inicio.html')
-
 @main.route('/albergues')
 def albergues():
     return render_template('albergues.html')
@@ -17,6 +13,7 @@ def albergues():
 @main.route('/apoyo_legal')
 def apoyo_legal():
     return render_template('legal.html')
+
 
 @main.route('/apoyo_psicologico')
 def apoyo_psicologico():

@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, session
 from app.utils.decorators import login_required
-
+from app.models.usuario import Usuario
+from app.extensiones import db
+from app.controllers.admin.usuarios_controllers import gestion_usuarios_bp
 
 admin_bp = Blueprint('admin_bp', __name__, url_prefix='/admin')
 
@@ -20,3 +22,14 @@ def dashboard():
 @login_required (role_id=1)
 def GestionUsuarios():
     return render_template('gestiondeusuariosadmin.html')
+
+@admin_bp.route('/Actualizacion_Inegi')
+@login_required (role_id=1)
+def ActualizacionInegi():
+    return render_template('inegi.html')
+
+@admin_bp.route('/Alberges')
+@login_required (role_id=1)
+def AlberguesAdmin():
+    return render_template('alberge_administrador')
+    
