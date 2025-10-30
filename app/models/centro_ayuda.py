@@ -1,7 +1,7 @@
 from app.extensiones import db
 
 class CentroAyuda(db.Model):
-    __table__='centros_ayuda'
+    __tablename__='centros_ayuda'
 
     id_centro = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(150), nullable=False)

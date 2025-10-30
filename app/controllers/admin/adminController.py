@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
-
-admin_bp = Blueprint('admin', __name__, url_prefix = '/admin')
+from . import admin_bp
 
 @admin_bp.route('/')
 def dashboard():
