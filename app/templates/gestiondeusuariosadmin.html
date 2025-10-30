@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Gestión de Usuarios</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/accesibilidad.css')}}">
+    <script src="{{ url_for('static', filename='js/accesibilidad.js')}}"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
         
@@ -41,8 +43,9 @@
         }
     </style>
 </head>
-<body class="text-gray-800 flex flex-col">
-
+<body class="high-contrast">
+    <div id="reading-guide" class="reading-guide-mask"></div>
+    
     <header class="bg-purple-800 shadow-md px-6 py-4 flex items-center justify-between relative z-20">
         <div class="flex items-center space-x-4">
             <span class="text-3xl font-extrabold text-white">💜 Admin Panel</span>

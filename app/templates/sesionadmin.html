@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Luz Violeta - Panel de Control</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/accesibilidad.css')}}">
+    <script src="{{ url_for('static', filename='js/accesibilidad.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/validar_sesion.js')}}"></script>
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
         
@@ -47,7 +53,8 @@
         }
     </style>
 </head>
-<body class="text-gray-800 flex flex-col">
+<body class="high-contrast">
+    <div id="reading-guide" class="reading-guide-mask"></div>
 
     <header class="bg-purple-800 shadow-md px-6 py-4 flex items-center justify-between relative z-20">
         <div class="flex items-center space-x-4">
@@ -56,10 +63,12 @@
         </div>
 
         <nav class="flex space-x-4">
-            <span class="text-sm font-semibold text-white/80 py-2 hidden md:block">Hola, Administrador</span>
-            <button class="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 px-4 rounded-full transition-all duration-300 shadow-lg text-sm" onclick="alert('Cerrando sesión...')">
-                🔒 Cerrar Sesión
-            </button>
+            <span class="text-sm font-semibold text-white/80 py-2 hidden md:block">Hola, {{nombre}}</span>
+            <form action ="{{ url_for('login_bp.logout')}}">
+                <button type="submit" class="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 px-4 rounded-full transition-all duration-300 shadow-lg text-sm" onclick="alert('Cerrando sesión...')">
+                    🔒 Cerrar Sesión
+                </button>
+            </form>
         </nav>
     </header>
 
@@ -134,6 +143,7 @@
     <footer class="bg-purple-900 text-white text-center py-4 mt-auto shadow-inner">
         <p>© 2024 Luz Violeta. Panel de Administración.</p>
     </footer>
+
 
     </body>
 </html>

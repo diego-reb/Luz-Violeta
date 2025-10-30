@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luz Violeta - Apoyo a la Mujer</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+    <script src="{{ url_for('static', filename='js/accesibilidad.js')}}"></script>
     <style>
         /* Importa la fuente Inter de Google Fonts */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
@@ -39,8 +41,8 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
-
+<body class="high-contrast">
+    <div id="reading-guide" class="reading-guide-mask"></div>
     <span class="decorative-element absolute top-[10%] left-[20%] text-violet-400 text-5xl opacity-40">🌸</span>
     <span class="decorative-element absolute top-[60%] left-[70%] text-violet-300 text-6xl opacity-40" style="animation-delay: 2s;">✨</span>
     <span class="decorative-element absolute top-[80%] left-[30%] text-violet-400 text-4xl opacity-40" style="animation-delay: 4s;">✨</span>

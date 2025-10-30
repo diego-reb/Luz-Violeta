@@ -26,4 +26,13 @@ def Luzvioleta():
     app.register_blueprint(registro_bp)
     app.register_blueprint(telefono_bp)
 
+
+    @app.after_request
+    def add_no_cache_headers(response):
+        response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, private, max-age=0'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+        return response
+
+
     return app
