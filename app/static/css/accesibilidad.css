@@ -1,0 +1,176 @@
+/* === Accesibilidad general === */
+
+:root {
+  --font-size-base: 16px;
+  --font-family-base: 'Inter', sans-serif;
+}
+
+/* === Escala de grises === */
+body.grayscale { filter: grayscale(100%); background: #ffffff !important; color: #000000 !important; }
+
+/* === Cambio de tipografía accesible === */
+body.alt-font {
+  font-family: 'Arial Rounded MT Bold', Verdana, sans-serif !important;
+}
+
+/* === Guía de lectura === */
+.reading-guide-mask {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  background: rgba(87, 238, 28, 0.532);
+  pointer-events: none;
+  display: none;
+  z-index: 9999;
+  transition: top 0.1s ease; 
+}
+
+body.reading-guide-active .reading-guide-mask{
+  display: block;
+}
+body.dark-mode { background: #111827; color: #f0f5f9; }
+
+body.light-mode { background: #ffffff; color: #0f0e0e; }
+/* === Alto contraste === */
+body.high-contrast {
+  background: #000 !important;
+  color: #1f10ab !important;
+}
+
+body.high-contrast a {
+  color: rgb(8, 205, 100) !important;
+}
+
+/* TAMAÑO NORMAL (Punto de inicio y fin de disminución) */
+body.text-size-1 { 
+  font-size: 1em !important; 
+}
+
+/* Aumento 1 */
+body.text-size-2 {
+  font-size: 1.25em !important;
+}
+
+/* Aumento 2 */
+body.text-size-3 {
+  font-size: 1.5em !important;
+}
+
+/* Aumento 3 */
+body.text-size-4 {
+  font-size: 1.75em !important;
+}
+
+/* Aumento 4 (Máximo) */
+body.text-size-5 {
+  font-size: 2em !important;
+}
+
+
+/* === Botón flotante de accesibilidad === */
+#accesibility-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #22c55e, #38bdf8);
+  color: white;
+  font-size: 1.3rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0,0,0,.35);
+  z-index: 10001;
+  transition: transform 0.2s ease;
+}
+#accesibility-toggle:hover {
+  transform: scale(1.08);
+}
+
+/* === Menú desplegable === */
+#accesibility-panel {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  background: rgba(15,23,42,.95);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 10px 20px rgba(0,0,0,.4);
+  z-index: 10000;
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  width: 240px;
+}
+
+#accesibility-panel.active {
+  display: flex;
+  animation: fadeIn .25s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+#accesibility-panel button {
+  background: rgba(255,255,255,.08);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: white;
+  cursor: pointer;
+  transition: background .2s;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+#accesibility-panel button:hover {
+  background: rgba(255,255,255,.25);
+}
+
+/* 🌙 Modo oscuro (ya está por defecto con tus variables) */
+
+/* ☀️ Modo claro */
+body.light-mode {
+    --bg: #f4f4f9;              /* Fondo general */
+    --card: #ffffff;            /* Fondo del panel de login */
+    --muted: #5c687a;           /* Texto gris medio */
+    --text: #0f172a;            /* Texto principal oscuro */
+    --brand: #22c55e;           /* Verde consistente */
+    --brand-2: #38bdf8;         /* Azul consistente */
+    --accent: #eab308;          /* Amarillo */
+    --error: #ef4444;           /* Rojo */
+    --ok: #10b981;              /* Verde éxito */
+}
+
+/* Ajuste visual del panel del formulario en modo claro */
+body.light-mode .form-panel {
+    background: var(--card);
+    border: 1px solid rgba(148,163,184,.25);
+    color: var(--text);
+}
+
+/* Ajuste de inputs en modo claro */
+body.light-mode input[type="email"],
+body.light-mode input[type="password"] {
+    background: #f9fafb;
+    color: #111827;
+    border: 1px solid rgba(148,163,184,.4);
+}
+
+/* Hover de opciones radio en modo claro */
+body.light-mode .radio-option {
+    background: #f9fafb;
+    color: #0f172a;
+}
+body.light-mode .radio-option:hover {
+    background: #f3f4f6;
+}
+body.light-mode .radio-option.selected {
+    background: rgba(56,189,248,.15);
+    border-color: var(--brand-2);
+}
