@@ -15,3 +15,8 @@ def inject_user():
 @login_required (role_id=1)
 def dashboard():
     return render_template('sesionadmin.html')
+
+@admin_bp.route('/Gestion_Usuarios')
+@login_required (role_id=1)
+def GestionUsuarios():
+    return render_template('gestiondeusuariosadmin.html')
