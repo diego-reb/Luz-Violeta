@@ -5,6 +5,7 @@ from app.extensiones import db
 from app.controllers.admin.usuarios_controllers import gestion_usuarios_bp
 
 admin_bp = Blueprint('admin_bp', __name__, url_prefix='/admin')
+admin_bp.register_blueprint(gestion_usuarios_bp)
 
 @admin_bp.app_context_processor
 def inject_user():
@@ -18,10 +19,7 @@ def inject_user():
 def dashboard():
     return render_template('sesionadmin.html')
 
-@admin_bp.route('/Gestion_Usuarios')
-@login_required (role_id=1)
-def GestionUsuarios():
-    return render_template('gestiondeusuariosadmin.html')
+
 
 @admin_bp.route('/Actualizacion_Inegi')
 @login_required (role_id=1)

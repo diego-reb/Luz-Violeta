@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/accesibilidad.css')}}">
     <script src="{{ url_for('static', filename='js/accesibilidad.js')}}"></script>
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
         
@@ -84,6 +85,10 @@
     </style>
 </head>
 <body class="high-contrast">
+    <div id="loader" class="hidden fixed inset-0 bg-white bg-opacity-90 flex flex-col items-center justify-center z-[9999]">
+    <div class="w-16 h-16 border-4 border-purple-300 border-t-purple-700 rounded-full animate-spin"></div>
+    <p class="mt-4 text-purple-700 font-semibold text-lg">Cargando...</p>
+</div>
     <div id="reading-guide" class="reading-guide-mask"></div>
     
     <header class="bg-white shadow-md rounded-b-2xl px-4 py-4 flex items-center justify-between relative z-10">
@@ -125,7 +130,7 @@
                             Recuérdame
                         </label>
                     </div>
-                    <a href="#" class="font-medium text-purple-600 hover:text-purple-500 transition-colors">
+                    <a href="/Restablecer_contrasena" class="font-medium text-purple-600 hover:text-purple-500 transition-colors">
                         ¿Olvidaste tu contraseña?
                     </a>
                 </div>
@@ -135,7 +140,7 @@
             </form>
             <p class="mt-6 text-center text-sm text-gray-600">
                 ¿No tienes una cuenta?
-                <a href="#" class="font-medium text-purple-600 hover:text-purple-500 transition-colors">
+                <a href="/registro" class="font-medium text-purple-600 hover:text-purple-500 transition-colors">
                     Regístrate
                 </a>
             </p>
@@ -156,5 +161,8 @@
     <span class="floating-element absolute top-[50%] left-[50%] text-purple-400 text-6xl" style="animation-delay: 7s;">💖</span>
     <span class="floating-element-2 absolute top-[90%] left-[60%] text-pink-400 text-7xl" style="animation-delay: 8s;">🌸</span>
     <span class="floating-element absolute top-[35%] left-[65%] text-purple-300 text-4xl" style="animation-delay: 9s;">🦋</span>
+
+    <script src="{{ url_for('static', filename='js/pantalla_carga.js')}}"></script>
+
 </body>
 </html>

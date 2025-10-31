@@ -134,7 +134,9 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{u.id_usuario}}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{u.nombre}}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{u.correo}}</td>
-                            <td class="px-6 py-4 whitespace-nowrap">{{u.rol}}</td>
+                            {%for r in roles %}
+                            <td class="px-6 py-4 whitespace-nowrap">{{r.nombre}}</td>
+                            {% endfor %}
                             <td class="px-6 py-4 whitespace-nowrap">
                                 {%if u.activo %}
                                     <span class="text-green-600 front-semibold">Activo</span>
