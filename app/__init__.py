@@ -1,6 +1,7 @@
-from flask import Flask
+from flask import Flask, render_template
 from .config import Config
 from app.extensiones import db, migrate
+import traceback
 from app.controllers.main_controllers import main
 from app.controllers.login_controller import login_bp
 from app.controllers.admin.adminController import admin_bp
