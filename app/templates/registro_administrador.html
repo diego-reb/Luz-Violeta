@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Administrador</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Registrar Administrador</h1>
+    <form method="POST" action="{{ url_for('registro_admin') }}">
+        {{ form.hidden_tag() }}
+        
+        <p>
+            {{ form.nombre_completo.label }}<br>
+            {{ form.nombre_completo(size=40) }}<br>
+            {% for error in form.nombre_completo.errors %}
+                <span style="color:red">{{ error }}</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.correo.label }}<br>
+            {{ form.correo(size=40) }}<br>
+            {% for error in form.correo.errors %}
+                <span style="color:red">{{ error }}</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.telefono.label }}<br>
+            {{ form.telefono(size=40) }}<br>
+            {% for error in form.telefono.errors %}
+                <span style="color:red">{{ error }}</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.password.label }}<br>
+            {{ form.password(size=40) }}<br>
+            {% for error in form.password.errors %}
+                <span style="color:red">{{ error }}</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.confirmar_password.label }}<br>
+            {{ form.confirmar_password(size=40) }}<br>
+            {% for error in form.confirmar_password.errors %}
+                <span style="color:red">{{ error }}</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.activo() }} {{ form.activo.label }}
+        </p>
+
+        <p>{{ form.submit() }}</p>
+    </form>
+</body>
+</html>
