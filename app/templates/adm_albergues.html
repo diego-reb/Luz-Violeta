@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Administrar Albergues (Responsive)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f7f1ff;
+            min-height: 100vh;
+        }
+
+        /* Estilo para el enlace activo en el sidebar */
+        .sidebar-link {
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+        }
+
+        .sidebar-link:hover {
+            background-color: #f3e8ff;
+            color: #7c3aed;
+        }
+
+        .sidebar-link.active {
+            background-color: #8b5cf6;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(139, 92, 246, 0.4);
+        }
+
+        /* Estilo para la tabla (zebra stripes) */
+        .table-row-striped:nth-child(even) {
+            background-color: #f3f4f6; /* bg-gray-100 */
+        }
+
+        /* --- Estilos Responsivos Adicionales para la Tabla en Móviles --- */
+        /* La tabla tradicional se convierte en un diseño tipo "tarjeta" en móviles */
+        @media (max-width: 767px) {
+            .responsive-table thead {
+                display: none; /* Oculta el encabezado de la tabla en móvil */
+            }
+            .responsive-table, .responsive-table tbody, .responsive-table tr, .responsive-table td {
+                display: block; /* Hace que todos los elementos de la tabla se comporten como bloques */
+            }
+            .responsive-table tr {
+                margin-bottom: 0.75rem;
+                border: 1px solid #ddd;
+                border-radius: 0.75rem;
+                overflow: hidden;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            }
+            .responsive-table td {
+                border-bottom: 1px solid #eee;
+                text-align: right;
+                padding-left: 50%; /* Espacio para el label */
+                position: relative;
+            }
+            .responsive-table td::before {
+                content: attr(data-label); /* Usa el atributo data-label para mostrar el nombre de la columna */
+                position: absolute;
+                left: 0;
+                width: 50%;
+                padding-left: 1rem;
+                font-weight: 600;
+                text-align: left;
+                color: #581c87; /* Púrpura oscuro */
+            }
+            /* Asegura que la columna de acciones y ocupación se centren bien */
+            .responsive-table .action-col, .responsive-table .occupation-col, .responsive-table .status-col {
+                text-align: left;
+                padding-left: 1rem;
+            }
+            .responsive-table .action-col::before, .responsive-table .occupation-col::before, .responsive-table .status-col::before {
+                content: none;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-800 flex flex-col">
+
+    <header class="bg-purple-800 shadow-md px-6 py-4 flex items-center justify-between relative z-20">
+        <div class="flex items-center space-x-4">
+            <span class="text-2xl sm:text-3xl font-extrabold text-white">💜 Admin Panel</span>
+            <span class="text-white opacity-70 border-l border-white/50 pl-4 hidden md:block">Gestión de Luz Violeta</span>
+        </div>
+
+        <button id="menu-toggle" class="md:hidden text-white hover:text-purple-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+        </button>
+
+        <nav class="hidden sm:flex space-x-4">
+            <span class="text-sm font-semibold text-white/80 py-2 hidden md:block">Hola, Administrador</span>
+            <button class="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 px-4 rounded-full transition-all duration-300 shadow-lg text-sm" onclick="alert('Cerrando sesión...')">
+                🔒 Cerrar Sesión
+            </button>
+        </nav>
+    </header>
+
+    <div class="flex flex-grow relative">
+        <aside id="sidebar" class="w-64 bg-white shadow-xl p-4 absolute md:relative inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-30 h-full md:h-auto">
+            <div class="space-y-2 pt-4">
+                <a href="admin-dashboard.html" class="sidebar-link text-purple-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    Panel Principal
+                </a>
+                <a href="admin-usuarios.html" class="sidebar-link text-purple-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20v-2a3 3 0 00-5.356-1.857M9 20h5v-2a3 3 0 00-5.356-1.857M9 20v-2a3 3 0 00-5.356-1.857M11 10a4 4 0 11-8 0 4 4 0 018 0zM17 10a4 4 0 11-8 0 4 4 0 018 0zM19 18a2 2 0 100-4 2 2 0 000 4z"/></svg>
+                    Gestión de Usuarios
+                </a>
+                <a href="#albergues" class="sidebar-link active">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 4h2m-7-5h2m4-5h2m4-5h2M12 21V3"/></svg>
+                    Administrar Albergues
+                </a>
+                <a href="admin-reportes.html" class="sidebar-link text-purple-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0h6"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 14h2m-2 4h2"/></svg>
+                    Estadísticas y Reportes
+                </a>
+            </div>
+        </aside>
+
+        <main class="flex-1 p-4 md:p-8">
+            
+            <button onclick="window.history.back()" class="flex items-center text-purple-600 hover:text-purple-800 font-semibold mb-4 sm:mb-6 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+                Regresar al Panel
+            </button>
+            
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-purple-900 mb-4 sm:mb-6">Administrar Refugios Seguros 🏘️</h1>
+            <p class="text-gray-600 mb-6">Visualiza la capacidad, el estado y la información de contacto de todos los albergues afiliados.</p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
+                <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg border-l-4 border-purple-500">
+                    <p class="text-sm font-medium text-gray-500">Total de Albergues</p>
+                    <p class="text-2xl sm:text-3xl font-bold text-purple-700 mt-1">12</p>
+                </div>
+                <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg border-l-4 border-pink-500">
+                    <p class="text-sm font-medium text-gray-500">Capacidad Total Ocupada</p>
+                    <p class="text-2xl sm:text-3xl font-bold text-pink-700 mt-1">75%</p>
+                </div>
+                <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg border-l-4 border-green-500">
+                    <p class="text-sm font-medium text-gray-500">Albergues Disponibles</p>
+                    <p class="text-2xl sm:text-3xl font-bold text-green-700 mt-1">9</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center bg-white p-4 rounded-xl shadow-lg mb-6">
+                <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-5 rounded-full transition-colors duration-300 shadow-md mb-4 md:mb-0 transform hover:scale-105 w-full md:w-auto text-sm sm:text-base" onclick="alert('Abriendo formulario para nuevo albergue...')">
+                    ➕ Registrar Nuevo Albergue
+                </button>
+
+                <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 w-full md:w-auto">
+                    <input type="text" placeholder="Buscar por nombre o ciudad..." class="p-2 border border-gray-300 rounded-lg w-full focus:ring-purple-500 focus:border-purple-500 text-sm">
+                    <select class="p-2 border border-gray-300 rounded-lg w-full focus:ring-purple-500 focus:border-purple-500 text-sm">
+                        <option>Estado: Todos</option>
+                        <option>Activo</option>
+                        <option>Mantenimiento</option>
+                        <option>Cerrado Temporalmente</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-2xl overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 responsive-table">
+                    <thead class="bg-purple-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-purple-700 uppercase tracking-wider">
+                                ID
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-purple-700 uppercase tracking-wider">
+                                Nombre
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-purple-700 uppercase tracking-wider">
+                                Ciudad / Región
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-bold text-purple-700 uppercase tracking-wider">
+                                Ocupación
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-purple-700 uppercase tracking-wider">
+                                Estado
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-bold text-purple-700 uppercase tracking-wider">
+                                Acciones
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr class="table-row-striped">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" data-label="ID">A001</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-semibold" data-label="Nombre">Casa Esperanza</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700" data-label="Ciudad">Ciudad de México</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm occupation-col" data-label="Ocupación">
+                                <span class="font-bold text-red-500">90%</span> (9/10)
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap status-col" data-label="Estado">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                    Activo
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2 action-col" data-label="Acciones">
+                                <button class="text-indigo-600 hover:text-indigo-900 transition-colors" onclick="alert('Visualizando detalles de Casa Esperanza')">
+                                    🔍 Ver
+                                </button>
+                                <button class="text-indigo-600 hover:text-indigo-900 transition-colors" onclick="alert('Editando Casa Esperanza')">
+                                    ✏️ Editar
+                                </button>
+                                <button class="text-red-600 hover:text-red-900 transition-colors" onclick="confirm('¿Cerrar temporalmente Casa Esperanza?')">
+                                    ❌ Cerrar
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="table-row-striped">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" data-label="ID">A002</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-semibold" data-label="Nombre">Refugio Violeta</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700" data-label="Ciudad">Guadalajara</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm occupation-col" data-label="Ocupación">
+                                <span class="font-bold text-green-500">50%</span> (5/10)
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap status-col" data-label="Estado">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                    Activo
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2 action-col" data-label="Acciones">
+                                <button class="text-indigo-600 hover:text-indigo-900 transition-colors" onclick="alert('Visualizando detalles de Refugio Violeta')">
+                                    🔍 Ver
+                                </button>
+                                <button class="text-indigo-600 hover:text-indigo-900 transition-colors" onclick="alert('Editando Refugio Violeta')">
+                                    ✏️ Editar
+                                </button>
+                                <button class="text-red-600 hover:text-red-900 transition-colors" onclick="confirm('¿Cerrar temporalmente Refugio Violeta?')">
+                                    ❌ Cerrar
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="table-row-striped">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" data-label="ID">A003</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-semibold" data-label="Nombre">Puerta Segura</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700" data-label="Ciudad">Monterrey</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm occupation-col" data-label="Ocupación">
+                                <span class="font-bold text-yellow-500">10%</span> (1/10)
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap status-col" data-label="Estado">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    Mantenimiento
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2 action-col" data-label="Acciones">
+                                <button class="text-indigo-600 hover:text-indigo-900 transition-colors" onclick="alert('Visualizando detalles de Puerta Segura')">
+                                    🔍 Ver
+                                </button>
+                                <button class="text-indigo-600 hover:text-indigo-900 transition-colors" onclick="alert('Editando Puerta Segura')">
+                                    ✏️ Editar
+                                </button>
+                                <button class="text-red-600 hover:text-red-900 transition-colors" onclick="confirm('¿Cerrar temporalmente Puerta Segura?')">
+                                    ❌ Cerrar
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                </table>
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-between items-center mt-6 p-4 bg-white rounded-xl shadow-lg space-y-3 sm:space-y-0">
+                <p class="text-sm text-gray-600">Mostrando *1 a 10* de *12* albergues</p>
+                <div class="space-x-2">
+                    <button class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors disabled:opacity-50" disabled>Anterior</button>
+                    <button class="px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-lg hover:bg-purple-700 transition-colors">1</button>
+                    <button class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors">2</button>
+                    <button class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors" disabled>Siguiente</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="bg-purple-900 text-white text-center py-4 mt-auto shadow-inner">
+        <p>© 2024 Luz Violeta. Panel de Administración.</p>
+    </footer>
+
+    <script>
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('-translate-x-full');
+            sidebar.classList.toggle('translate-x-0');
+        });
+    </script>
+</body>
+</html>
