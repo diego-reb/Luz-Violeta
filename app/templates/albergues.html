@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/accesibilidad.css')}}">
     <script src="{{ url_for('static', filename='js/accesibilidad.js')}}"></script>
     <script async src="https://maps.googleapis.com/maps/api/js?key=TU_API_KEY&callback=initMap"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
         
@@ -153,28 +154,17 @@
             <p class="text-center text-gray-600 mb-4">Selecciona una alcaldía para ver los albergues disponibles en el mapa.</p>
             
             <div class="flex justify-center mb-6">
-                <select id="alcaldia-select" class="p-3 border border-purple-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 w-full md:w-1/2 bg-white text-gray-800 shadow-sm">
-                    <option value="" disabled selected>Selecciona una alcaldía</option>
-                    <option value="alvaro-obregon">Álvaro Obregón</option>
-                    <option value="azcapotzalco">Azcapotzalco</option>
-                    <option value="benito-juarez">Benito Juárez</option>
-                    <option value="coyoacan">Coyoacán</option>
-                    <option value="cuajimalpa">Cuajimalpa de Morelos</option>
-                    <option value="cuauhtemoc">Cuauhtémoc</option>
-                    <option value="gustavo-a-madero">Gustavo A. Madero</option>
-                    <option value="iztacalco">Iztacalco</option>
-                    <option value="iztapalapa">Iztapalapa</option>
-                    <option value="magdalena-contreras">La Magdalena Contreras</option>
-                    <option value="miguel-hidalgo">Miguel Hidalgo</option>
-                    <option value="milpa-alta">Milpa Alta</option>
-                    <option value="tlahuac">Tláhuac</option>
-                    <option value="tlalpan">Tlalpan</option>
-                    <option value="venustiano-carranza">Venustiano Carranza</option>
-                    <option value="xochimilco">Xochimilco</option>
-                </select>
-            </div>
-            
-            <div id="albergues-table-container"></div>
+    <select id="alcaldia-select" class="p-3 border border-purple-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 w-full md:w-1/2 bg-white text-gray-800 shadow-sm">
+        <option value="" disabled selected>Selecciona una alcaldía</option>
+        {% for alcaldia in alcaldias %}
+            <option value="{{ alcaldia.id }}">{{ alcaldia.nombre }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+            <div id="lista-albergues" style="margin-top:20px;">
+        <p>Seleccione una alcaldía para ver los albergues disponibles.</p>
+    </div>
 
             <div id="map" class="mt-8"></div>
         </div>
@@ -194,143 +184,90 @@
     <span class="floating-element absolute top-[50%] left-[50%] text-purple-400 text-6xl" style="animation-delay: 7s;">💖</span>
     <span class="floating-element-2 absolute top-[90%] left-[60%] text-pink-400 text-7xl" style="animation-delay: 8s;">🌸</span>
     <span class="floating-element absolute top-[35%] left-[65%] text-purple-300 text-4xl" style="animation-delay: 9s;">🦋</span>
+<script>
+let map;
+let markers = [];
 
-    <script>
-        // --- Lógica del mapa y el menú desplegable ---
-        let map;
-        let markers = [];
+// Inicializa el mapa centrado en CDMX
+function initMap() {
+    map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 19.432608, lng: -99.133209 }, // CDMX
+        zoom: 12,
+    });
+}
 
-        // Coordenadas y albergues de ejemplo para todas las alcaldías
-        const alcaldias = {
-            "alvaro-obregon": { lat: 19.3621, lng: -99.2057, name: "Álvaro Obregón" },
-            "azcapotzalco": { lat: 19.4895, lng: -99.1837, name: "Azcapotzalco" },
-            "benito-juarez": { lat: 19.3876, lng: -99.1666, name: "Benito Juárez" },
-            "coyoacan": { lat: 19.3496, lng: -99.1601, name: "Coyoacán" },
-            "cuajimalpa": { lat: 19.3698, lng: -99.2743, name: "Cuajimalpa de Morelos" },
-            "cuauhtemoc": { lat: 19.4342, lng: -99.1417, name: "Cuauhtémoc" },
-            "gustavo-a-madero": { lat: 19.4975, lng: -99.1172, name: "Gustavo A. Madero" },
-            "iztacalco": { lat: 19.3908, lng: -99.0984, name: "Iztacalco" },
-            "iztapalapa": { lat: 19.3621, lng: -99.0683, name: "Iztapalapa" },
-            "magdalena-contreras": { lat: 19.3039, lng: -99.2272, name: "La Magdalena Contreras" },
-            "miguel-hidalgo": { lat: 19.4447, lng: -99.2016, name: "Miguel Hidalgo" },
-            "milpa-alta": { lat: 19.1983, lng: -99.0305, name: "Milpa Alta" },
-            "tlahuac": { lat: 19.2889, lng: -99.0069, name: "Tláhuac" },
-            "tlalpan": { lat: 19.2847, lng: -99.1677, name: "Tlalpan" },
-            "venustiano-carranza": { lat: 19.4317, lng: -99.1178, name: "Venustiano Carranza" },
-            "xochimilco": { lat: 19.2562, lng: -99.1419, name: "Xochimilco" }
-        };
+// Carga los albergues de la alcaldía seleccionada
+async function cargarAlbergues() {
+    const idAlcaldia = document.getElementById("alcaldia-select").value;
+    const contenedor = document.getElementById("lista-albergues");
 
-        const alberguesData = {
-            "alvaro-obregon": [{ lat: 19.3550, lng: -99.2100, name: "Albergue de Apoyo Obregón", address: "Av. Vasco de Quiroga 120", contact: "55 1111 2222" }],
-            "azcapotzalco": [{ lat: 19.4950, lng: -99.1850, name: "Albergue Azcapotzalco", address: "Calle de las Rosas 123", contact: "55 1234 5678" }],
-            "benito-juarez": [{ lat: 19.3900, lng: -99.1700, name: "Casa de Refugio de la Ciudad", address: "Eje 5 Sur 550", contact: "55 3333 4444" }],
-            "coyoacan": [{ lat: 19.3520, lng: -99.1620, name: "Albergue Coyoacán", address: "Av. Coyoacán 890", contact: "55 7777 8888" }],
-            "cuajimalpa": [{ lat: 19.3750, lng: -99.2800, name: "Refugio Cuajimalpa", address: "Av. Cuajimalpa 321", contact: "55 2222 3333" }],
-            "cuauhtemoc": [{ lat: 19.4380, lng: -99.1450, name: "Albergue de la Esperanza", address: "Paseo de la Reforma 10", contact: "55 1122 3344" }],
-            "gustavo-a-madero": [{ lat: 19.5000, lng: -99.1200, name: "Casa de Apoyo", address: "Av. Ticomán 150", contact: "55 9999 0000" }],
-            "iztacalco": [{ lat: 19.3950, lng: -99.1000, name: "Albergue Iztacalco", address: "Av. Plutarco Elías Calles 800", contact: "55 3333 4444" }],
-            "iztapalapa": [{ lat: 19.3650, lng: -99.0720, name: "Albergue de Iztapalapa", address: "Calle de la Montaña 50", contact: "55 9988 7766" }],
-            "magdalena-contreras": [{ lat: 19.3050, lng: -99.2300, name: "Refugio La Magdalena", address: "Av. San Jerónimo 100", contact: "55 5555 6666" }],
-            "miguel-hidalgo": [{ lat: 19.4470, lng: -99.2050, name: "Casa de Refugio Miguel Hidalgo", address: "Av. Ejército Nacional 843", contact: "55 6666 7777" }],
-            "milpa-alta": [{ lat: 19.1990, lng: -99.0350, name: "Albergue Milpa Alta", address: "Calle Gpe. Victoria 10", contact: "55 8888 9999" }],
-            "tlahuac": [{ lat: 19.2900, lng: -99.0100, name: "Refugio del Lago", address: "Av. de los Olivos 22", contact: "55 0000 1111" }],
-            "tlalpan": [{ lat: 19.2800, lng: -99.1700, name: "Albergue Tlalpan", address: "Carr. Picacho-Ajusco 54", contact: "55 4444 5555" }],
-            "venustiano-carranza": [{ lat: 19.4350, lng: -99.1200, name: "Casa de Apoyo Venustiano", address: "Eje 2 Sur 10", contact: "55 1122 3344" }],
-            "xochimilco": [{ lat: 19.2500, lng: -99.1500, name: "Refugio de Xochimilco", address: "Av. Nuevo León 45", contact: "55 2233 4455" }]
-        };
+    if (!idAlcaldia) {
+        contenedor.innerHTML = "<p>Seleccione una alcaldía.</p>";
+        return;
+    }
 
-        // Función para inicializar el mapa
-        function initMap() {
-            // Coordenadas iniciales centradas en la Ciudad de México
-            const cdmx = { lat: 19.4326, lng: -99.1332 };
-            map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 10,
-                center: cdmx,
-                mapId: "DEMO_MAP_ID",
-            });
+    try {
+        const response = await fetch(`/albergues/por_alcaldia/${idAlcaldia}`);
+        const data = await response.json();
+
+        if (data.length === 0) {
+            contenedor.innerHTML = "<p>No hay albergues registrados en esta alcaldía.</p>";
+            return;
         }
 
-        // Función para generar la tabla de albergues
-        function generateTable(albergues) {
-            const container = document.getElementById('albergues-table-container');
-            if (albergues.length === 0) {
-                container.innerHTML = `<p class="text-center text-gray-500 mt-4">No hay albergues disponibles en esta alcaldía.</p>`;
-                return;
-            }
+        // Limpiar marcadores antiguos
+        markers.forEach(marker => marker.setMap(null));
+        markers = [];
 
-            let tableHTML = `
-                <table id="albergues-table">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Ubicación</th>
-                            <th>Contacto</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+        // Crear lista de albergues
+        let html = "<ul>";
+        data.forEach(a => {
+            const tieneUbicacion = a.latitud && a.longitud;
+            html += `
+                <li style="cursor:${tieneUbicacion ? "pointer" : "default"};"
+                    ${tieneUbicacion ? `onclick="mostrarEnMapa(${a.latitud}, ${a.longitud}, '${a.nombre}')"` : ""}>
+                    <strong>${a.nombre}</strong><br>
+                    Dirección: ${a.direccion}<br>
+                    Teléfono: ${a.telefono}
+                    ${!tieneUbicacion ? "<br><em>Ubicación no disponible</em>" : ""}
+                </li>
+                <hr>
             `;
-            albergues.forEach(albergue => {
-                tableHTML += `
-                    <tr>
-                        <td>${albergue.name}</td>
-                        <td>${albergue.address}</td>
-                        <td><a href="tel:${albergue.contact.replace(/\s/g, '')}">${albergue.contact}</a></td>
-                    </tr>
-                `;
-            });
-            tableHTML += `
-                    </tbody>
-                </table>
-            `;
-            container.innerHTML = tableHTML;
-        }
-
-        // Función para manejar el cambio en el menú desplegable
-        document.getElementById('alcaldia-select').addEventListener('change', function() {
-            const alcaldiaSeleccionada = this.value;
-
-            // Limpiar marcadores anteriores
-            markers.forEach(marker => marker.setMap(null));
-            markers = [];
-            document.getElementById('albergues-table-container').innerHTML = '';
-
-            if (alcaldiaSeleccionada) {
-                // Centrar el mapa en la alcaldía seleccionada
-                const coords = alcaldias[alcaldiaSeleccionada];
-                if (coords) {
-                    map.setCenter(coords);
-                    map.setZoom(12);
-                }
-
-                // Colocar marcadores de albergues y generar la tabla
-                const alberguesEnAlcaldia = alberguesData[alcaldiaSeleccionada] || [];
-                alberguesEnAlcaldia.forEach(albergue => {
-                    const marker = new google.maps.Marker({
-                        position: { lat: albergue.lat, lng: albergue.lng },
-                        map: map,
-                        title: albergue.name,
-                    });
-                    markers.push(marker);
-
-                    const infoWindow = new google.maps.InfoWindow({
-                        content: `<h3>${albergue.name}</h3><p>${albergue.address}</p>`
-                    });
-
-                    marker.addListener("click", () => {
-                        infoWindow.open({
-                            anchor: marker,
-                            map,
-                            shouldFocus: false,
-                        });
-                    });
-                });
-                
-                generateTable(alberguesEnAlcaldia);
-            }
         });
-    </script>
+        html += "</ul>";
+        contenedor.innerHTML = html;
 
-    
+    } catch (error) {
+        console.error(error);
+        contenedor.innerHTML = "<p>Ocurrió un error al cargar los albergues.</p>";
+    }
+}
+
+// Muestra la ubicación en el mapa
+function mostrarEnMapa(lat, lng, nombre) {
+    if (!lat || !lng) return alert("No hay ubicación registrada para este albergue.");
+
+    const position = { lat: lat, lng: lng };
+    map.setCenter(position);
+    map.setZoom(16);
+
+    const marker = new google.maps.Marker({
+        position: position,
+        map: map,
+        title: nombre
+    });
+
+    markers.push(marker);
+
+    const infoWindow = new google.maps.InfoWindow({
+        content: `<strong>${nombre}</strong>`
+    });
+    infoWindow.open(map, marker);
+}
+
+// Evento para recargar albergues cuando cambie la selección
+document.getElementById("alcaldia-select").addEventListener("change", cargarAlbergues);
+</script>
 
 </body>
 </html>

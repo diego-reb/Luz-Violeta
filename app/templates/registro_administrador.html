@@ -3,58 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <title>Registro de Administrador</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/registro_admin.css') }}">
 </head>
 <body>
-    <h1>Registrar Administrador</h1>
-    <form method="POST" action="{{ url_for('registro_admin') }}">
-        {{ form.hidden_tag() }}
-        
-        <p>
-            {{ form.nombre_completo.label }}<br>
-            {{ form.nombre_completo(size=40) }}<br>
-            {% for error in form.nombre_completo.errors %}
-                <span style="color:red">{{ error }}</span>
-            {% endfor %}
-        </p>
+<div class="container">
+    <h1 class="title">Registrar Administrador</h1>
+    <form id="formRegistro" class="formulario">
+        <div class="form-group">
+            <input type="text" id="nombre_completo" name="nombre_completo" class="input" required>
+            <label>Nombre Completo</label>
+            <span class="error"></span>
+        </div>
 
-        <p>
-            {{ form.correo.label }}<br>
-            {{ form.correo(size=40) }}<br>
-            {% for error in form.correo.errors %}
-                <span style="color:red">{{ error }}</span>
-            {% endfor %}
-        </p>
+        <div class="form-group">
+            <input type="email" id="correo" name="correo" class="input" required>
+            <label>Correo</label>
+            <span class="error"></span>
+        </div>
 
-        <p>
-            {{ form.telefono.label }}<br>
-            {{ form.telefono(size=40) }}<br>
-            {% for error in form.telefono.errors %}
-                <span style="color:red">{{ error }}</span>
-            {% endfor %}
-        </p>
+        <div class="form-group">
+            <input type="text" id="nombre_usuario" name="nombre_usuario" class="input" required>
+            <label>Nombre de Usuario</label>
+            <span class="error"></span>
+        </div>
 
-        <p>
-            {{ form.password.label }}<br>
-            {{ form.password(size=40) }}<br>
-            {% for error in form.password.errors %}
-                <span style="color:red">{{ error }}</span>
-            {% endfor %}
-        </p>
+        <div class="form-group">
+            <input type="password" id="password" name="password" class="input" required>
+            <label>Contraseña</label>
+            <span class="error"></span>
+        </div>
 
-        <p>
-            {{ form.confirmar_password.label }}<br>
-            {{ form.confirmar_password(size=40) }}<br>
-            {% for error in form.confirmar_password.errors %}
-                <span style="color:red">{{ error }}</span>
-            {% endfor %}
-        </p>
-
-        <p>
-            {{ form.activo() }} {{ form.activo.label }}
-        </p>
-
-        <p>{{ form.submit() }}</p>
+        <div class="form-group">
+            <input type="password" id="confirmar_password" name="confirmar_password" class="input" required>
+            <label>Confirmar Contraseña</label>
+            <span class="error"></span>
+        </div>
+        <button type="submit" class="btn">Registrar</button>
+        <div id="mensaje"></div>
     </form>
+</div>
+
+<script>
+    // Animación etiquetas flotantes
+    document.querySelectorAll('.input').forEach(input => {
+        input.addEventListener('focus', () => input.nextElementSibling.classList.add('active'));
+        input.addEventListener('blur', () => {
+            if(input.value === '') input.nextElementSibling.classList.remove('active');
+        });
+    });
+
+    // Validación en tiempo real y envío via fetch
+    const form = document.getElementById('formRegistro');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        // Limpiar errores anteriores
+        document.querySelectorAll('.error').forEach(el => el.textContent = '');
+        document.getElementById('mensaje').textContent = '';
+
+        // Validación básica cliente
+        if(data.password !== data.confirmar_password){
+            document.querySelector('#confirmar_password + .error').textContent = 'Las contraseñas no coinciden';
+            return;
+        }
+
+        try {
+            const res = await fetch('{{ url_for("registroadmin_bp.registrar_administradores") }}', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await res.json();
+            if(res.ok){
+                document.getElementById('mensaje').textContent = result.mensaje;
+                document.getElementById('mensaje').style.color = 'green';
+                form.reset();
+                document.querySelectorAll('label').forEach(l => l.classList.remove('active'));
+
+            setTimeout(() => {
+        window.location.href = result.redirect;
+    }, 1000);
+} else {
+                // Mostrar errores específicos
+                document.getElementById('mensaje').textContent = result.error;
+                document.getElementById('mensaje').style.color = 'red';
+            }
+
+        } catch(err){
+            console.error(err);
+            document.getElementById('mensaje').textContent = 'Error al registrar usuario';
+            document.getElementById('mensaje').style.color = 'red';
+        }
+    });
+</script>
 </body>
 </html>

@@ -7,8 +7,7 @@ class Alcaldia(db.Model):
     nombre = db.Column(db.String(100), nullable=False)
     clave_inegi = db.Column(db.String(10))
 
-    # Relación con Albergues
-    albergues = db.relationship('Albergue', backref='alcaldia', lazy=True)
+    albergues = db.relationship('Albergue', back_populates='alcaldia', lazy=True)
 
     def __repr__(self):
         return f"<Alcaldia {self.nombre}>"
