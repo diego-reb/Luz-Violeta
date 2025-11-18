@@ -7,7 +7,7 @@ from app.utils.decorators import login_required
 gestion_usuarios_bp = Blueprint('gestion_usuarios_bp', __name__, url_prefix='/admin/Gestion_Usuarios')
 
 @gestion_usuarios_bp.route('/')
-@login_required (role_id=1)
+@login_required(role_id=1)
 def GestionUsuarios():
     roles = Rol.query.all()
     usuarios = Usuario.query.all()

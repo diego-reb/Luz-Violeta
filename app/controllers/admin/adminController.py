@@ -1,11 +1,12 @@
-from flask import Blueprint, render_template, session
+from flask import Blueprint, render_template, session, redirect, url_for
 from app.utils.decorators import login_required
 from app.models.usuario import Usuario
+from app.models.abogado import Abogado
+from app.models.albergue import Albergue
+from app.models.psicologo import Psicologo
 from app.extensiones import db
-from app.controllers.admin.usuarios_controllers import gestion_usuarios_bp
 
 admin_bp = Blueprint('admin_bp', __name__, url_prefix='/admin')
-admin_bp.register_blueprint(gestion_usuarios_bp)
 
 @admin_bp.app_context_processor
 def inject_user():
@@ -15,9 +16,29 @@ def inject_user():
     return dict(nombre=session.get('nombre', 'Administrador'))
 
 @admin_bp.route('/')
-@login_required (role_id=1)
+@login_required(role_id=1)
 def dashboard():
-    return render_template('sesionadmin.html')
+    try:
+        if "usuario_id" not in session:
+            return redirect(url_for("login_bp.login"))
+
+        nombre = session.get("nombre")
+
+        usuarios_activos = Usuario.query.filter_by(activo=True).count()
+        solicitudes_albergues = Albergue.query.count()
+        consultas_legales = Abogado.query.count()
+        voluntarios = Psicologo.query.count()
+
+        tareas = [
+            "Revisar 3 nuevas solicitudes de albergues.",
+            "Responder mensajes de usuario #1234.",
+            "Actualizar la lista de contactos de emergencia."
+        ]
+       
+        return render_template('sesionadmin.html', nombre=nombre, usuarios_activos=usuarios_activos, solicitudes_albergues=solicitudes_albergues, consultas_legales=consultas_legales, voluntarios=voluntarios,tareas=tareas)
+    except Exception as e:
+        print("Error en dashboard.", e)
+        return render_template("error_generico.html", mensaje="Error al cargar el panel del administrador")
 
 
 

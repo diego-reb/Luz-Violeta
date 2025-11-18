@@ -147,32 +147,50 @@
             </p>
 
             <div class="flex justify-center mb-6">
-                <select id="alcaldia-select" class="p-3 border border-purple-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 w-full md:w-1/2 bg-white text-gray-800 shadow-sm">
-                    <option value="" disabled selected>Selecciona una alcaldía</option>
-                    <option value="alvaro-obregon">Álvaro Obregón</option>
-                    <option value="azcapotzalco">Azcapotzalco</option>
-                    <option value="benito-juarez">Benito Juárez</option>
-                    <option value="coyoacan">Coyoacán</option>
-                    <option value="cuajimalpa">Cuajimalpa de Morelos</option>
-                    <option value="cuauhtemoc">Cuauhtémoc</option>
-                    <option value="gustavo-a-madero">Gustavo A. Madero</option>
-                    <option value="iztacalco">Iztacalco</option>
-                    <option value="iztapalapa">Iztapalapa</option>
-                    <option value="magdalena-contreras">La Magdalena Contreras</option>
-                    <option value="miguel-hidalgo">Miguel Hidalgo</option>
-                    <option value="milpa-alta">Milpa Alta</option>
-                    <option value="tlaltelolco">Tláhuac</option>
-                    <option value="tlalpan">Tlalpan</option>
-                    <option value="venustiano-carranza">Venustiano Carranza</option>
-                    <option value="xochimilco">Xochimilco</option>
-                </select>
-            </div>
+    <select id="alcaldia-select" class="p-3 border border-purple-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 w-full md:w-1/2 bg-white text-gray-800 shadow-sm">
+        <option value="">Todas las alcaldías</option>
+        {% for al in alcaldias %}
+            <option value="{{ al.nombre }}">{{ al.nombre }}</option>
+        {% endfor %}
+    </select>
+</div>
+
             
-            <div id="legal-table-container"></div>
+            <div id="abogados-table-container">
+    {% if abogados %}
+        <table id="abogados-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    <th>Costo</th>
+                    <th>Dirección</th>
+                    <th>Alcaldía</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in abogados %}
+                    <tr>
+                        <td>{{ a.nombre }}</td>
+                        <td>{{ a.correo }}</td>
+                        <td>
+                            <a href="tel:{{ a.telefono }}">{{ a.telefono }}</a>
+                        </td>
+                        <td>{{ a.costo }}</td>
+                        <td>{{ a.direccion }}</td>
+                        <td>{{ a.alcaldia.nombre if a.alcaldia else 'Sin asignar' }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="text-center text-gray-500 mt-4">No hay abogados registrados.</p>
+    {% endif %}
+</div>
+
             
-            <p class="mt-8 text-center text-gray-500 text-sm">
-                *La información de contacto es solo para fines ilustrativos. Por favor, comunícate con nosotros para más detalles sobre los servicios legales disponibles.
-            </p>
+           
         </div>
     </main>
 
@@ -191,105 +209,27 @@
     <span class="floating-element-2 absolute top-[90%] left-[60%] text-pink-400 text-7xl" style="animation-delay: 8s;">🌸</span>
     <span class="floating-element absolute top-[35%] left-[65%] text-purple-300 text-4xl" style="animation-delay: 9s;">🦋</span>
 
-    <script>
-        // Datos de ejemplo para los abogados organizados por alcaldía
-        const abogadosData = {
-            "alvaro-obregon": [
-                { name: "Lic. Andrea Paz", specialty: "Derecho Civil", contact: "55 1111 2222" }
-            ],
-            "azcapotzalco": [
-                { name: "Lic. Marco López", specialty: "Derecho Penal y Denuncias", contact: "55 4567 8901" }
-            ],
-            "benito-juarez": [
-                { name: "Lic. Carla Durán", specialty: "Acoso Laboral y Violencia Económica", contact: "55 3456 7890" }
-            ],
-            "coyoacan": [
-                { name: "Lic. Gabriel Rivera", specialty: "Derecho Familiar", contact: "55 7777 8888" }
-            ],
-            "cuajimalpa": [
-                { name: "Lic. Sofia Ramos", specialty: "Violencia de Género", contact: "55 2222 3333" }
-            ],
-            "cuauhtemoc": [
-                { name: "Lic. Ana Romero", specialty: "Derecho Familiar y Civil", contact: "55 1234 5678" }
-            ],
-            "gustavo-a-madero": [
-                { name: "Lic. Luis Torres", specialty: "Asesoría General", contact: "55 9999 0000" }
-            ],
-            "iztacalco": [
-                { name: "Lic. Mariana Cruz", specialty: "Derecho Civil", contact: "55 3333 4444" }
-            ],
-            "iztapalapa": [
-                { name: "Lic. Javier Soto", specialty: "Derecho Penal y Violencia de Género", contact: "55 2345 6789" }
-            ],
-            "magdalena-contreras": [
-                { name: "Lic. Fernando Ortiz", specialty: "Derecho Familiar", contact: "55 5555 6666" }
-            ],
-            "miguel-hidalgo": [
-                { name: "Lic. Valeria Sánchez", specialty: "Acoso Laboral", contact: "55 6666 7777" }
-            ],
-            "milpa-alta": [
-                { name: "Lic. Ricardo Vargas", specialty: "Derecho Agrario", contact: "55 8888 9999" }
-            ],
-            "tlaltelolco": [
-                { name: "Lic. Elena Gómez", specialty: "Derecho Civil y Penal", contact: "55 0000 1111" }
-            ],
-            "tlalpan": [
-                { name: "Lic. Patricia Ruiz", specialty: "Derecho Familiar", contact: "55 4444 5555" }
-            ],
-            "venustiano-carranza": [
-                { name: "Lic. Jose Rivas", specialty: "Derecho Penal", contact: "55 1122 3344" }
-            ],
-            "xochimilco": [
-                { name: "Lic. Brenda Castro", specialty: "Derecho Familiar y Penal", contact: "55 2233 4455" }
-            ]
-        };
+   <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const select = document.getElementById("alcaldia-select");
+    const filas = document.querySelectorAll("#abogados-table tbody tr");
 
-        // Función para generar y mostrar la tabla de abogados
-        function generateLegalTable(abogados) {
-            const container = document.getElementById('legal-table-container');
-            if (abogados.length === 0) {
-                container.innerHTML = `<p class="text-center text-gray-500 mt-4">No hay abogados registrados en esta alcaldía.</p>`;
-                return;
-            }
+    select.addEventListener("change", function () {
+        const filtro = this.value.trim();
 
-            let tableHTML = `
-                <table id="abogados-table">
-                    <thead>
-                        <tr>
-                            <th>Abogado(a)</th>
-                            <th>Especialidad</th>
-                            <th>Teléfono</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-            abogados.forEach(abogado => {
-                tableHTML += `
-                    <tr>
-                        <td>${abogado.name}</td>
-                        <td>${abogado.specialty}</td>
-                        <td><a href="tel:${abogado.contact.replace(/\s/g, '')}">${abogado.contact}</a></td>
-                    </tr>
-                `;
-            });
-            tableHTML += `
-                    </tbody>
-                </table>
-            `;
-            container.innerHTML = tableHTML;
-        }
+        filas.forEach(fila => {
+            const alcaldia = fila.querySelector("td:nth-child(6)").textContent.trim();
 
-        // Evento que se activa al cambiar la selección de la alcaldía
-        document.getElementById('alcaldia-select').addEventListener('change', function() {
-            const alcaldiaSeleccionada = this.value;
-            document.getElementById('legal-table-container').innerHTML = '';
-
-            if (alcaldiaSeleccionada) {
-                const abogadosEnAlcaldia = abogadosData[alcaldiaSeleccionada] || [];
-                generateLegalTable(abogadosEnAlcaldia);
+            if (filtro === "" || alcaldia === filtro) {
+                fila.style.display = "";
+            } else {
+                fila.style.display = "none";
             }
         });
-    </script>
+    });
+});
+</script>
+
 
 </body>
 </html>

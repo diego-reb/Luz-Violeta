@@ -5,12 +5,14 @@ import traceback
 from app.controllers.main_controllers import main
 from app.controllers.login_controller import login_bp
 from app.controllers.admin.adminController import admin_bp
-from app.controllers.admin import admin_bp
 from app.controllers.registro_controllers import registro_bp
 from app.controllers.telefono_controllers import telefono_bp
 from app.controllers.admin.usuarios_controllers import gestion_usuarios_bp
 from app.utils.logging_config import configurar_logging
-
+from app.controllers.albergues_controller import albergues_bp 
+from app.controllers.abogados_controller import abogados_bp
+from app.controllers.psicologos_controller import psicologo_bp
+from app.controllers.admin.registroadmin_controller import registroadmin_bp
 
 def Luzvioleta():
     app = Flask(__name__)
@@ -27,6 +29,11 @@ def Luzvioleta():
     app.register_blueprint(registro_bp)
     app.register_blueprint(telefono_bp)
     app.register_blueprint(gestion_usuarios_bp)
+    app.register_blueprint(albergues_bp)
+    app.register_blueprint(abogados_bp)
+    app.register_blueprint(psicologo_bp)
+    app.register_blueprint(registroadmin_bp)
+
 
     configurar_logging(app)
 
@@ -39,6 +46,7 @@ def Luzvioleta():
         try:
             return render_template(f"{code}.html"), code
         except:
+            print("Error al cargar página de abogados:", e)
             return render_template("error_generico.html", code=code), code
 
 
