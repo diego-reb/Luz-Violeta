@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, session, url_for, flash, jsonify
 from werkzeug.security import check_password_hash
-from app.models.usuario import Usuario
-
+from app.models.Usuario import Usuario
 login_bp = Blueprint('login_bp', __name__)
 
 @login_bp.route('/login', methods = ['GET', 'POST'])

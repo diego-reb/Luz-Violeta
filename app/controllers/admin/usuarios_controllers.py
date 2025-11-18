@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, session
 from app.extensiones import db
-from app.models.usuario import Usuario
+from app.models.Usuario import Usuario
 from app.models.Rol import Rol
 from app.utils.decorators import login_required
 

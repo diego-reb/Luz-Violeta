@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, render_template, request, redirect, url_for
 from werkzeug.security import generate_password_hash
-from app.models.usuario import Usuario
+from app.models.Usuario import Usuario
 from app.extensiones import db
 
 registro_bp = Blueprint('registro_bp', __name__)

@@ -7,14 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   const EXCLUSIVE_CLASSES = Object.keys(EXCLUSIVE_CLASSES_MAP);
 
-  // --- Crear botón flotante ---
+  // --- Crear botón flotante y panel ---
   const toggleBtn = document.createElement('button');
   toggleBtn.id = 'accesibility-toggle';
   toggleBtn.title = 'Opciones de accesibilidad';
   toggleBtn.innerHTML = '♿';
   document.body.appendChild(toggleBtn);
 
-  // --- Crear panel ---
   const panel = document.createElement('div');
   panel.id = 'accesibility-panel';
   panel.innerHTML = `
@@ -51,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const saveState = (key, value) => localStorage.setItem(key, value);
   const loadState = key => localStorage.getItem(key) === 'true';
 
-  // --- Funciones exclusivas ---
+  // --- Desactiva todos los modos exclusivos ---
   const disableExclusiveClasses = () => {
     EXCLUSIVE_CLASSES.forEach(c => {
       if (document.body.classList.contains(c)) {
@@ -59,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem(EXCLUSIVE_CLASSES_MAP[c], 'false');
 
         const otherBtn = document.querySelector(`#accesibility-panel button[id*="${c.includes('guide') ? 'guide' : c.split('-')[1]}"]`);
-        if(otherBtn) otherBtn.classList.remove('active-acc');
+        if (otherBtn) otherBtn.classList.remove('active-acc');
 
         if (c === 'reading-guide-active') guia.style.display = 'none';
       }
@@ -71,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isActive) {
       document.body.classList.remove(className);
       saveState(storageKey, false);
-      if (btn) btn.classList.remove('active-acc'); 
+      if (btn) btn.classList.remove('active-acc');
     } else {
       document.body.classList.add(className);
       saveState(storageKey, true);
@@ -79,22 +78,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  // --- Función para activar un modo exclusivo (deshabilita todos los demás) ---
   const setExclusiveClass = (newClassName, storageKey, btn) => {
     const isActive = document.body.classList.contains(newClassName);
+    const darkBtn = document.getElementById('toggle-dark');
+
+    // Quitar clases de modo (dark/light) antes de aplicar/desactivar el exclusivo
     document.body.classList.remove('dark-mode', 'light-mode');
 
     if (isActive) {
+      // Si ya estaba activo, desactivar y RESTABLECER MODO CLARO/OSCURO
       document.body.classList.remove(newClassName);
       saveState(storageKey, false);
       btn.classList.remove('active-acc');
       if (newClassName === 'reading-guide-active') guia.style.display = 'none';
 
-      if (loadState('lightMode')) document.body.classList.add('light-mode');
-      else document.body.classList.add('dark-mode');
+      // Restablecer el modo guardado (Oscuro o Claro)
+      if (loadState('lightMode')) {
+        document.body.classList.add('light-mode');
+        darkBtn.innerText = 'Modo Oscuro';
+      } else {
+        document.body.classList.add('dark-mode');
+        darkBtn.innerText = 'Modo Claro';
+      }
       return;
     }
 
-    disableExclusiveClasses();
+    // Si se activa, deshabilitar otros exclusivos y aplicar el nuevo
+    disableExclusiveClasses(); 
     document.body.classList.add(newClassName);
     saveState(storageKey, true);
     btn.classList.add('active-acc');
@@ -102,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (newClassName === 'reading-guide-active') guia.style.display = 'block';
   };
 
-  // --- Inicialización limpia al cargar ---
+  // --- Inicialización y restauración de estado ---
   EXCLUSIVE_CLASSES.forEach(c => document.body.classList.remove(c));
 
   const initExclusiveState = (btnId, className, storageKey) => {
@@ -118,12 +129,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const contrastBtn = initExclusiveState('toggle-contrast', 'high-contrast', EXCLUSIVE_CLASSES_MAP['high-contrast']);
   const grayscaleBtn = initExclusiveState('toggle-grayscale', 'grayscale', EXCLUSIVE_CLASSES_MAP['grayscale']);
   const guideBtn = initExclusiveState('toggle-guide', 'reading-guide-active', EXCLUSIVE_CLASSES_MAP['reading-guide-active']);
+  const fontBtn = initExclusiveState('toggle-font', 'alt-font', 'altFont');
 
   const isExclusiveModeActive = EXCLUSIVE_CLASSES.some(c => document.body.classList.contains(c));
 
   const darkBtn = document.getElementById('toggle-dark');
-  let isLightMode = loadState('lightMode'); 
+  let isLightMode = loadState('lightMode');
 
+  // Aplicar modo claro/oscuro solo si no hay un modo exclusivo activo
   if (!isExclusiveModeActive) {
     if (isLightMode) {
       document.body.classList.add('light-mode');
@@ -133,18 +146,17 @@ document.addEventListener('DOMContentLoaded', () => {
       darkBtn.innerText = 'Modo Claro';
     }
   } else {
-    document.body.classList.remove('dark-mode', 'light-mode');
+    // Si hay un modo exclusivo, asegurar que los botones de modo reflejen el estado guardado
     darkBtn.innerText = isLightMode ? 'Modo Oscuro' : 'Modo Claro';
   }
 
-  const fontBtn = initExclusiveState('toggle-font', 'alt-font', 'altFont');
-
-  let currentFontSize = parseFloat(localStorage.getItem('fontSize')) || 1;
+  // *** INICIALIZACIÓN DE TAMAÑO DE FUENTE: 1.5em como base ***
+  let currentFontSize = parseFloat(localStorage.getItem('fontSize')) || 1.5;
   document.body.style.fontSize = `${currentFontSize}em`;
 
   // --- Event Listeners ---
   darkBtn.addEventListener('click', () => {
-    disableExclusiveClasses(); 
+    disableExclusiveClasses(); // Deshabilita cualquier modo exclusivo
     if (document.body.classList.contains('dark-mode')) {
       document.body.classList.remove('dark-mode');
       document.body.classList.add('light-mode');
@@ -164,6 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
   grayscaleBtn.addEventListener('click', () => setExclusiveClass('grayscale', EXCLUSIVE_CLASSES_MAP['grayscale'], grayscaleBtn));
   guideBtn.addEventListener('click', () => setExclusiveClass('reading-guide-active', EXCLUSIVE_CLASSES_MAP['reading-guide-active'], guideBtn));
 
+  // Control de tamaño de fuente
   const sizeBtn = document.getElementById('toggle-size');
   const sizeOptions = document.getElementById('font-size-options');
   sizeBtn.addEventListener('click', () => {
@@ -173,11 +186,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const increaseBtn = document.getElementById('increase-font');
   const decreaseBtn = document.getElementById('decrease-font');
   increaseBtn.addEventListener('click', () => {
+    // Aumenta hasta un máximo de 2em
     currentFontSize = Math.min(currentFontSize + 0.1, 2);
     document.body.style.fontSize = `${currentFontSize}em`;
     localStorage.setItem('fontSize', currentFontSize);
   });
   decreaseBtn.addEventListener('click', () => {
+    // Disminuye hasta un mínimo de 0.8em
     currentFontSize = Math.max(currentFontSize - 0.1, 0.8);
     document.body.style.fontSize = `${currentFontSize}em`;
     localStorage.setItem('fontSize', currentFontSize);
@@ -189,6 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Lectura en voz alta
   const readBtn = document.getElementById('toggle-read');
   let lecturaActiva = false;
   readBtn.addEventListener('click', () => {

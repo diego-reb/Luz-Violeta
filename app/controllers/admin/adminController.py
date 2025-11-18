@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, session, redirect, url_for
 from app.utils.decorators import login_required
-from app.models.usuario import Usuario
+from app.models.Usuario import Usuario
 from app.models.abogado import Abogado
 from app.models.albergue import Albergue
 from app.models.psicologo import Psicologo

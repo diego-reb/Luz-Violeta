@@ -1,176 +1,192 @@
-/* === Accesibilidad general === */
+/* === ACCESIBILIDAD Y TAMAÑO DE TEXTO === */
 
 :root {
   --font-size-base: 16px;
   --font-family-base: 'Inter', sans-serif;
 }
 
+body {
+    transition: font-size 0.2s ease; 
+}
+
+body *,
+body [class*="text-"] {
+    font-size: inherit !important; 
+    line-height: 1.5em !important; 
+}
+
+/* ... (el resto de tu CSS sigue igual) ... */
+
 /* === Escala de grises === */
 body.grayscale { filter: grayscale(100%); background: #ffffff !important; color: #000000 !important; }
 
 /* === Cambio de tipografía accesible === */
 body.alt-font {
-  font-family: 'Arial Rounded MT Bold', Verdana, sans-serif !important;
+    font-family: 'Arial Rounded MT Bold', Verdana, sans-serif !important;
 }
 
 /* === Guía de lectura === */
 .reading-guide-mask {
-  position: fixed;
-  left: 0;
-  width: 100%;
-  height: 40px;
-  background: rgba(87, 238, 28, 0.532);
-  pointer-events: none;
-  display: none;
-  z-index: 9999;
-  transition: top 0.1s ease; 
+    position: fixed;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: rgba(188, 184, 195, 0.532);
+    pointer-events: none;
+    display: none;
+    z-index: 9999;
+    transition: top 0.1s ease; 
 }
 
 body.reading-guide-active .reading-guide-mask{
-  display: block;
+    display: block;
 }
-body.dark-mode { background: #111827; color: #f0f5f9; }
 
-body.light-mode { background: #ffffff; color: #0f0e0e; }
-/* === Alto contraste === */
+/* ---------------------------------------------------- */
+/* === 1. MODOS DE COLOR GENERALES (TARGETING ESPECÍFICO) === */
+/* ---------------------------------------------------- */
+
+/* MODO OSCURO */
+body.dark-mode { 
+  background: #111827; 
+  color: #f0f5f9; 
+}
+/* *** SOLUCIÓN 2: Fondo oscuro para tarjetas, incluyendo el panel de Login (.card-hover) *** */
+body.dark-mode .card,
+body.dark-mode .form-panel,
+body.dark-mode .card-hover,
+body.dark-mode .bg-white { /* Forzar el cambio de bg-white de Tailwind a un oscuro si está en un contenedor targeteable */
+    background: #1f2937 !important; 
+    color: #e5e7eb !important; 
+}
+/* Asegurar que el hero banner NO se oscurezca, si tiene una clase especifica, aquí asumimos que no tiene .card-hover, etc. */
+/* Si el header tiene bg-white y queremos que se mantenga blanco en modo oscuro, necesitaríamos su clase. 
+   Pero por ahora, solo aseguramos que el panel de login y las tarjetas cambien. */
+
+/* Ajuste de inputs y enlaces en modo oscuro */
+body.dark-mode a {
+    color: #181418; 
+}
+body.dark-mode input[type="text"],
+body.dark-mode input[type="email"],
+body.dark-mode input[type="password"] {
+    background: #374151 !important;
+    border: 1px solid #4b5563 !important;
+    color: #e5e7eb !important;
+}
+
+
+/* MODO CLARO */
+body.light-mode { 
+  background: #ffffff; 
+  color: #0f0e0e; 
+}
+/* *** SOLUCIÓN 2: Asegurar el color blanco para las tarjetas en modo claro *** */
+body.light-mode .card,
+body.light-mode .form-panel,
+body.light-mode .card-hover { 
+    background: #ffffff !important; 
+    color: #0f0e0e !important; 
+}
+/* ... (resto del CSS de modo claro se mantiene) ... */
+
+
+/* ---------------------------------------------------- */
+/* === 2. MODOS EXCLUSIVOS DE ACCESIBILIDAD === */
+/* ---------------------------------------------------- */
+
+/* ALTO CONTRASTE */
 body.high-contrast {
-  background: #000 !important;
-  color: #1f10ab !important;
+    background: #000000 !important;
+    color: #ffffff !important;
 }
-
 body.high-contrast a {
-  color: rgb(8, 205, 100) !important;
+    color: #00ffff !important; 
+}
+/* Contenedores en ALTO CONTRASTE */
+body.high-contrast .card,
+body.high-contrast .form-panel,
+body.high-contrast .card-hover,
+body.high-contrast .bg-white { /* Targeteo del panel de login y tarjetas */
+    background: #000000 !important; 
+    border: 1px solid #ffffff !important; 
+    color: #ffffff !important; 
+}
+body.high-contrast input,
+body.high-contrast textarea,
+body.high-contrast select {
+    background: #000000 !important;
+    border: 2px solid #00ffff !important; 
+    color: #ffffff !important;
 }
 
-/* TAMAÑO NORMAL (Punto de inicio y fin de disminución) */
-body.text-size-1 { 
-  font-size: 1em !important; 
+/* ESCALA DE GRISES */
+body.grayscale { filter: grayscale(100%); background: #ffffff !important; color: #000000 !important; }
+body.grayscale .card,
+body.grayscale .form-panel,
+body.grayscale .card-hover,
+body.grayscale .bg-white {
+    background: #ffffff !important;
+    color: #000000 !important;
 }
-
-/* Aumento 1 */
-body.text-size-2 {
-  font-size: 1.25em !important;
-}
-
-/* Aumento 2 */
-body.text-size-3 {
-  font-size: 1.5em !important;
-}
-
-/* Aumento 3 */
-body.text-size-4 {
-  font-size: 1.75em !important;
-}
-
-/* Aumento 4 (Máximo) */
-body.text-size-5 {
-  font-size: 2em !important;
-}
-
-
-/* === Botón flotante de accesibilidad === */
+/* ... (Guía de lectura y Panel de accesibilidad se mantienen) ... */
 #accesibility-toggle {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #dd8dfd, #8800f8);
-  color: white;
-  font-size: 1.3rem;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 6px 16px rgba(0,0,0,.35);
-  z-index: 10001;
-  transition: transform 0.2s ease;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #dd8dfd, #8800f8);
+    color: white;
+    font-size: 1.3rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(0,0,0,.35);
+    z-index: 10001;
+    transition: transform 0.2s ease;
 }
 #accesibility-toggle:hover {
-  transform: scale(1.08);
+    transform: scale(1.08);
 }
-
-/* === Menú desplegable === */
 #accesibility-panel {
-  position: fixed;
-  bottom: 80px;
-  right: 20px;
-  background: rgba(15,23,42,.95);
-  border: 1px solid rgba(255,255,255,.15);
-  border-radius: 12px;
-  padding: 12px;
-  box-shadow: 0 10px 20px rgba(0,0,0,.4);
-  z-index: 10000;
-  display: none;
-  flex-direction: column;
-  gap: 8px;
-  width: 240px;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background: rgba(15,23,42,.95);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,.4);
+    z-index: 10000;
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    width: 240px;
 }
-
 #accesibility-panel.active {
-  display: flex;
-  animation: fadeIn .25s ease;
+    display: flex;
+    animation: fadeIn .25s ease;
 }
-
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
 }
-
 #accesibility-panel button {
-  background: rgba(255,255,255,.08);
-  border: none;
-  border-radius: 8px;
-  padding: 8px 10px;
-  color: white;
-  cursor: pointer;
-  transition: background .2s;
-  font-size: 0.9rem;
-  text-align: left;
+    background: rgba(255,255,255,.08);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 10px;
+    color: white;
+    cursor: pointer;
+    transition: background .2s;
+    font-size: 0.9rem;
+    text-align: left;
 }
-
 #accesibility-panel button:hover {
-  background: rgba(255,255,255,.25);
+    background: rgba(255,255,255,.25);
 }
-
-/* 🌙 Modo oscuro (ya está por defecto con tus variables) */
-
-/* ☀️ Modo claro */
-body.light-mode {
-    --bg: #f4f4f9;              /* Fondo general */
-    --card: #ffffff;            /* Fondo del panel de login */
-    --muted: #5c687a;           /* Texto gris medio */
-    --text: #0f172a;            /* Texto principal oscuro */
-    --brand: #22c55e;           /* Verde consistente */
-    --brand-2: #38bdf8;         /* Azul consistente */
-    --accent: #eab308;          /* Amarillo */
-    --error: #ef4444;           /* Rojo */
-    --ok: #10b981;              /* Verde éxito */
-}
-
-/* Ajuste visual del panel del formulario en modo claro */
-body.light-mode .form-panel {
-    background: var(--card);
-    border: 1px solid rgba(148,163,184,.25);
-    color: var(--text);
-}
-
-/* Ajuste de inputs en modo claro */
-body.light-mode input[type="email"],
-body.light-mode input[type="password"] {
-    background: #f9fafb;
-    color: #111827;
-    border: 1px solid rgba(148,163,184,.4);
-}
-
-/* Hover de opciones radio en modo claro */
-body.light-mode .radio-option {
-    background: #f9fafb;
-    color: #0f172a;
-}
-body.light-mode .radio-option:hover {
-    background: #f3f4f6;
-}
-body.light-mode .radio-option.selected {
-    background: rgba(56,189,248,.15);
-    border-color: var(--brand-2);
+.active-acc {
+    background: #8800f8 !important; 
+    color: white !important;
 }
