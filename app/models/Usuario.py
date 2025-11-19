@@ -11,7 +11,7 @@ class Usuario(db.Model):
     contrasena = db.Column(db.String(250), nullable = False)
     nombre_usuario = db.Column(db.String(50), nullable = False, unique = True)
     activo = db.Column(db.Boolean, default = True)
-    rol_id = db.Column(db.Integer, db.ForeignKey('roles.id_rol'), nullable = False)
+    rol_id = db.Column(db.Integer, db.ForeignKey('roles.id'), nullable = False)
 
     rol = relationship('Rol', back_populates = 'usuarios')
 
