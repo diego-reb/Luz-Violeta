@@ -1,226 +1,193 @@
-document.addEventListener('DOMContentLoaded', () => {
-  // --- Configuración de Clases Mutuamente Excluyentes ---
-  const EXCLUSIVE_CLASSES_MAP = {
-    'high-contrast': 'highContrast',
-    'grayscale': 'grayscale',
-    'reading-guide-active': 'readingGuide'
-  };
-  const EXCLUSIVE_CLASSES = Object.keys(EXCLUSIVE_CLASSES_MAP);
+/* === ACCESIBILIDAD - SCRIPT FINAL SIN ERRORES === */
 
-  // --- Crear botón flotante y panel ---
-  const toggleBtn = document.createElement('button');
-  toggleBtn.id = 'accesibility-toggle';
-  toggleBtn.title = 'Opciones de accesibilidad';
-  toggleBtn.innerHTML = '♿';
-  document.body.appendChild(toggleBtn);
+document.addEventListener("DOMContentLoaded", function () {
 
-  const panel = document.createElement('div');
-  panel.id = 'accesibility-panel';
-  panel.innerHTML = `
-    <button id="toggle-dark">Modo Claro</button>
-    <button id="toggle-contrast">Alto contraste</button>
-    <button id="toggle-font">Tipografía accesible</button>
-    <div id="font-size-controls">
-      <button id="toggle-size">Tamaño de texto</button>
-      <div id="font-size-options" style="display:none; flex-direction:row; gap:6px; margin-top:5px;">
-        <button id="decrease-font" title="Reducir tamaño">−</button>
-        <button id="increase-font" title="Aumentar tamaño">+</button>
-      </div>
-    </div>
-    <button id="toggle-grayscale">Escala de grises</button>
-    <button id="toggle-guide">Guía de lectura</button>
-    <button id="toggle-read">Lectura en voz alta</button>
-  `;
-  document.body.appendChild(panel);
+    /* ====== REESTAURAR ESTADO GUARDADO ====== */
+    const savedState = JSON.parse(localStorage.getItem("accesibilityState")) || {
+        mode: "",
+        grayscale: false,
+        contrast: false,
+        font: false,
+        guide: false,
+        scale: 0  // 0 = tamaño normal
+    };
 
-  toggleBtn.addEventListener('click', () => panel.classList.toggle('active'));
-  document.addEventListener('click', e => {
-    if (!panel.contains(e.target) && e.target !== toggleBtn) panel.classList.remove('active');
-  });
+    function saveState() {
+        localStorage.setItem("accesibilityState", JSON.stringify(savedState));
+    }
 
-  // --- Crear guía de lectura ---
-  let guia = document.querySelector('.reading-guide-mask');
-  if (!guia) {
-    guia = document.createElement('div');
-    guia.className = 'reading-guide-mask';
-    document.body.appendChild(guia);
-  }
+    /* ========= CREAR BOTÓN ========= */
+    const toggleBtn = document.createElement("button");
+    toggleBtn.id = "accesibility-toggle";
+    toggleBtn.innerHTML = "♿";
+    document.body.appendChild(toggleBtn);
 
-  // --- Funciones de Estado ---
-  const saveState = (key, value) => localStorage.setItem(key, value);
-  const loadState = key => localStorage.getItem(key) === 'true';
+    /* ========= CREAR PANEL ========= */
+    const panel = document.createElement("div");
+    panel.id = "accesibility-panel";
+    panel.innerHTML = `
+        <button id="toggle-dark">Modo oscuro</button>
+        <button id="toggle-light">Modo claro</button>
+        <button id="toggle-contrast">Alto contraste</button>
+        <button id="toggle-grayscale">Escala de grises</button>
+        <button id="toggle-font">Cambio tipografía</button>
 
-  // --- Desactiva todos los modos exclusivos ---
-  const disableExclusiveClasses = () => {
-    EXCLUSIVE_CLASSES.forEach(c => {
-      if (document.body.classList.contains(c)) {
-        document.body.classList.remove(c);
-        localStorage.setItem(EXCLUSIVE_CLASSES_MAP[c], 'false');
+        <button id="text-minus">A- Reducir</button>
+        <button id="text-plus">A+ Aumentar</button>
 
-        const otherBtn = document.querySelector(`#accesibility-panel button[id*="${c.includes('guide') ? 'guide' : c.split('-')[1]}"]`);
-        if (otherBtn) otherBtn.classList.remove('active-acc');
+        <button id="toggle-guide">Guía de lectura</button>
 
-        if (c === 'reading-guide-active') guia.style.display = 'none';
-      }
+        <button id="toggle-read">Lectura en voz alta</button>
+    `;
+    document.body.appendChild(panel);
+
+    /* ========= GUÍA DE LECTURA ========= */
+    let readingMask = document.querySelector(".reading-guide-mask");
+    if (!readingMask) {
+        readingMask = document.createElement("div");
+        readingMask.className = "reading-guide-mask";
+        document.body.appendChild(readingMask);
+    }
+
+    /* ========= MOSTRAR PANEL ========= */
+    toggleBtn.addEventListener("click", () => {
+        panel.classList.toggle("active");
     });
-  };
 
-  const toggleClass = (className, storageKey, btn) => {
-    const isActive = document.body.classList.contains(className);
-    if (isActive) {
-      document.body.classList.remove(className);
-      saveState(storageKey, false);
-      if (btn) btn.classList.remove('active-acc');
-    } else {
-      document.body.classList.add(className);
-      saveState(storageKey, true);
-      if (btn) btn.classList.add('active-acc');
-    }
-  };
+    /* ========= APLICAR ESTADO GUARDADO ========= */
+    function applySavedState() {
+        document.body.classList.remove(
+            "dark-mode", "light-mode", "high-contrast", "grayscale",
+            "scale-text-small", "scale-text-medium", "scale-text-large",
+            "scale-text-extra-large", "scale-text-max", "alt-font",
+            "reading-guide-active"
+        );
 
-  // --- Función para activar un modo exclusivo (deshabilita todos los demás) ---
-  const setExclusiveClass = (newClassName, storageKey, btn) => {
-    const isActive = document.body.classList.contains(newClassName);
-    const darkBtn = document.getElementById('toggle-dark');
+        if (savedState.mode) document.body.classList.add(savedState.mode);
+        if (savedState.grayscale) document.body.classList.add("grayscale");
+        if (savedState.contrast) document.body.classList.add("high-contrast");
+        if (savedState.font) document.body.classList.add("alt-font");
+        if (savedState.guide) document.body.classList.add("reading-guide-active");
 
-    // Quitar clases de modo (dark/light) antes de aplicar/desactivar el exclusivo
-    document.body.classList.remove('dark-mode', 'light-mode');
-
-    if (isActive) {
-      // Si ya estaba activo, desactivar y RESTABLECER MODO CLARO/OSCURO
-      document.body.classList.remove(newClassName);
-      saveState(storageKey, false);
-      btn.classList.remove('active-acc');
-      if (newClassName === 'reading-guide-active') guia.style.display = 'none';
-
-      // Restablecer el modo guardado (Oscuro o Claro)
-      if (loadState('lightMode')) {
-        document.body.classList.add('light-mode');
-        darkBtn.innerText = 'Modo Oscuro';
-      } else {
-        document.body.classList.add('dark-mode');
-        darkBtn.innerText = 'Modo Claro';
-      }
-      return;
+        /* Tamaño */
+        if (savedState.scale === 1) document.body.classList.add("scale-text-small");
+        if (savedState.scale === 2) document.body.classList.add("scale-text-medium");
+        if (savedState.scale === 3) document.body.classList.add("scale-text-large");
+        if (savedState.scale === 4) document.body.classList.add("scale-text-extra-large");
+        if (savedState.scale === 5) document.body.classList.add("scale-text-max");
     }
 
-    // Si se activa, deshabilitar otros exclusivos y aplicar el nuevo
-    disableExclusiveClasses(); 
-    document.body.classList.add(newClassName);
-    saveState(storageKey, true);
-    btn.classList.add('active-acc');
+    applySavedState();
 
-    if (newClassName === 'reading-guide-active') guia.style.display = 'block';
-  };
-
-  // --- Inicialización y restauración de estado ---
-  EXCLUSIVE_CLASSES.forEach(c => document.body.classList.remove(c));
-
-  const initExclusiveState = (btnId, className, storageKey) => {
-    const btn = document.getElementById(btnId);
-    if (loadState(storageKey)) {
-      document.body.classList.add(className);
-      btn.classList.add('active-acc');
-      if (className === 'reading-guide-active') guia.style.display = 'block';
+    /* ========= MARCAR ACTIVO ========= */
+    function marcarActivo(boton) {
+        panel.querySelectorAll("button").forEach(b => b.classList.remove("active-acc"));
+        boton.classList.add("active-acc");
     }
-    return btn;
-  };
 
-  const contrastBtn = initExclusiveState('toggle-contrast', 'high-contrast', EXCLUSIVE_CLASSES_MAP['high-contrast']);
-  const grayscaleBtn = initExclusiveState('toggle-grayscale', 'grayscale', EXCLUSIVE_CLASSES_MAP['grayscale']);
-  const guideBtn = initExclusiveState('toggle-guide', 'reading-guide-active', EXCLUSIVE_CLASSES_MAP['reading-guide-active']);
-  const fontBtn = initExclusiveState('toggle-font', 'alt-font', 'altFont');
+    /* ========= MODOS ========= */
+    document.getElementById("toggle-dark").addEventListener("click", function () {
+        savedState.mode = "dark-mode";
+        savedState.contrast = false;
+        savedState.grayscale = false;
+        saveState();
+        applySavedState();
+        marcarActivo(this);
+    });
 
-  const isExclusiveModeActive = EXCLUSIVE_CLASSES.some(c => document.body.classList.contains(c));
+    document.getElementById("toggle-light").addEventListener("click", function () {
+        savedState.mode = "light-mode";
+        savedState.contrast = false;
+        savedState.grayscale = false;
+        saveState();
+        applySavedState();
+        marcarActivo(this);
+    });
 
-  const darkBtn = document.getElementById('toggle-dark');
-  let isLightMode = loadState('lightMode');
+    document.getElementById("toggle-contrast").addEventListener("click", function () {
+        savedState.mode = "";
+        savedState.contrast = !savedState.contrast;
+        savedState.grayscale = false;
+        saveState();
+        applySavedState();
+        marcarActivo(this);
+    });
 
-  // Aplicar modo claro/oscuro solo si no hay un modo exclusivo activo
-  if (!isExclusiveModeActive) {
-    if (isLightMode) {
-      document.body.classList.add('light-mode');
-      darkBtn.innerText = 'Modo Oscuro';
-    } else {
-      document.body.classList.add('dark-mode');
-      darkBtn.innerText = 'Modo Claro';
-    }
-  } else {
-    // Si hay un modo exclusivo, asegurar que los botones de modo reflejen el estado guardado
-    darkBtn.innerText = isLightMode ? 'Modo Oscuro' : 'Modo Claro';
-  }
+    document.getElementById("toggle-grayscale").addEventListener("click", function () {
+        savedState.mode = "";
+        savedState.grayscale = !savedState.grayscale;
+        savedState.contrast = false;
+        saveState();
+        applySavedState();
+        marcarActivo(this);
+    });
 
-  // *** INICIALIZACIÓN DE TAMAÑO DE FUENTE: 1.5em como base ***
-  let currentFontSize = parseFloat(localStorage.getItem('fontSize')) || 1.5;
-  document.body.style.fontSize = `${currentFontSize}em`;
+    /* ========= TIPOGRAFÍA ========= */
+    document.getElementById("toggle-font").addEventListener("click", function () {
+        savedState.font = !savedState.font;
+        saveState();
+        applySavedState();
+        marcarActivo(this);
+    });
 
-  // --- Event Listeners ---
-  darkBtn.addEventListener('click', () => {
-    disableExclusiveClasses(); // Deshabilita cualquier modo exclusivo
-    if (document.body.classList.contains('dark-mode')) {
-      document.body.classList.remove('dark-mode');
-      document.body.classList.add('light-mode');
-      darkBtn.innerText = 'Modo Oscuro';
-      saveState('lightMode', true);
-    } else {
-      document.body.classList.remove('light-mode');
-      document.body.classList.add('dark-mode');
-      darkBtn.innerText = 'Modo Claro';
-      saveState('lightMode', false);
-    }
-  });
+    /* ========= ESCALA DE TEXTO ========= */
+    document.getElementById("text-minus").addEventListener("click", function () {
+        if (savedState.scale > 0) savedState.scale--;
+        saveState();
+        applySavedState();
+        marcarActivo(this);
+    });
 
-  fontBtn.addEventListener('click', () => toggleClass('alt-font', 'altFont', fontBtn));
+    document.getElementById("text-plus").addEventListener("click", function () {
+        if (savedState.scale < 5) savedState.scale++;
+        saveState();
+        applySavedState();
+        marcarActivo(this);
+    });
 
-  contrastBtn.addEventListener('click', () => setExclusiveClass('high-contrast', EXCLUSIVE_CLASSES_MAP['high-contrast'], contrastBtn));
-  grayscaleBtn.addEventListener('click', () => setExclusiveClass('grayscale', EXCLUSIVE_CLASSES_MAP['grayscale'], grayscaleBtn));
-  guideBtn.addEventListener('click', () => setExclusiveClass('reading-guide-active', EXCLUSIVE_CLASSES_MAP['reading-guide-active'], guideBtn));
+    /* ========= GUÍA ========= */
+    let guideActive = savedState.guide;
 
-  // Control de tamaño de fuente
-  const sizeBtn = document.getElementById('toggle-size');
-  const sizeOptions = document.getElementById('font-size-options');
-  sizeBtn.addEventListener('click', () => {
-    sizeOptions.style.display = sizeOptions.style.display === 'none' ? 'flex' : 'none';
-  });
+    document.getElementById("toggle-guide").addEventListener("click", function () {
+        guideActive = !guideActive;
+        savedState.guide = guideActive;
+        saveState();
+        applySavedState();
+        marcarActivo(this);
+    });
 
-  const increaseBtn = document.getElementById('increase-font');
-  const decreaseBtn = document.getElementById('decrease-font');
-  increaseBtn.addEventListener('click', () => {
-    // Aumenta hasta un máximo de 2em
-    currentFontSize = Math.min(currentFontSize + 0.1, 2);
-    document.body.style.fontSize = `${currentFontSize}em`;
-    localStorage.setItem('fontSize', currentFontSize);
-  });
-  decreaseBtn.addEventListener('click', () => {
-    // Disminuye hasta un mínimo de 0.8em
-    currentFontSize = Math.max(currentFontSize - 0.1, 0.8);
-    document.body.style.fontSize = `${currentFontSize}em`;
-    localStorage.setItem('fontSize', currentFontSize);
-  });
+    document.addEventListener("mousemove", function (e) {
+        if (guideActive) {
+            readingMask.style.top = e.clientY - 20 + "px";
+        }
+    });
 
-  document.addEventListener('mousemove', e => {
-    if (document.body.classList.contains('reading-guide-active')) {
-      guia.style.top = `${e.clientY - 20}px`;
-    }
-  });
+    /* ========= LECTURA EN VOZ ALTA ========= */
+    const readBtn = document.getElementById("toggle-read");
+    let lecturaActiva = false;
 
-  // Lectura en voz alta
-  const readBtn = document.getElementById('toggle-read');
-  let lecturaActiva = false;
-  readBtn.addEventListener('click', () => {
-    if (!('speechSynthesis' in window)) return alert("Tu navegador no soporta lectura de texto.");
-    if (!lecturaActiva) {
-      const utterance = new SpeechSynthesisUtterance(document.body.innerText);
-      utterance.lang = 'es-ES';
-      utterance.rate = 1;
-      speechSynthesis.speak(utterance);
-      lecturaActiva = true;
-      readBtn.innerText = 'Detener lectura';
-      utterance.onend = () => { lecturaActiva = false; readBtn.innerText = 'Lectura en voz alta'; };
-    } else {
-      speechSynthesis.cancel();
-      lecturaActiva = false;
-      readBtn.innerText = 'Lectura en voz alta';
-    }
-  });
+    readBtn.addEventListener("click", function () {
+        if (!("speechSynthesis" in window)) return alert("Tu navegador no soporta lectura de texto.");
+
+        if (!lecturaActiva) {
+            const texto = new SpeechSynthesisUtterance(document.body.innerText);
+            texto.lang = "es-ES";
+            texto.rate = 1;
+
+            speechSynthesis.speak(texto);
+            lecturaActiva = true;
+            readBtn.innerText = "Detener lectura";
+
+            texto.onend = () => {
+                lecturaActiva = false;
+                readBtn.innerText = "Lectura en voz alta";
+            };
+
+        } else {
+            speechSynthesis.cancel();
+            lecturaActiva = false;
+            readBtn.innerText = "Lectura en voz alta";
+        }
+    });
+
 });

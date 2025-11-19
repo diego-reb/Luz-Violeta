@@ -5,123 +5,125 @@
   --font-family-base: 'Inter', sans-serif;
 }
 
+/* Transición suave de tamaño */
 body {
-    transition: font-size 0.2s ease; 
+    transition: font-size 0.2s ease;
+    font-family: var(--font-family-base);
 }
 
-body *,
-body [class*="text-"] {
-    font-size: inherit !important; 
-    line-height: 1.5em !important; 
+/* === MODOS DE ESCALADO DE FUENTE === */
+
+body.scale-text-small * {
+    font-size: 0.9em !important;
+    line-height: 1.5em !important;
 }
 
-/* ... (el resto de tu CSS sigue igual) ... */
-
-/* === Escala de grises === */
-body.grayscale { filter: grayscale(100%); background: #ffffff !important; color: #000000 !important; }
-
-/* === Cambio de tipografía accesible === */
-body.alt-font {
-    font-family: 'Arial Rounded MT Bold', Verdana, sans-serif !important;
+body.scale-text-medium * {
+    font-size: 1.0em !important;
+    line-height: 1.5em !important;
 }
 
-/* === Guía de lectura === */
-.reading-guide-mask {
-    position: fixed;
-    left: 0;
-    width: 100%;
-    height: 40px;
-    background: rgba(188, 184, 195, 0.532);
-    pointer-events: none;
-    display: none;
-    z-index: 9999;
-    transition: top 0.1s ease; 
+body.scale-text-large * {
+    font-size: 1.25em !important;
+    line-height: 1.6em !important;
 }
 
-body.reading-guide-active .reading-guide-mask{
-    display: block;
+body.scale-text-extra-large * {
+    font-size: 1.5em !important;
+    line-height: 1.7em !important;
+}
+
+body.scale-text-max * {
+    font-size: 1.8em !important;
+    line-height: 1.8em !important;
 }
 
 /* ---------------------------------------------------- */
-/* === 1. MODOS DE COLOR GENERALES (TARGETING ESPECÍFICO) === */
+/* === MODOS DE COLOR === */
 /* ---------------------------------------------------- */
 
-/* MODO OSCURO */
-body.dark-mode { 
-  background: #111827; 
-  color: #f0f5f9; 
+/* ▧ MODO OSCURO */
+body.dark-mode {
+  background: #262140 !important;
+  color: #f0f5f9 !important;
 }
-/* *** SOLUCIÓN 2: Fondo oscuro para tarjetas, incluyendo el panel de Login (.card-hover) *** */
+
 body.dark-mode .card,
 body.dark-mode .form-panel,
 body.dark-mode .card-hover,
-body.dark-mode .bg-white { /* Forzar el cambio de bg-white de Tailwind a un oscuro si está en un contenedor targeteable */
-    background: #1f2937 !important; 
-    color: #e5e7eb !important; 
-}
-/* Asegurar que el hero banner NO se oscurezca, si tiene una clase especifica, aquí asumimos que no tiene .card-hover, etc. */
-/* Si el header tiene bg-white y queremos que se mantenga blanco en modo oscuro, necesitaríamos su clase. 
-   Pero por ahora, solo aseguramos que el panel de login y las tarjetas cambien. */
-
-/* Ajuste de inputs y enlaces en modo oscuro */
-body.dark-mode a {
-    color: #181418; 
-}
-body.dark-mode input[type="text"],
-body.dark-mode input[type="email"],
-body.dark-mode input[type="password"] {
-    background: #374151 !important;
-    border: 1px solid #4b5563 !important;
+body.dark-mode .bg-white {
+    background: #1f062dbf !important;
     color: #e5e7eb !important;
 }
 
-
-/* MODO CLARO */
-body.light-mode { 
-  background: #ffffff; 
-  color: #0f0e0e; 
+body.dark-mode .card-hover p,
+body.dark-mode .card-hover span,
+body.dark-mode .card-hover div,
+body.dark-mode label,
+body.dark-mode a {
+    color: #d485ff !important;
 }
-/* *** SOLUCIÓN 2: Asegurar el color blanco para las tarjetas en modo claro *** */
+
+body.dark-mode input[type="text"],
+body.dark-mode input[type="email"],
+body.dark-mode input[type="password"] {
+    background: #5b4d57 !important;
+    border: 1px solid #666f7b !important;
+    color: #e5e7eb !important;
+}
+
+/* ▧ MODO CLARO */
+body.light-mode {
+  background: #ffffff !important;
+  color: #0f0e0e !important;
+}
+
 body.light-mode .card,
 body.light-mode .form-panel,
-body.light-mode .card-hover { 
-    background: #ffffff !important; 
-    color: #0f0e0e !important; 
+body.light-mode .card-hover,
+body.light-mode .bg-white {
+    background: #ffffff !important;
+    color: #0f0e0e !important;
 }
-/* ... (resto del CSS de modo claro se mantiene) ... */
-
 
 /* ---------------------------------------------------- */
-/* === 2. MODOS EXCLUSIVOS DE ACCESIBILIDAD === */
+/* === MODOS EXCLUSIVOS === */
 /* ---------------------------------------------------- */
 
-/* ALTO CONTRASTE */
+/* ▧ ALTO CONTRASTE */
 body.high-contrast {
-    background: #000000 !important;
-    color: #ffffff !important;
+    background: #000 !important;
+    color: #fff !important;
 }
+
 body.high-contrast a {
-    color: #00ffff !important; 
+    color: #0c0299 !important;
 }
-/* Contenedores en ALTO CONTRASTE */
+
 body.high-contrast .card,
 body.high-contrast .form-panel,
 body.high-contrast .card-hover,
-body.high-contrast .bg-white { /* Targeteo del panel de login y tarjetas */
-    background: #000000 !important; 
-    border: 1px solid #ffffff !important; 
-    color: #ffffff !important; 
+body.high-contrast .bg-white {
+    background: #000 !important;
+    border: 1px solid #f2fa06 !important;
+    color: #15ff00 !important;
 }
+
 body.high-contrast input,
 body.high-contrast textarea,
 body.high-contrast select {
-    background: #000000 !important;
-    border: 2px solid #00ffff !important; 
-    color: #ffffff !important;
+    background: #000 !important;
+    border: 2px solid #00ffff !important;
+    color: #9cfc2e !important;
 }
 
-/* ESCALA DE GRISES */
-body.grayscale { filter: grayscale(100%); background: #ffffff !important; color: #000000 !important; }
+/* ▧ ESCALA DE GRISES */
+body.grayscale {
+    filter: grayscale(100%);
+    background: #ffffff !important;
+    color: #000000 !important;
+}
+
 body.grayscale .card,
 body.grayscale .form-panel,
 body.grayscale .card-hover,
@@ -129,7 +131,40 @@ body.grayscale .bg-white {
     background: #ffffff !important;
     color: #000000 !important;
 }
-/* ... (Guía de lectura y Panel de accesibilidad se mantienen) ... */
+
+/* ---------------------------------------------------- */
+/* === TIPOGRAFÍA ACCESIBLE === */
+/* ---------------------------------------------------- */
+
+body.alt-font {
+    font-family: 'Arial Rounded MT Bold', Verdana, sans-serif !important;
+}
+
+/* ---------------------------------------------------- */
+/* === GUÍA DE LECTURA === */
+/* ---------------------------------------------------- */
+
+.reading-guide-mask {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: rgba(188,184,195,0.53);
+    pointer-events: none;
+    display: none;
+    z-index: 9999;
+    transition: top 0.1s ease;
+}
+
+body.reading-guide-active .reading-guide-mask {
+    display: block;
+}
+
+
+/* ---------------------------------------------------- */
+/* === PANEL Y BOTÓN DE ACCESIBILIDAD === */
+/* ---------------------------------------------------- */
+
 #accesibility-toggle {
     position: fixed;
     bottom: 20px;
@@ -146,9 +181,11 @@ body.grayscale .bg-white {
     z-index: 10001;
     transition: transform 0.2s ease;
 }
+
 #accesibility-toggle:hover {
     transform: scale(1.08);
 }
+
 #accesibility-panel {
     position: fixed;
     bottom: 80px;
@@ -164,14 +201,17 @@ body.grayscale .bg-white {
     gap: 8px;
     width: 240px;
 }
+
 #accesibility-panel.active {
     display: flex;
     animation: fadeIn .25s ease;
 }
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
 #accesibility-panel button {
     background: rgba(255,255,255,.08);
     border: none;
@@ -183,10 +223,12 @@ body.grayscale .bg-white {
     font-size: 0.9rem;
     text-align: left;
 }
+
 #accesibility-panel button:hover {
     background: rgba(255,255,255,.25);
 }
+
 .active-acc {
-    background: #8800f8 !important; 
+    background: #8800f8 !important;
     color: white !important;
 }

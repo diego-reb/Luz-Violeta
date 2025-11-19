@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luz Violeta - Juntas somos invencibles</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="/app/static/JS/click_boton.js"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/accesibilidad.css')}}">
-    <script src="{{ url_for('static', filename='js/accesibilidad.js')}}"></script>
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
         
@@ -23,7 +23,6 @@
             background-size: cover;
             background-position: center;
             position: relative;
-            /* No z-index aquí para que los elementos flotantes no sean cubiertos si están antes en el DOM */
         }
 
         /* Overlay para mejorar la legibilidad del texto sobre la imagen */
@@ -35,12 +34,12 @@
             right: 0;
             bottom: 0;
             background: linear-gradient(135deg, rgba(167, 139, 250, 0.7) 0%, rgba(232, 121, 249, 0.7) 100%); /* Degradado semi-transparente */
-            z-index: 1; /* Esto asegura que el overlay esté sobre la imagen de fondo pero debajo del contenido */
+            z-index: 1;
         }
 
         .hero-bg .container {
             position: relative;
-            z-index: 2; /* Asegura que el contenido del hero esté sobre el overlay */
+            z-index: 2;
         }
 
         /* Card hover effect */
@@ -52,14 +51,14 @@
         /* Floating decorative elements */
         .floating-element {
             animation: float 15s ease-in-out infinite;
-            pointer-events: none; /* Esto permite hacer clic en elementos debajo de ellos */
-            z-index: -1; /* Asegura que estén detrás de todo el contenido principal */
+            pointer-events: none;
+            z-index: -1;
         }
         
         .floating-element-2 {
             animation: float-alt 18s ease-in-out infinite;
-            pointer-events: none; /* Esto permite hacer clic en elementos debajo de ellos */
-            z-index: -1; /* Asegura que estén detrás de todo el contenido principal */
+            pointer-events: none;
+            z-index: -1;
         }
 
         @keyframes float {
@@ -75,7 +74,12 @@
             60% { transform: translateY(30px) translateX(20px) rotate(10deg); opacity: 0.5; }
         }
     </style>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/accesibilidad.css')}}">
+
+    <script src="{{ url_for('static', filename='js/accesibilidad.js')}}"></script>
 </head>
+
 <body class="high-contrast">
     <div id="reading-guide" class="reading-guide-mask"></div>
 
