@@ -93,7 +93,7 @@ body.light-mode .bg-white {
 /* ▧ ALTO CONTRASTE */
 body.high-contrast {
     background: #000 !important;
-    color: #fff !important;
+    color: #ff007f !important; /* CAMBIO: Rosa fluorescente */
 }
 
 body.high-contrast a {
@@ -104,9 +104,9 @@ body.high-contrast .card,
 body.high-contrast .form-panel,
 body.high-contrast .card-hover,
 body.high-contrast .bg-white {
-    background: #000 !important;
+    background: #0f0e0f !important;
     border: 1px solid #f2fa06 !important;
-    color: #15ff00 !important;
+    color: #ff007f !important; /* CAMBIO: Rosa fluorescente */
 }
 
 body.high-contrast input,
