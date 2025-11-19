@@ -13,6 +13,7 @@ from app.controllers.albergues_controller import albergues_bp
 from app.controllers.abogados_controller import abogados_bp
 from app.controllers.psicologos_controller import psicologo_bp
 from app.controllers.admin.registroadmin_controller import registroadmin_bp
+from app.controllers.admin.Albergues_controllers import admin_albergues_bp
 
 def Luzvioleta():
     app = Flask(__name__)
@@ -33,6 +34,7 @@ def Luzvioleta():
     app.register_blueprint(abogados_bp)
     app.register_blueprint(psicologo_bp)
     app.register_blueprint(registroadmin_bp)
+    app.register_blueprint(admin_albergues_bp)
 
 
     configurar_logging(app)

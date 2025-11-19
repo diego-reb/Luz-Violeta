@@ -11,8 +11,17 @@ class Albergue(db.Model):
     latitud = db.Column(db.Numeric(10, 6))
     longitud = db.Column(db.Numeric(10, 6))
     id_alcaldia = db.Column(db.Integer, db.ForeignKey('alcaldias.id'))
+    capacidad_total = db.Column(db.Integer, default=10)
+    capacidad_ocupada = db.Column(db.Integer, default=0)
 
     alcaldia = db.relationship('Alcaldia', back_populates='albergues')
+
+    @property
+    def ocupacion(self):
+        """Calcula el porcentaje de ocupación"""
+        if self.capacidad_total:
+            return round((self.capacidad_ocupada / self.capacidad_total) * 100)
+        return 0
 
     def __repr__(self):
         return f"<Albergue {self.nombre}>"

@@ -98,7 +98,7 @@
         <nav class="hidden sm:flex space-x-4">
             <span class="text-sm font-semibold text-white/80 py-2 hidden md:block">Hola, Administrador</span>
             <button class="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 px-4 rounded-full transition-all duration-300 shadow-lg text-sm" onclick="alert('Cerrando sesión...')">
-                🔒 Cerrar Sesión
+                 Cerrar Sesión
             </button>
         </nav>
     </header>
@@ -118,10 +118,10 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 4h2m-7-5h2m4-5h2m4-5h2M12 21V3"/></svg>
                     Administrar Albergues
                 </a>
-                <a href="admin-reportes.html" class="sidebar-link text-purple-700">
+               <!--- <a href="admin-reportes.html" class="sidebar-link text-purple-700">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0h6"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 14h2m-2 4h2"/></svg>
                     Estadísticas y Reportes
-                </a>
+                </a> --->
             </div>
         </aside>
 
@@ -138,7 +138,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
                 <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg border-l-4 border-purple-500">
                     <p class="text-sm font-medium text-gray-500">Total de Albergues</p>
-                    <p class="text-2xl sm:text-3xl font-bold text-purple-700 mt-1">12</p>
+                    <p class="text-2xl sm:text-3xl font-bold text-purple-700 mt-1"></p>
                 </div>
                 <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg border-l-4 border-pink-500">
                     <p class="text-sm font-medium text-gray-500">Capacidad Total Ocupada</p>
@@ -191,77 +191,36 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
+                        {% for a in albergues %}
                         <tr class="table-row-striped">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" data-label="ID">A001</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-semibold" data-label="Nombre">Casa Esperanza</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700" data-label="Ciudad">Ciudad de México</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm occupation-col" data-label="Ocupación">
-                                <span class="font-bold text-red-500">90%</span> (9/10)
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" data-label="ID">{{ a.id }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-semibold" data-label="Nombre">{{ a.nombre }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700" data-label="Ciudad">{{ a.ciudad or 'N/A' }}</td>
+                            <span class="px-6 py-4 whitespace-nowrap text-sm occupation-col" data-label="Ocupación">
+                                <span class="font-bold {% if a.ocupacion >= 80 %}text-red-500{% elif a.ocupacion >= 50 %}text-yellow-500{% else %}text-green-500{% endif %}">
+                                {{ a.ocupacion}}
+                                </span> ({{ a.ocupacion}}/{{ a.capacidad }})
+                                </span>
+                            </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap status-col" data-label="Estado">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                    Activo
-                                </span>
+                                {% if a.estado == 'Activo' %}
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Activo</span>
+                                {% else %}
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">{{ a.estado }}</span>
+                                {% endif %}
                             </td>
+
                             <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2 action-col" data-label="Acciones">
-                                <button class="text-indigo-600 hover:text-indigo-900 transition-colors" onclick="alert('Visualizando detalles de Casa Esperanza')">
-                                    🔍 Ver
-                                </button>
-                                <button class="text-indigo-600 hover:text-indigo-900 transition-colors" onclick="alert('Editando Casa Esperanza')">
-                                    ✏️ Editar
-                                </button>
-                                <button class="text-red-600 hover:text-red-900 transition-colors" onclick="confirm('¿Cerrar temporalmente Casa Esperanza?')">
-                                    ❌ Cerrar
-                                </button>
+                                <button class="text-indigo-600 hover:text-indigo-900 transition-colors" onclick="alert('Visualizando detalles de {{ a.nombre }}')">🔍 Ver</button>
+            <button class="text-indigo-600 hover:text-indigo-900 transition-colors" onclick="alert('Editando {{ a.nombre }}')">✏️ Editar</button>
+            <button class="text-red-600 hover:text-red-900 transition-colors" onclick="confirm('¿Cerrar temporalmente {{ a.nombre }}?')">❌ Cerrar</button>
                             </td>
+                            {% endfor %}
+
                         </tr>
-                        <tr class="table-row-striped">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" data-label="ID">A002</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-semibold" data-label="Nombre">Refugio Violeta</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700" data-label="Ciudad">Guadalajara</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm occupation-col" data-label="Ocupación">
-                                <span class="font-bold text-green-500">50%</span> (5/10)
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap status-col" data-label="Estado">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                    Activo
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2 action-col" data-label="Acciones">
-                                <button class="text-indigo-600 hover:text-indigo-900 transition-colors" onclick="alert('Visualizando detalles de Refugio Violeta')">
-                                    🔍 Ver
-                                </button>
-                                <button class="text-indigo-600 hover:text-indigo-900 transition-colors" onclick="alert('Editando Refugio Violeta')">
-                                    ✏️ Editar
-                                </button>
-                                <button class="text-red-600 hover:text-red-900 transition-colors" onclick="confirm('¿Cerrar temporalmente Refugio Violeta?')">
-                                    ❌ Cerrar
-                                </button>
-                            </td>
-                        </tr>
-                        <tr class="table-row-striped">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" data-label="ID">A003</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-semibold" data-label="Nombre">Puerta Segura</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700" data-label="Ciudad">Monterrey</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm occupation-col" data-label="Ocupación">
-                                <span class="font-bold text-yellow-500">10%</span> (1/10)
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap status-col" data-label="Estado">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                    Mantenimiento
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2 action-col" data-label="Acciones">
-                                <button class="text-indigo-600 hover:text-indigo-900 transition-colors" onclick="alert('Visualizando detalles de Puerta Segura')">
-                                    🔍 Ver
-                                </button>
-                                <button class="text-indigo-600 hover:text-indigo-900 transition-colors" onclick="alert('Editando Puerta Segura')">
-                                    ✏️ Editar
-                                </button>
-                                <button class="text-red-600 hover:text-red-900 transition-colors" onclick="confirm('¿Cerrar temporalmente Puerta Segura?')">
-                                    ❌ Cerrar
-                                </button>
-                            </td>
+                        
+                        
                         </tr>
                         </tbody>
                 </table>
