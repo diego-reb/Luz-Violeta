@@ -10,16 +10,20 @@ def login():
         password = request.form.get('password')
 
         if not identificador or not password:
-            return render_template("login.html", mensaje = "Faltan campos")
+            flash("Por favor complete todos los campos", "error")
+            return render_template("login.html")
         
         usuario = Usuario.query.filter(
             (Usuario.nombre_usuario == identificador) | (Usuario.correo == identificador)
         ).first()
 
-
+        if not usuario.activo:
+            flash ("Credenciales invalidas", "error")
+            return render_template ("login.html")
 
         if not usuario or not usuario.check_password(password):
-            return render_template ("login.html", mensaje = "credenciales invalidas")
+            flash ("Credenciales invalidas", "error")
+            return render_template ("login.html")
         
         session.clear()
         session["usuario_id"] = usuario.id_usuario

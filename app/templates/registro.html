@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/accesibilidad.css')}}">
     <script src="{{ url_for('static', filename='js/accesibilidad.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/ocultar_mensajes.js')}}"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
         
@@ -79,6 +80,14 @@
         }
         .text-shadow-md {
             text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .flash-message.fade-out {
+            animation: fadeOut 1s forwards;
         }
     </style>
 </head>
