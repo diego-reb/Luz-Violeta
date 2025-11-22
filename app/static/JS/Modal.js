@@ -1,84 +1,117 @@
+async function abrirModalEditar(id) {
+    const loader = document.getElementById("loader");
+    loader.classList.remove("hidden");
+
+    try {
+        const response = await fetch(`/admin/Gestion_Usuarios/usuario/${id}`);
+        const data = await response.json();
+
+        document.getElementById("tituloModal").textContent = "Editar Usuario";
+        document.getElementById("id_usuario").value = data.id_usuario;
+        document.getElementById("nombre").value = data.nombre;
+        document.getElementById("correo").value = data.correo;
+        document.getElementById("username").value = data.username;
+
+        // La contraseña NO se llena por seguridad
+        document.getElementById("password").value = "";
+
+        document.getElementById("rol_id").value = data.rol_id;
+        document.getElementById("activo").value = data.activo ? "1" : "0";
+
+        document.getElementById("modalUsuario").classList.remove("hidden");
+    } catch (e) {
+        alert("Error al obtener datos del usuario");
+    }
+
+    loader.classList.add("hidden");
+}
+
+
 function abrirModalNuevo() {
-    document.getElementById("tituloModal").innerText = "Registrar Usuario";
-    document.getElementById("formUsuario").reset();
+    document.getElementById("tituloModal").textContent = "Registrar Nuevo Usuario";
+
     document.getElementById("id_usuario").value = "";
+    document.getElementById("nombre").value = "";
+    document.getElementById("correo").value = "";
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+    document.getElementById("rol_id").selectedIndex = 0;
+    document.getElementById("activo").value = "1";
+
     document.getElementById("modalUsuario").classList.remove("hidden");
 }
-
-function abrirModalEditar(id) {
-    fetch(`/admin/Gestion_Usuarios/usuario/${id}`)
-        .then(resp => resp.json())
-        .then(u => {
-            document.getElementById("tituloModal").innerText = "Editar Usuario";
-
-            document.getElementById("id_usuario").value = u.id_usuario;
-            document.getElementById("nombre").value = u.nombre;
-            document.getElementById("correo").value = u.correo;
-            document.getElementById("username").value = u.username;
-            document.getElementById("rol_id").value = u.rol_id;
-            document.getElementById("activo").value = u.activo ? 1 : 0;
-
-            document.getElementById("modalUsuario").classList.remove("hidden");
-        });
-}
-function cambiarEstado(id, nuevoEstado) {
-    if (!confirm("¿Seguro que quieres cambiar el estado de este usuario?")) return;
-
-    fetch(`/admin/Gestion_Usuarios/cambiar_estado/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ activo: nuevoEstado })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.status === "ok") {
-            location.reload();
-        }
-    });
-}
-
 
 function cerrarModal() {
     document.getElementById("modalUsuario").classList.add("hidden");
 }
 
-function mostrarLoader() {
-    document.getElementById("loader").classList.remove("hidden");
-}
-
-function ocultarLoader() {
-    document.getElementById("loader").classList.add("hidden");
-}
-
-function guardarUsuario() {
-    mostrarLoader();
+async function guardarUsuario() {
+    const loader = document.getElementById("loader");
+    loader.classList.remove("hidden");
 
     const id = document.getElementById("id_usuario").value;
-    const data = {
-        nombre: document.getElementById("nombre").value,
-        correo: document.getElementById("correo").value,
-        username: document.getElementById("username").value,
-        password: document.getElementById("password").value,
-        rol_id: document.getElementById("rol_id").value,
-        activo: document.getElementById("activo").value
+    const nombre = document.getElementById("nombre").value;
+    const correo = document.getElementById("correo").value;
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const rol_id = document.getElementById("rol_id").value;
+    const activo = document.getElementById("activo").value;
+
+    const payload = {
+        nombre,
+        correo,
+        username,
+        password,
+        rol_id,
+        activo
     };
 
-    let url = id
-        ? `/admin/Gestion_Usuarios/editar/${id}`
-        : "/admin/Gestion_Usuarios/registrar";
+    try {
+        let response;
 
-    let method = id ? "PUT" : "POST";
+        // EDITAR
+        if (id) {
+            response = await fetch(`/admin/Gestion_Usuarios/editar/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+        } 
+        // REGISTRAR
+        else {
+            response = await fetch(`/admin/Gestion_Usuarios/registrar`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+        }
 
-    fetch(url, {
-        method: method,
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(data)
-    })
-    .then(resp => resp.json())
-    .then(() => {
-        setTimeout(() => {
-            ocultarLoader();
+        const res = await response.json();
+
+        if (res.status === "ok") {
+            cerrarModal();
             location.reload();
-        }, 1500);
-    });
+        } else {
+            alert("Error al guardar el usuario");
+        }
+
+    } catch (e) {
+        console.error(e);
+        alert("Error de conexión con el servidor");
+    }
+
+    loader.classList.add("hidden");
+}
+
+function cerrarModal() {
+    document.getElementById("modalUsuario").classList.add("hidden");
+
+    // Limpia los campos del formulario
+    document.getElementById("id_usuario").value = "";
+    document.getElementById("nombre").value = "";
+    document.getElementById("correo").value = "";
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+    document.getElementById("rol_id").selectedIndex = 0;
+    document.getElementById("activo").value = "1";
 }

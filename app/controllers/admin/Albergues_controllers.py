@@ -8,8 +8,13 @@ admin_albergues_bp = Blueprint('admin_albergues_bp', __name__, url_prefix='/admi
 @admin_albergues_bp.route('/')
 @login_required(role_id=1)
 def GestionAlbergues():
+
+    page = request.args.get('page', 1, type=int)
+    per_page = 10
+
+    pagination = Albergue.query.paginate(page=page, per_page=per_page)
     albergues = Albergue.query.all()
-    return render_template('adm_albergues.html', albergues=albergues)
+    return render_template('adm_albergues.html', albergues=pagination.items, pagination=pagination)
 
 @admin_albergues_bp.route('/albergue/<int:id>', methods=['GET'])
 def obtener_albergue(id):
@@ -41,3 +46,29 @@ def editar_albergue(id):
     db.session.commit()
     return jsonify({"status": "ok"}), 200
     
+@admin_albergues_bp.route('/registrar', methods=['POST'])
+def registrar_albergue():
+    data = request.json
+
+    nuevo = Albergue(
+        nombre=data['nombre'],
+        ciudad=data['ciudad'],
+        capacidad=data['capacidad'],
+        ocupacion=data['ocupacion'],
+        estado=data['estado']
+    )
+
+    db.session.add(nuevo)
+    db.session.commit()
+
+    return jsonify({"status": "ok"}), 201
+
+@admin_albergues_bp.route('/eliminar/<int:id>', methods=['DELETE'])
+def cambiar_estado_usuario(id):
+    a = Albergue.query.get(id)
+    data = request.json
+    a.activo = data['activo']
+    db.session.commit()
+    return jsonify({"status": "ok"}), 200
+    
+

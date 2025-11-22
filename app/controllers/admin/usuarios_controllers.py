@@ -14,6 +14,7 @@ def GestionUsuarios():
     return render_template('gestiondeusuariosadmin.html', usuarios=usuarios, roles=roles)
 
 @gestion_usuarios_bp.route('/registrar', methods=['POST'])
+@login_required(role_id=1)
 def registrar_usuario():
     data = request.json
     nuevo_usuario = Usuario(
@@ -27,7 +28,10 @@ def registrar_usuario():
     db.session.commit()
     return jsonify({"status": "ok"}), 200
 
+
+
 @gestion_usuarios_bp.route('/usuario/<int:id>', methods=['GET'])
+@login_required(role_id=1)
 def obtener_usuario(id):
     u = Usuario.query.get(id)
     return jsonify({
@@ -40,6 +44,7 @@ def obtener_usuario(id):
     })
 
 @gestion_usuarios_bp.route('/editar/<int:id>', methods=['PUT'])
+@login_required(role_id=1)
 def editar_usuario(id):
     u= Usuario.query.get(id)
     data = request.json
@@ -47,13 +52,15 @@ def editar_usuario(id):
     u.correo = data['correo']
     u.nombre_usuario = data['username']
     u.rol_id = data['rol_id']
-    u.activo = data['activo']
+    u.activo = True if str(data['activo']) == "1" else False
 
     if data['password']:
         u.set_password(data['password'])
 
     db.session.commit()
-    return jsonify({"status":"ok"}), 200
+    return jsonify({"status": "ok"}), 200
+
+
 
 @gestion_usuarios_bp.route('/cambiar_estado/<int:id>', methods=['PUT'])
 def cambiar_estado_usuario(id):
@@ -61,4 +68,5 @@ def cambiar_estado_usuario(id):
     data = request.json
     u.activo = data['activo']
     db.session.commit()
-    return jsonify({"status":"ok"}),200
+    return jsonify({"status": "ok"}), 200
+
