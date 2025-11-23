@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin - Administrar Albergues (Responsive)</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{{ url_for('static', filename='js/accesibilidad.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/accesibilidad.css') }}" />
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-        
+
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f7f1ff;
@@ -49,9 +52,18 @@
             font-size: 0.85rem;
         }
 
-        .col-nombre { width: 180px; }
-        .col-ciudad { width: 150px; }
-        .col-ocupacion { width: 120px; text-align: center; }
+        .col-nombre {
+            width: 180px;
+        }
+
+        .col-alcaldia {
+            width: 180px;
+        }
+
+        .col-ocupacion {
+            width: 120px;
+            text-align: center;
+        }
 
         .table-container {
             overflow-x: auto;
@@ -62,10 +74,14 @@
             .responsive-table thead {
                 display: none;
             }
-            .responsive-table, .responsive-table tbody,
-            .responsive-table tr, .responsive-table td {
+
+            .responsive-table,
+            .responsive-table tbody,
+            .responsive-table tr,
+            .responsive-table td {
                 display: block;
             }
+
             .responsive-table tr {
                 margin-bottom: 0.75rem;
                 border: 1px solid #ddd;
@@ -73,12 +89,14 @@
                 overflow: hidden;
                 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             }
+
             .responsive-table td {
                 text-align: right;
                 padding-left: 50%;
                 position: relative;
                 border-bottom: 1px solid #eee;
             }
+
             .responsive-table td::before {
                 content: attr(data-label);
                 position: absolute;
@@ -89,7 +107,9 @@
                 color: #581c87;
                 text-align: left;
             }
-            .action-col::before, .occupation-col::before,
+
+            .action-col::before,
+            .occupation-col::before,
             .status-col::before {
                 content: none;
             }
@@ -99,225 +119,330 @@
 
 <body class="text-gray-800 flex flex-col">
 
-<header class="bg-purple-800 shadow-md px-6 py-4 flex items-center justify-between relative z-20">
-    <div class="flex items-center space-x-4">
-        <span class="text-2xl sm:text-3xl font-extrabold text-white">💜 Admin Panel</span>
-        <span class="text-white opacity-70 border-l border-white/50 pl-4 hidden md:block">Gestión de Luz Violeta</span>
+    <header class="bg-purple-800 shadow-md px-6 py-4 flex items-center justify-between relative z-20">
+        <div class="flex items-center space-x-4">
+            <span class="text-2xl sm:text-3xl font-extrabold text-white">💜 Admin Panel</span>
+            <span class="text-white opacity-70 border-l border-white/50 pl-4 hidden md:block">Gestión de Luz
+                Violeta</span>
+        </div>
+
+        <button id="menu-toggle" class="md:hidden text-white hover:text-purple-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+
+        <nav class="hidden sm:flex space-x-4">
+            <span class="text-sm font-semibold text-white/80 py-2 hidden md:block">Hola, Administrador</span>
+            <button
+                class="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 px-4 rounded-full transition-all duration-300 shadow-lg text-sm">
+                Cerrar Sesión
+            </button>
+        </nav>
+    </header>
+
+    <div class="flex flex-grow relative">
+        <aside id="sidebar"
+            class="w-64 bg-white shadow-xl p-4 absolute md:relative inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-30">
+            <div class="space-y-2 pt-4">
+                <a href="/admin/" class="sidebar-link text-purple-700">Panel Principal</a>
+                <a href="/admin/Gestion_Usuarios" class="sidebar-link text-purple-700">Gestión de Usuarios</a>
+                <a href="/admin/Gestion_Albergues" class="sidebar-link active">Administrar Albergues</a>
+            </div>
+        </aside>
+
+        <main id="high-contrast" class="flex-1 p-4 md:p-8">
+            <button onclick="window.history.back()"
+                class="flex items-center text-purple-600 hover:text-purple-800 font-semibold mb-4 sm:mb-6">←
+                Regresar al Panel</button>
+
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-purple-900 mb-4 sm:mb-6">Administrar Refugios Seguros
+                🏘️</h1>
+            <p class="text-gray-600 mb-6">Visualiza la capacidad, el estado y la información de contacto de todos los
+                albergues afiliados.</p>
+
+            <div class="flex flex-col md:flex-row justify-between items-center bg-white p-4 rounded-xl shadow-lg mb-6">
+                <button onclick="abrirRegistro()"
+                    class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-5 rounded-full shadow-md w-full md:w-auto text-sm">
+                    ➕ Registrar Nuevo Albergue
+                </button>
+
+                <div
+                    class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 w-full md:w-auto mt-4 md:mt-0">
+                    <input type="text" placeholder="Buscar por nombre o alcaldia..."
+                        class="p-2 border border-gray-300 rounded-lg w-full focus:ring-purple-500" />
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-2xl table-container">
+                <table class="min-w-full divide-y divide-gray-200 responsive-table">
+                    <thead class="bg-purple-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-bold text-purple-700 uppercase">ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-bold text-purple-700 uppercase col-nombre">
+                                Nombre
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-bold text-purple-700 uppercase col-alcaldia">
+                                Alcaldía
+                            </th>
+                            <th class="px-6 py-3 text-center text-xs font-bold text-purple-700 uppercase col-ocupacion">
+                                Ocupación
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-bold text-purple-700 uppercase">Estado</th>
+                            <th class="px-6 py-3 text-center text-xs font-bold text-purple-700 uppercase">Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="divide-y divide-gray-200">
+                        {% for a in albergues %}
+                        <tr class="table-row-striped">
+                            <td class="px-6 py-4 text-sm font-medium" data-label="ID">{{ a.id }}</td>
+
+                            <td class="px-6 py-4 text-sm font-semibold" data-label="Nombre">{{ a.nombre }}</td>
+
+                            <td class="px-6 py-4 text-sm" data-label="Alcaldía">
+                                {{ a.alcaldia.nombre if a.alcaldia else 'N/A' }}
+                            </td>
+
+                            <td class="px-6 py-4 text-sm occupation-col text-center" data-label="Ocupación">
+                                <span class="font-bold
+                                    {% if a.ocupacion >= 80 %}text-red-500
+                                    {% elif a.ocupacion >= 50 %}text-yellow-500
+                                    {% else %}text-green-500
+                                    {% endif %}">
+                                    {{ a.ocupacion }}%
+                                </span>
+                                ({{ a.capacidad_ocupada }}/{{ a.capacidad_total }})
+                            </td>
+
+                            <td class="px-6 py-4 text-sm status-col" data-label="Estado">
+                                {% if a.estado == 'Activo' %}
+                                <span
+                                    class="px-2 inline-flex text-xs font-semibold rounded-full bg-blue-100 text-blue-800">Activo</span>
+                                {% else %}
+                                <span
+                                    class="px-2 inline-flex text-xs font-semibold rounded-full bg-gray-100 text-gray-800">{{
+                                    a.estado }}</span>
+                                {% endif %}
+                            </td>
+
+                            <td class="px-6 py-4 text-center text-sm action-col" data-label="Acciones">
+                                <button class="btn-editar text-indigo-600 hover:text-indigo-900" data-id="{{ a.id }}"
+                                    data-nombre="{{ a.nombre }}" data-alcaldia="{{ a.id_alcaldia }}"
+                                    data-capacidad="{{ a.capacidad_total }}" data-ocupacion="{{ a.capacidad_ocupada }}"
+                                    data-estado="{{ a.estado }}" data-telefono="{{ a.telefono }}"
+                                    data-direccion="{{ a.direccion }}" data-codigo_postal="{{ a.codigo_postal }}"
+                                    data-latitud="{{ a.latitud }}" data-longitud="{{ a.longitud }}">✏️ Editar</button>
+
+
+                                <button class="btn-eliminar text-red-600 hover:text-red-900" data-id="{{ a.id }}">❌
+                                    Cerrar</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if pagination %}
+            <div class="flex justify-center space-x-2 mt-6">
+                {% if pagination.has_prev %}
+                <a href="?page={{ pagination.prev_num }}" class="px-3 py-2 bg-gray-200 rounded">Anterior</a>
+                {% endif %}
+
+                {% for p in range(1, pagination.pages + 1) %}
+                <a href="?page={{ p }}"
+                    class="px-3 py-2 rounded {% if p == pagination.page %} bg-purple-600 text-white {% else %} bg-gray-200 text-gray-700 {% endif %}">
+                    {{ p }}</a>
+                {% endfor %}
+
+                {% if pagination.has_next %}
+                <a href="?page={{ pagination.next_num }}" class="px-3 py-2 bg-gray-200 rounded">Siguiente</a>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- FORMULARIO DE REGISTRO -->
+            <div id="overlay-registrar"
+                class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                <div class="bg-white p-6 rounded-xl w-11/12 max-w-2xl shadow-2xl">
+                    <h2 class="text-2xl font-bold text-purple-800 mb-4">Registrar Nuevo Albergue</h2>
+
+                    <form id="formRegistrarAlbergue">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700">Nombre</label>
+                                <input type="text" id="reg-nombre" class="w-full p-2 border rounded-lg" required />
+                            </div>
+
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700">Alcaldía</label>
+                                <select id="reg-id_alcaldia" class="w-full p-2 border rounded-lg">
+                                    <option value="">-- Seleccionar alcaldía --</option>
+                                    {% for alc in alcaldias %}
+                                    <option value="{{ alc.id }}">{{ alc.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700">Teléfono</label>
+                                <input type="text" id="reg-telefono" class="w-full p-2 border rounded-lg" />
+                            </div>
+
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700">Dirección</label>
+                                <input type="text" id="reg-direccion" class="w-full p-2 border rounded-lg" />
+                            </div>
+
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700">Código Postal</label>
+                                <input type="text" id="reg-codigo_postal" class="w-full p-2 border rounded-lg" />
+                            </div>
+
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700">Latitud</label>
+                                <input type="number" step="0.000001" id="reg-latitud"
+                                    class="w-full p-2 border rounded-lg" />
+                            </div>
+
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700">Longitud</label>
+                                <input type="number" step="0.000001" id="reg-longitud"
+                                    class="w-full p-2 border rounded-lg" />
+                            </div>
+
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700">Capacidad total</label>
+                                <input type="number" id="reg-capacidad" class="w-full p-2 border rounded-lg" required />
+                            </div>
+
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700">Capacidad ocupada</label>
+                                <input type="number" id="reg-ocupacion" class="w-full p-2 border rounded-lg" required />
+                            </div>
+
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700">Estado</label>
+                                <select id="reg-estado" class="w-full p-2 border rounded-lg">
+                                    <option>Activo</option>
+                                    <option>Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mt-5 flex space-x-3">
+                            <button type="submit"
+                                class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg shadow">
+                                Registrar
+                            </button>
+
+                            <button type="button" onclick="cerrarRegistro()"
+                                class="bg-gray-400 hover:bg-gray-500 text-white px-5 py-2 rounded-lg shadow">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- FORMULARIO DE EDICIÓN -->
+            <div id="overlay-editar"
+                class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                <div class="bg-white p-6 rounded-xl w-11/12 max-w-2xl shadow-2xl">
+                    <h2 class="text-2xl font-bold text-purple-800 mb-4">Editar Albergue</h2>
+
+                    <form id="formEditarAlbergue">
+                        <input type="hidden" id="edit-id" />
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700">Nombre</label>
+                                <input type="text" id="edit-nombre" class="w-full p-2 border rounded-lg" required />
+                            </div>
+
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700">Alcaldía</label>
+                                <select id="edit-id_alcaldia" class="w-full p-2 border rounded-lg">
+                                    <option value="">-- Seleccionar alcaldía --</option>
+                                    {% for alc in alcaldias %}
+                                    <option value="{{ alc.id }}">{{ alc.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700">Teléfono</label>
+                                <input type="text" id="edit-telefono" class="w-full p-2 border rounded-lg" />
+                            </div>
+
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700">Dirección</label>
+                                <input type="text" id="edit-direccion" class="w-full p-2 border rounded-lg" />
+                            </div>
+
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700">Código Postal</label>
+                                <input type="text" id="edit-codigo_postal" class="w-full p-2 border rounded-lg" />
+                            </div>
+
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700">Latitud</label>
+                                <input type="number" step="0.000001" id="edit-latitud"
+                                    class="w-full p-2 border rounded-lg" />
+                            </div>
+
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700">Longitud</label>
+                                <input type="number" step="0.000001" id="edit-longitud"
+                                    class="w-full p-2 border rounded-lg" />
+                            </div>
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700">Capacidad total</label>
+                                <input type="number" id="edit-capacidad" class="w-full p-2 border rounded-lg" />
+                            </div>
+
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700">Capacidad ocupada</label>
+                                <input type="number" id="edit-ocupacion" class="w-full p-2 border rounded-lg" />
+                            </div>
+
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700">Estado</label>
+                                <select id="edit-estado" class="w-full p-2 border rounded-lg">
+                                    <option>Activo</option>
+                                    <option>Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mt-5 flex space-x-3">
+                            <button type="submit"
+                                class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded-lg shadow">
+                                Guardar Cambios
+                            </button>
+
+                            <button type="button" onclick="cerrarFormulario()"
+                                class="bg-gray-400 hover:bg-gray-500 text-white px-5 py-2 rounded-lg shadow">
+                                Cancelar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </main>
     </div>
 
-    <button id="menu-toggle" class="md:hidden text-white hover:text-purple-200">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-             stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round"
-                d="M4 6h16M4 12h16M4 18h16"/></svg>
-    </button>
+    <footer class="bg-purple-900 text-white text-center py-4 mt-auto shadow-inner">© 2024 Luz Violeta. Panel de
+        Administración.</footer>
 
-    <nav class="hidden sm:flex space-x-4">
-        <span class="text-sm font-semibold text-white/80 py-2 hidden md:block">Hola, Administrador</span>
-        <button class="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 px-4 rounded-full transition-all duration-300 shadow-lg text-sm">
-            Cerrar Sesión
-        </button>
-    </nav>
-</header>
+    <script>
+        // sidebar toggle
+        document.getElementById('menu-toggle').addEventListener('click', function () {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+        });
+    </script>
 
-<div class="flex flex-grow relative">
-    <aside id="sidebar" class="w-64 bg-white shadow-xl p-4 absolute md:relative inset-y-0 left-0 
-    transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-30">
-
-        <div class="space-y-2 pt-4">
-            <a href="/admin/" class="sidebar-link text-purple-700">
-                Panel Principal
-            </a>
-
-            <a href="/admin/Gestion_Usuarios" class="sidebar-link text-purple-700">
-                Gestión de Usuarios
-            </a>
-
-            <a href="/admin/Gestion_Albergues" class="sidebar-link active">
-                Administrar Albergues
-            </a>
-        </div>
-    </aside>
-
-    <main class="flex-1 p-4 md:p-8">
-
-        <button onclick="window.history.back()" class="flex items-center text-purple-600 hover:text-purple-800 font-semibold mb-4 sm:mb-6">
-            ← Regresar al Panel
-        </button>
-
-        <h1 class="text-3xl sm:text-4xl font-extrabold text-purple-900 mb-4 sm:mb-6">
-            Administrar Refugios Seguros 🏘️
-        </h1>
-        <p class="text-gray-600 mb-6">
-            Visualiza la capacidad, el estado y la información de contacto de todos los albergues afiliados.
-        </p>
-
-        <div class="flex flex-col md:flex-row justify-between items-center bg-white p-4 rounded-xl shadow-lg mb-6">
-            <button onclick="abrirRegistro()"
-        class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-5 rounded-full shadow-md w-full md:w-auto text-sm">
-    ➕ Registrar Nuevo Albergue
-</button>
-
-
-            <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 w-full md:w-auto mt-4 md:mt-0">
-                <input type="text" placeholder="Buscar por nombre o ciudad..."
-                       class="p-2 border border-gray-300 rounded-lg w-full focus:ring-purple-500">
-            </div>
-        </div>
-
-        <div class="bg-white rounded-xl shadow-2xl table-container">
-            <table class="min-w-full divide-y divide-gray-200 responsive-table">
-                <thead class="bg-purple-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-bold text-purple-700 uppercase">ID</th>
-                        <th class="px-6 py-3 text-left text-xs font-bold text-purple-700 uppercase col-nombre">Nombre</th>
-                        <th class="px-6 py-3 text-left text-xs font-bold text-purple-700 uppercase col-ciudad">Ciudad</th>
-                        <th class="px-6 py-3 text-center text-xs font-bold text-purple-700 uppercase col-ocupacion">Ocupación</th>
-                        <th class="px-6 py-3 text-left text-xs font-bold text-purple-700 uppercase">Estado</th>
-                        <th class="px-6 py-3 text-center text-xs font-bold text-purple-700 uppercase">Acciones</th>
-                    </tr>
-                </thead>
-
-                <tbody class="divide-y divide-gray-200">
-                    {% for a in albergues %}
-                    <tr class="table-row-striped">
-
-                        <td class="px-6 py-4 text-sm font-medium" data-label="ID">{{ a.id }}</td>
-
-                        <td class="px-6 py-4 text-sm font-semibold" data-label="Nombre">{{ a.nombre }}</td>
-
-                        <td class="px-6 py-4 text-sm" data-label="Ciudad">{{ a.ciudad or 'N/A' }}</td>
-
-                        <td class="px-6 py-4 text-sm occupation-col text-center" data-label="Ocupación">
-                            <span class="font-bold 
-                                {% if a.ocupacion >= 80 %}text-red-500
-                                {% elif a.ocupacion >= 50 %}text-yellow-500
-                                {% else %}text-green-500
-                                {% endif %}">
-                                {{ a.ocupacion }}
-                            </span>
-                            ({{ a.ocupacion }}/{{ a.capacidad }})
-                        </td>
-
-                        <td class="px-6 py-4 text-sm status-col" data-label="Estado">
-                            {% if a.estado == 'Activo' %}
-                                <span class="px-2 inline-flex text-xs font-semibold rounded-full bg-blue-100 text-blue-800">Activo</span>
-                            {% else %}
-                                <span class="px-2 inline-flex text-xs font-semibold rounded-full bg-gray-100 text-gray-800">{{ a.estado }}</span>
-                            {% endif %}
-                        </td>
-
-                        <td class="px-6 py-4 text-center text-sm action-col" data-label="Acciones">
-                            <button 
-    class="btn-editar text-indigo-600 hover:text-indigo-900"
-    data-id="{{ a.id }}"
-    data-nombre="{{ a.nombre }}"
-    data-ciudad="{{ a.ciudad }}"
-    data-ocupacion="{{ a.ocupacion }}"
-    data-capacidad="{{ a.capacidad }}"
-    data-estado="{{ a.estado }}">
-    ✏️ Editar
-</button>
-
-                            <button class="text-red-600 hover:text-red-900">❌ Cerrar</button>
-                        </td>
-
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-        {% if pagination %}
-<div class="flex justify-center space-x-2 mt-6">
-
-    {% if pagination.has_prev %}
-        <a href="?page={{ pagination.prev_num }}" class="px-3 py-2 bg-gray-200 rounded">Anterior</a>
-    {% endif %}
-
-    {% for p in range(1, pagination.pages + 1) %}
-        <a href="?page={{ p }}" 
-           class="px-3 py-2 rounded 
-                  {% if p == pagination.page %} bg-purple-600 text-white 
-                  {% else %} bg-gray-200 text-gray-700 {% endif %}">
-            {{ p }}
-        </a>
-    {% endfor %}
-
-    {% if pagination.has_next %}
-        <a href="?page={{ pagination.next_num }}" class="px-3 py-2 bg-gray-200 rounded">Siguiente</a>
-    {% endif %}
-
-</div>
-{% endif %}
-
-<!-- FORMULARIO DE EDICIÓN OCULTO -->
-<div id="form-editar" class="hidden bg-white p-6 mt-6 rounded-xl shadow-xl border border-gray-200">
-
-    <h2 class="text-2xl font-bold text-purple-800 mb-4">Editar Albergue</h2>
-
-    <form id="formEditarAlbergue">
-
-        <input type="hidden" id="edit-id">
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
-            <div>
-                <label class="text-sm font-semibold text-gray-700">Nombre</label>
-                <input type="text" id="edit-nombre" class="w-full p-2 border rounded-lg" required>
-            </div>
-
-            <div>
-                <label class="text-sm font-semibold text-gray-700">Ciudad</label>
-                <input type="text" id="edit-ciudad" class="w-full p-2 border rounded-lg">
-            </div>
-
-            <div>
-                <label class="text-sm font-semibold text-gray-700">Capacidad</label>
-                <input type="number" id="edit-capacidad" class="w-full p-2 border rounded-lg">
-            </div>
-
-            <div>
-                <label class="text-sm font-semibold text-gray-700">Ocupación</label>
-                <input type="number" id="edit-ocupacion" class="w-full p-2 border rounded-lg">
-            </div>
-
-            <div>
-                <label class="text-sm font-semibold text-gray-700">Estado</label>
-                <select id="edit-estado" class="w-full p-2 border rounded-lg">
-                    <option>Activo</option>
-                    <option>Inactivo</option>
-                </select>
-            </div>
-
-        </div>
-
-        <div class="mt-5 flex space-x-3">
-            <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded-lg shadow">
-                Guardar Cambios
-            </button>
-
-            <button type="button" onclick="cerrarFormulario()"
-                class="bg-gray-400 hover:bg-gray-500 text-white px-5 py-2 rounded-lg shadow">
-                Cancelar
-            </button>
-        </div>
-
-    </form>
-</div>
-
-    </main>
-</div>
-
-
-<footer class="bg-purple-900 text-white text-center py-4 mt-auto shadow-inner">
-    © 2024 Luz Violeta. Panel de Administración.
-</footer>
-
-<script>
-    document.getElementById('menu-toggle').addEventListener('click', function () {
-        document.getElementById('sidebar').classList.toggle('-translate-x-full');
-    });
-</script>
-
+    <!-- tu js separado -->
+    <script src="{{ url_for('static', filename='js/ModalAlbergue.js') }}"></script>
 </body>
+
 </html>

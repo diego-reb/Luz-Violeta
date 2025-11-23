@@ -142,7 +142,7 @@
         </a>
 
         <nav class="flex space-x-2 sm:space-x-4">
-            <a href="/Quienes_somos"
+            <a href="/"
                 class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
                 Quiénes somos
             </a>
@@ -158,43 +158,55 @@
                 class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
                 Apoyo psicológico
             </a>
-            
+
             <div class="relative z-50">
-    <button id="userMenuBtn" class="hidden md:flex items-center bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-full transition duration-300 shadow-md cursor-pointer">
-        <span>Cuenta</span>
-        <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M19 9l-7 7-7-7"></path>
-        </svg>
-    </button>
+                <button id="userMenuBtn"
+                    class="hidden md:flex items-center bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-full transition duration-300 shadow-md cursor-pointer">
+                    <span>Cuenta</span>
+                    <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
 
-    <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white shadow-xl rounded-xl py-2 border border-purple-200">
-        {% if session.get('usuario_id') %}
-            <a href="/perfil/" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Perfil</a>
-            <a href="/seguridad/" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Seguridad</a>
-            <div class="border-t border-gray-200 my-2"></div>
-            <a href="{{ url_for('login_bp.logout') }}" class="block px-4 py-2 text-red-600 hover:bg-red-100 transition">Cerrar sesión</a>
-        {% else %}
-            <a href="{{ url_for('login_bp.login') }}" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Iniciar sesión</a>
-        {% endif %}
-    </div>
+                <div id="userMenu"
+                    class="hidden absolute right-0 mt-2 w-48 bg-white shadow-xl rounded-xl py-2 border border-purple-200">
+                    {% if session.get('usuario_id') %}
+                    <a href="/perfil/" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Perfil</a>
+                    <a href="/seguridad/"
+                        class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Seguridad</a>
+                    <div class="border-t border-gray-200 my-2"></div>
+                    <a href="{{ url_for('login_bp.logout') }}"
+                        class="block px-4 py-2 text-red-600 hover:bg-red-100 transition">Cerrar sesión</a>
+                    {% else %}
+                    <a href="{{ url_for('login_bp.login') }}"
+                        class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Iniciar sesión</a>
+                    {% endif %}
+                </div>
 
-    <button id="hamburgerBtn" class="md:hidden flex items-center justify-center p-2 rounded-md bg-purple-600 text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 cursor-pointer">
-        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-    </button>
+                <button id="hamburgerBtn"
+                    class="md:hidden flex items-center justify-center p-2 rounded-md bg-purple-600 text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 cursor-pointer">
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
 
-    <div id="hamburgerMenu" class="hidden absolute right-0 mt-2 w-48 bg-white shadow-xl rounded-xl py-2 border border-purple-200 md:hidden">
-        {% if session.get('usuario_id') %}
-            <a href="/perfil/" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Perfil</a>
-            <a href="/seguridad/" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Seguridad</a>
-            <div class="border-t border-gray-200 my-2"></div>
-            <a href="{{ url_for('login_bp.logout') }}" class="block px-4 py-2 text-red-600 hover:bg-red-100 transition">Cerrar sesión</a>
-        {% else %}
-            <a href="{{ url_for('login_bp.login') }}" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Iniciar sesión</a>
-        {% endif %}
-    </div>
-</div>
+                <div id="hamburgerMenu"
+                    class="hidden absolute right-0 mt-2 w-48 bg-white shadow-xl rounded-xl py-2 border border-purple-200 md:hidden">
+                    {% if session.get('usuario_id') %}
+                    <a href="/perfil/" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Perfil</a>
+                    <a href="/seguridad/"
+                        class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Seguridad</a>
+                    <div class="border-t border-gray-200 my-2"></div>
+                    <a href="{{ url_for('login_bp.logout') }}"
+                        class="block px-4 py-2 text-red-600 hover:bg-red-100 transition">Cerrar sesión</a>
+                    {% else %}
+                    <a href="{{ url_for('login_bp.login') }}"
+                        class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Iniciar sesión</a>
+                    {% endif %}
+                </div>
+            </div>
 
         </nav>
     </header>
@@ -254,10 +266,11 @@
                             class="mx-auto mt-8 mb-6 animate-pulse">
                         <p class="text-lg text-gray-600 mb-8">Toca el botón para revelar los números de emergencia. Tu
                             seguridad es nuestra prioridad.</p>
-                        <a href="tel:911" id="phone-button"
+                        <a href="#" id="phone-button"
                             class="bg-purple-600 hover:bg-purple-700 text-white font-bold text-xl py-4 px-10 rounded-full transition-all duration-300 transform hover:scale-110 shadow-lg inline-block">
                             📞 Tocar para llamar
                         </a>
+
 
                     </div>
 
@@ -299,6 +312,8 @@
         style="animation-delay: 8s;">🌸</span>
     <span class="floating-element absolute top-[35%] left-[65%] text-purple-300 text-4xl"
         style="animation-delay: 9s;">🦋</span>
+
+    <script src="{{ url_for('static', filename='js/boton_panico.js') }}"></script>
 
     <script>
         document.getElementById('phone-button').addEventListener('click', function () {

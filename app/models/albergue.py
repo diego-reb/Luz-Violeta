@@ -13,6 +13,7 @@ class Albergue(db.Model):
     id_alcaldia = db.Column(db.Integer, db.ForeignKey('alcaldias.id'))
     capacidad_total = db.Column(db.Integer, default=10)
     capacidad_ocupada = db.Column(db.Integer, default=0)
+    estado = db.Column(db.String(20), default="Activo")
 
     alcaldia = db.relationship('Alcaldia', back_populates='albergues')
 

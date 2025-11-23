@@ -4,6 +4,7 @@ from app.models.Usuario import Usuario
 from app.models.abogado import Abogado
 from app.models.albergue import Albergue
 from app.models.psicologo import Psicologo
+from app.models.Boton_panico import BotonPanico
 from app.extensiones import db
 
 admin_bp = Blueprint('admin_bp', __name__, url_prefix='/admin')
@@ -21,21 +22,14 @@ def dashboard():
     try:
         if "usuario_id" not in session:
             return redirect(url_for("login_bp.login"))
-
         nombre = session.get("nombre")
-
         usuarios_activos = Usuario.query.filter_by(activo=True).count()
-        solicitudes_albergues = Albergue.query.count()
-        consultas_legales = Abogado.query.count()
-        voluntarios = Psicologo.query.count()
+        albergues_registrados = Albergue.query.count()
+        abogados_registrados = Abogado.query.count()
+        botones_panico = BotonPanico.query.count()
 
-        tareas = [
-            "Revisar 3 nuevas solicitudes de albergues.",
-            "Responder mensajes de usuario #1234.",
-            "Actualizar la lista de contactos de emergencia."
-        ]
-       
-        return render_template('sesionadmin.html', nombre=nombre, usuarios_activos=usuarios_activos, solicitudes_albergues=solicitudes_albergues, consultas_legales=consultas_legales, voluntarios=voluntarios,tareas=tareas)
+
+        return render_template('sesionadmin.html', nombre=nombre, usuarios_activos=usuarios_activos, albergues_registrados=albergues_registrados, abogados_registrados=abogados_registrados, botones_panico=botones_panico)
     except Exception as e:
         print("Error en dashboard.", e)
         return render_template("error_generico.html", mensaje="Error al cargar el panel del administrador")

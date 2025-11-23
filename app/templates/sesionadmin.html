@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Luz Violeta - Panel de Control</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/accesibilidad.css')}}">
     <script src="{{ url_for('static', filename='js/accesibilidad.js')}}"></script>
     <script src="{{ url_for('static', filename='js/validar_sesion.js')}}"></script>
@@ -13,15 +14,14 @@
     <meta http-equiv="Expires" content="0" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-        
+
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f7f1ff; /* Lila muy claro */
+            background-color: #f7f1ff;
             position: relative;
             min-height: 100vh;
         }
 
-        /* Estilo para el enlace activo en el sidebar */
         .sidebar-link {
             transition: all 0.2s;
             display: flex;
@@ -31,31 +31,38 @@
         }
 
         .sidebar-link:hover {
-            background-color: #f3e8ff; /* Lila un poco más oscuro al pasar el ratón */
-            color: #7c3aed; /* Púrpura más oscuro */
+            background-color: #f3e8ff;
+            color: #7c3aed;
         }
 
         .sidebar-link.active {
-            background-color: #8b5cf6; /* Púrpura fuerte */
+            background-color: #8b5cf6;
             color: white;
             font-weight: 600;
             box-shadow: 0 4px 6px rgba(139, 92, 246, 0.4);
         }
 
-        /* Estilos específicos para el Modal de Login (si se usa) */
-        .modal {
-            transition: opacity 0.3s ease-in-out;
-            pointer-events: none;
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
         }
-        .modal-open {
-            opacity: 1;
-            pointer-events: auto;
+
+        .carousel-container {
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .carousel-card {
+            min-width: 300px;
+            scroll-snap-align: start;
         }
     </style>
 </head>
 <body class="high-contrast">
     <div id="reading-guide" class="reading-guide-mask"></div>
 
+    <!-- HEADER -->
     <header class="bg-purple-800 shadow-md px-6 py-4 flex items-center justify-between relative z-20">
         <div class="flex items-center space-x-4">
             <span class="text-3xl font-extrabold text-white">💜 Admin Panel</span>
@@ -76,24 +83,28 @@
         <aside class="w-64 bg-white shadow-xl p-4 sticky top-0 h-screen hidden md:block">
             <div class="space-y-2 pt-4">
                 <a href="/admin/" class="sidebar-link active">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
                     Panel Principal
                 </a>
                 <a href="/admin/Gestion_Usuarios" class="sidebar-link text-purple-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20v-2a3 3 0 00-5.356-1.857M9 20h5v-2a3 3 0 00-5.356-1.857M9 20v-2a3 3 0 00-5.356-1.857M11 10a4 4 0 11-8 0 4 4 0 018 0zM17 10a4 4 0 11-8 0 4 4 0 018 0zM19 18a2 2 0 100-4 2 2 0 000 4z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20v-2a3 3 0 00-5.356-1.857M9 20h5v-2a3 3 0 00-5.356-1.857M9 20v-2a3 3 0 00-5.356-1.857M11 10a4 4 0 11-8 0 4 4 0 018 0zM17 10a4 4 0 11-8 0 4 4 0 018 0zM19 18a2 2 0 100-4 2 2 0 000 4z"/>
+                    </svg>
                     Gestión de Usuarios
                 </a>
                 <a href="/admin/Gestion_Albergues" class="sidebar-link text-purple-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 4h2m-7-5h2m4-5h2m4-5h2M12 21V3"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 4h2m-7-5h2m4-5h2m4-5h2M12 21V3"/>
+                    </svg>
                     Administrar Albergues
                 </a>
-                <a href="/admin/Reportes" class="sidebar-link text-purple-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0h6"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 14h2m-2 4h2"/></svg>
-                    Estadísticas y Reportes
-                </a>
+                
             </div>
         </aside>
 
+        <!-- MAIN CONTENT -->
         <main class="flex-1 p-4 md:p-8">
             <h1 class="text-4xl font-extrabold text-purple-900 mb-8">Panel Principal de Administración</h1>
 
@@ -104,40 +115,109 @@
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-pink-500">
                     <p class="text-sm font-medium text-gray-500">Solicitudes de Albergue</p>
-                    <p class="text-3xl font-bold text-pink-700 mt-1">{{ solicitudes_albergue }}</p>
-
+                    <p class="text-3xl font-bold text-pink-700 mt-1">{{ albergues_registrados }}</p>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-yellow-500">
                     <p class="text-sm font-medium text-gray-500">Consultas Legales</p>
-                    <p class="text-3xl font-bold text-yellow-700 mt-1">{{ consultas_legales }}</p>
+                    <p class="text-3xl font-bold text-yellow-700 mt-1">{{ abogados_registrados }}</p>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-green-500">
-                    <p class="text-sm font-medium text-gray-500">Voluntarios</p>
-                    <p class="text-3xl font-bold text-green-700 mt-1">{{ voluntarios }}</p>
+                    <p class="text-sm font-medium text-gray-500">Boton de Panico</p>
+                    <p class="text-3xl font-bold text-green-700 mt-1">{{ botones_panico }}</p>
                 </div>
             </div>
 
-            <div class="bg-white p-6 rounded-xl shadow-lg">
-                <h2 class="text-2xl font-bold text-purple-800 mb-4 border-b pb-2">Tareas Pendientes</h2>
-                <ul class="space-y-3">
-    {% for t in tareas %}
-    <li class="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
-        <span class="text-gray-700">{{ t }}</span>
-        <button class="text-sm bg-purple-200 text-purple-700 px-3 py-1 rounded-full hover:bg-purple-300">
-            Ver
-        </button>
-    </li>
-    {% endfor %}
-</ul>
+            <div class="container mx-auto max-w-full md:max-w-6xl bg-white p-8 rounded-3xl shadow-2xl card-hover transition-all duration-300">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-purple-800">Estadísticas de la Aplicación</h2>
+                    <p class="text-gray-600 mt-2">Analiza la interacción de las usuarias con las herramientas clave.</p>
+                </div>
 
+                <div class="grid md:grid-cols-3 gap-8 mb-8">
+                    <div class="bg-purple-50 p-6 rounded-2xl shadow-inner col-span-1">
+                        <h3 class="text-xl font-semibold text-purple-700 mb-4">Métricas de Interacción</h3>
+                        <canvas id="interactionChart"></canvas>
+                    </div>
+
+                    <div class="bg-purple-50 p-6 rounded-2xl shadow-inner col-span-2">
+                        <h3 class="text-xl font-semibold text-purple-700 mb-4">Uso del Chatbot</h3>
+                        <canvas id="chatbotChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-2xl font-bold text-purple-700 mb-4 border-b-2 border-purple-300 pb-2">Registros recientes</h3>
+                    <div class="carousel-container flex gap-4 pb-4">
+                        <div class="carousel-card bg-white p-6 rounded-2xl shadow-lg card-hover transition-all duration-300 flex-none">
+                            <p class="text-sm font-light text-gray-500 mb-2">Registro #001</p>
+                            <p class="font-bold text-lg mb-2">Razón: <span class="text-purple-600">Alerta de Pánico</span></p>
+                            <p class="text-sm text-gray-700 mb-4">Descripción: Botón presionado por Agresión Física. Se contactó a las autoridades locales.</p>
+                            <p class="text-sm text-gray-500">Fecha: 15/09/2025 - 14:30 PM</p>
+                        </div>
+                        <div class="carousel-card bg-white p-6 rounded-2xl shadow-lg card-hover transition-all duration-300 flex-none">
+                            <p class="text-sm font-light text-gray-500 mb-2">Registro #002</p>
+                            <p class="font-bold text-lg mb-2">Razón: <span class="text-purple-600">Interacción con Chatbot</span></p>
+                            <p class="text-sm text-gray-700 mb-4">Descripción: Conversación sobre trámites legales. Duración de 5 minutos.</p>
+                            <p class="text-sm text-gray-500">Fecha: 14/09/2025 - 10:15 AM</p>
+                        </div>
+                        <div class="carousel-card bg-white p-6 rounded-2xl shadow-lg card-hover transition-all duration-300 flex-none">
+                            <p class="text-sm font-light text-gray-500 mb-2">Registro #003</p>
+                            <p class="font-bold text-lg mb-2">Razón: <span class="text-purple-600">Visita a la App</span></p>
+                            <p class="text-sm text-gray-700 mb-4">Descripción: La usuaria visitó las secciones de 'Apoyo Legal' y 'Albergues'.</p>
+                            <p class="text-sm text-gray-500">Fecha: 13/09/2025 - 18:45 PM</p>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const interactionData = {
+                        labels: ['Botón de Pánico', 'Uso de Chatbot', 'Vistas de App'],
+                        datasets: [{
+                            label: 'Métricas de Interacción',
+                            data: [120, 350, 780],
+                            backgroundColor: [
+                                'rgba(232, 121, 249, 0.8)',
+                                'rgba(167, 139, 250, 0.8)',
+                                'rgba(192, 132, 252, 0.8)'
+                            ],
+                            hoverOffset: 4
+                        }]
+                    };
+
+                    const chatbotData = {
+                        labels: ['Conversaciones iniciadas', 'Preguntas resueltas', 'Necesidades especiales'],
+                        datasets: [{
+                            label: 'Uso del Chatbot',
+                            data: [350, 280, 70],
+                            backgroundColor: [
+                                'rgba(167, 139, 250, 0.8)',
+                                'rgba(129, 140, 248, 0.8)',
+                                'rgba(192, 132, 252, 0.8)'
+                            ],
+                            hoverOffset: 4
+                        }]
+                    };
+
+                    new Chart(document.getElementById('interactionChart'), {
+                        type: 'pie',
+                        data: interactionData,
+                        options: { responsive: true }
+                    });
+
+                    new Chart(document.getElementById('chatbotChart'), {
+                        type: 'bar',
+                        data: chatbotData,
+                        options: { responsive: true, scales: { y: { beginAtZero: true } } }
+                    });
+                });
+            </script>
         </main>
     </div>
 
     <footer class="bg-purple-900 text-white text-center py-4 mt-auto shadow-inner">
-        <p>© 2024 Luz Violeta. Panel de Administración.</p>
+        <p>© 2025 Luz Violeta. Panel de Administración.</p>
     </footer>
-
-
-    </body>
+</body>
 </html>
