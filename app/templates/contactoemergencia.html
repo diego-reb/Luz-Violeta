@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contactos de Emergencia - Luz Violeta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f7f1ff; /* Un lila muy claro */
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Card hover effect */
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Floating decorative elements */
+        .floating-element {
+            animation: float 15s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .floating-element-2 {
+            animation: float-alt 18s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.6; }
+            25% { transform: translateY(-20px) translateX(15px) rotate(8deg); opacity: 0.8; }
+            50% { transform: translateY(-40px) translateX(-15px) rotate(-8deg); opacity: 0.6; }
+            75% { transform: translateY(-20px) translateX(15px) rotate(8deg); opacity: 0.8; }
+        }
+
+        @keyframes float-alt {
+            0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.5; }
+            30% { transform: translateY(15px) translateX(-20px) rotate(-10deg); opacity: 0.7; }
+            60% { transform: translateY(30px) translateX(20px) rotate(10deg); opacity: 0.5; }
+        }
+
+        /* Estilos para tarjetas de contacto */
+        .contact-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid #8b5cf6;
+        }
+
+        .contact-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Estilos para botones de acción */
+        .action-btn {
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* --- CSS AÑADIDO PARA LA VENTANA EMERGENTE (MODAL) --- */
+        .modal {
+            display: none; /* Ocultar por defecto, la JS lo muestra */
+            position: fixed; 
+            z-index: 1000; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.4); /* Fondo semi-transparente */
+            align-items: center; /* Centrar verticalmente */
+            justify-content: center; /* Centrar horizontalmente */
+            padding: 20px; /* Padding para evitar que el contenido toque los bordes */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px; /* Limitar el ancho */
+            position: relative;
+            transform: scale(1);
+            transition: transform 0.3s ease-out;
+            max-height: 90vh; /* Para pantallas pequeñas */
+            overflow-y: auto; /* Para permitir el scroll dentro del modal si es necesario */
+        }
+
+        /* Pequeña animación de entrada (opcional) */
+        .modal[style*="display: flex"] .modal-content {
+            animation: modalopen 0.3s;
+        }
+
+        @keyframes modalopen {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="bg-white shadow-md rounded-b-2xl px-4 py-4 flex items-center justify-between relative z-10">
+        <a href="inicio.html" class="flex items-center space-x-2">
+            <img src="https://placehold.co/60x60/a78bfa/ffffff?text=LV" alt="Logo Luz Violeta" class="rounded-xl shadow-lg">
+            <span class="text-3xl font-extrabold text-purple-700 hidden md:block">Luz Violeta</span>
+        </a>
+
+        <nav class="flex items-center space-x-2 sm:space-x-4">
+            <a href="inicio.html#quienes-somos" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
+                Quiénes somos
+            </a>
+            <a href="albergues.html" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
+                Albergues
+            </a>
+            <a href="apoyo-legal.html" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
+                Apoyo legal
+            </a>
+            <a href="apoyo-psicologico.html" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
+                Apoyo psicológico
+            </a>
+            
+            <a href="index.html" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-lg text-sm sm:text-base transform hover:scale-105 ml-2 sm:ml-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                Salida
+            </a>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8 my-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden card-hover transition-all duration-300 mb-8">
+                <div class="bg-gradient-to-r from-purple-600 to-purple-800 p-6 text-white text-center">
+                    <h1 class="text-3xl font-bold">Contactos de Emergencia</h1>
+                    <p class="mt-2 opacity-90">Personas de confianza que pueden ayudarte en situaciones de crisis</p>
+                </div>
+                
+                <div class="p-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                        <p class="text-gray-600 flex-1">
+                            Agrega contactos de confianza que puedan asistirte en caso de emergencia. 
+                            Esta información es crucial para tu seguridad.
+                        </p>
+                        <button id="add-contact-btn" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                            </svg>
+                            Agregar Contacto
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="contacts-list" class="space-y-4 mb-8">
+                </div>
+
+            <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mb-8">
+                <div class="flex items-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-600 mr-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                    </svg>
+                    <div>
+                        <h3 class="font-bold text-yellow-800 mb-2">Información importante sobre contactos de emergencia</h3>
+                        <ul class="text-yellow-700 text-sm space-y-1">
+                            <li>• Elige personas de total confianza que puedan responder rápidamente</li>
+                            <li>• Informa a tus contactos que los has agregado como referencia de emergencia</li>
+                            <li>• Mantén esta información actualizada</li>
+                            <li>• En caso de peligro inminente, contacta primero a las autoridades</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="contact-modal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-purple-700" id="modal-title">Agregar Contacto de Emergencia</h3>
+                <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <form id="contact-form" class="space-y-4">
+                <input type="hidden" id="contact-id">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="contact-name" class="block text-sm font-medium text-gray-700 mb-1">Nombre completo *</label>
+                        <input type="text" id="contact-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300" required>
+                    </div>
+                    
+                    <div>
+                        <label for="contact-relationship" class="block text-sm font-medium text-gray-700 mb-1">Parentesco/Relación *</label>
+                        <select id="contact-relationship" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300" required>
+                            <option value="">Selecciona una relación</option>
+                            <option value="madre">Madre</option>
+                            <option value="padre">Padre</option>
+                            <option value="hermana">Hermana</option>
+                            <option value="hermano">Hermano</option>
+                            <option value="hija">Hija</option>
+                            <option value="hijo">Hijo</option>
+                            <option value="esposo">Esposo</option>
+                            <option value="esposa">Esposa</option>
+                            <option value="pareja">Pareja</option>
+                            <option value="amigo">Amigo/a</option>
+                            <option value="vecino">Vecino/a</option>
+                            <option value="compañero">Compañero/a de trabajo</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="contact-phone" class="block text-sm font-medium text-gray-700 mb-1">Teléfono principal *</label>
+                        <input type="tel" id="contact-phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300" required>
+                    </div>
+                    
+                    <div>
+                        <label for="contact-phone2" class="block text-sm font-medium text-gray-700 mb-1">Teléfono secundario</label>
+                        <input type="tel" id="contact-phone2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="contact-email" class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
+                    <input type="email" id="contact-email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300">
+                </div>
+
+                <div>
+                    <label for="contact-address" class="block text-sm font-medium text-gray-700 mb-1">Dirección</label>
+                    <textarea id="contact-address" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300" placeholder="Dirección completa del contacto"></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="contact-priority" class="block text-sm font-medium text-gray-700 mb-1">Prioridad de contacto</label>
+                        <select id="contact-priority" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300">
+                            <option value="alta">Alta (Contactar primero)</option>
+                            <option value="media" selected>Media</option>
+                            <option value="baja">Baja</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="contact-availability" class="block text-sm font-medium text-gray-700 mb-1">Disponibilidad</label>
+                        <select id="contact-availability" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300">
+                            <option value="24/7">24/7</option>
+                            <option value="diurno" selected>Horario diurno</option>
+                            <option value="nocturno">Horario nocturno</option>
+                            <option value="fines_semana">Fines de semana</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="contact-notes" class="block text-sm font-medium text-gray-700 mb-1">Notas adicionales</label>
+                    <textarea id="contact-notes" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300" placeholder="Información adicional que consideres importante (ej: vive cerca, tiene auto, etc.)"></textarea>
+                </div>
+
+                <div class="flex items-center mt-2">
+                    <input type="checkbox" id="contact-informed" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                    <label for="contact-informed" class="ml-2 block text-sm text-gray-700">
+                        He informado a esta persona que es mi contacto de emergencia
+                    </label>
+                </div>
+                
+                <div class="pt-4 flex justify-end gap-3">
+                    <button type="button" id="cancel-contact" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition-all duration-300 action-btn">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 action-btn">
+                        <span id="submit-button-text">Agregar Contacto</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="bg-purple-900 text-white text-center py-6 mt-12 shadow-inner rounded-t-2xl">
+        <p>© 2024 Luz Violeta. Juntas somos invencibles.</p>
+        <p class="text-sm mt-1">Todos los derechos reservados.</p>
+    </footer>
+
+    <span class="floating-element absolute top-[10%] left-[20%] text-purple-300 text-7xl">✨</span>
+    <span class="floating-element-2 absolute top-[60%] left-[70%] text-pink-300 text-6xl" style="animation-delay: 2s;">💖</span>
+    <span class="floating-element absolute top-[80%] left-[30%] text-purple-400 text-5xl" style="animation-delay: 4s;">✨</span>
+    <span class="floating-element-2 absolute top-[40%] left-[5%] text-pink-400 text-8xl" style="animation-delay: 6s;">🌸</span>
+    <span class="floating-element absolute top-[25%] left-[85%] text-purple-300 text-5xl" style="animation-delay: 3s;">🦋</span>
+    <span class="floating-element-2 absolute top-[75%] left-[15%] text-pink-300 text-4xl" style="animation-delay: 5s;">✨</span>
+    <span class="floating-element absolute top-[50%] left-[50%] text-purple-400 text-6xl" style="animation-delay: 7s;">💖</span>
+    <span class="floating-element-2 absolute top-[90%] left-[60%] text-pink-400 text-7xl" style="animation-delay: 8s;">🌸</span>
+    <span class="floating-element absolute top-[35%] left-[65%] text-purple-300 text-4xl" style="animation-delay: 9s;">🦋</span>
+
+    <script>
+        // Variables globales
+        let contacts = JSON.parse(localStorage.getItem('emergencyContacts') || '[]');
+        let editingContactId = null;
+
+        // Cargar contactos al iniciar
+        document.addEventListener('DOMContentLoaded', function() {
+            loadContacts();
+        });
+
+        // Funciones para el modal
+        document.getElementById('add-contact-btn').addEventListener('click', function() {
+            openModal();
+        });
+
+        document.getElementById('close-modal').addEventListener('click', function() {
+            closeModal();
+        });
+
+        document.getElementById('cancel-contact').addEventListener('click', function() {
+            closeModal();
+        });
+
+        // Cerrar modal al hacer clic fuera
+        window.addEventListener('click', function(e) {
+            if (e.target.id === 'contact-modal') {
+                closeModal();
+            }
+        });
+
+        // Manejo del formulario
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            saveContact();
+        });
+
+        // Función para abrir el modal
+        function openModal(contactId = null) {
+            const modal = document.getElementById('contact-modal');
+            const title = document.getElementById('modal-title');
+            const submitText = document.getElementById('submit-button-text');
+            
+            if (contactId) {
+                // Modo edición
+                title.textContent = 'Editar Contacto de Emergencia';
+                submitText.textContent = 'Actualizar Contacto';
+                editingContactId = contactId;
+                fillForm(contactId);
+            } else {
+                // Modo agregar
+                title.textContent = 'Agregar Contacto de Emergencia';
+                submitText.textContent = 'Agregar Contacto';
+                editingContactId = null;
+                document.getElementById('contact-form').reset();
+            }
+            
+            // El display: flex en el JS hace que el modal se muestre
+            modal.style.display = 'flex';
+        }
+
+        // Función para cerrar el modal
+        function closeModal() {
+            document.getElementById('contact-modal').style.display = 'none';
+            document.getElementById('contact-form').reset();
+            editingContactId = null;
+        }
+
+        // Función para llenar el formulario con datos existentes
+        function fillForm(contactId) {
+            const contact = contacts.find(c => c.id === contactId);
+            if (!contact) return;
+
+            document.getElementById('contact-id').value = contact.id;
+            document.getElementById('contact-name').value = contact.name || '';
+            document.getElementById('contact-relationship').value = contact.relationship || '';
+            document.getElementById('contact-phone').value = contact.phone || '';
+            document.getElementById('contact-phone2').value = contact.phone2 || '';
+            document.getElementById('contact-email').value = contact.email || '';
+            document.getElementById('contact-address').value = contact.address || '';
+            document.getElementById('contact-priority').value = contact.priority || 'media';
+            document.getElementById('contact-availability').value = contact.availability || 'diurno';
+            document.getElementById('contact-notes').value = contact.notes || '';
+            document.getElementById('contact-informed').checked = contact.informed || false;
+        }
+
+        // Función para guardar contacto
+        function saveContact() {
+            const contactData = {
+                id: editingContactId || Date.now().toString(),
+                name: document.getElementById('contact-name').value,
+                relationship: document.getElementById('contact-relationship').value,
+                phone: document.getElementById('contact-phone').value,
+                phone2: document.getElementById('contact-phone2').value,
+                email: document.getElementById('contact-email').value,
+                address: document.getElementById('contact-address').value,
+                priority: document.getElementById('contact-priority').value,
+                availability: document.getElementById('contact-availability').value,
+                notes: document.getElementById('contact-notes').value,
+                informed: document.getElementById('contact-informed').checked,
+                createdAt: editingContactId ? 
+                    (contacts.find(c => c.id === editingContactId)?.createdAt || new Date().toISOString()) : 
+                    new Date().toISOString()
+            };
+
+            if (editingContactId) {
+                // Actualizar contacto existente
+                const index = contacts.findIndex(c => c.id === editingContactId);
+                if (index !== -1) {
+                    contacts[index] = contactData;
+                }
+            } else {
+                // Agregar nuevo contacto
+                contacts.push(contactData);
+            }
+
+            // Guardar en localStorage
+            localStorage.setItem('emergencyContacts', JSON.stringify(contacts));
+            
+            // Recargar lista
+            loadContacts();
+            
+            // Cerrar modal y mostrar notificación
+            closeModal();
+            showNotification(
+                editingContactId ? 'Contacto actualizado correctamente' : 'Contacto agregado correctamente', 
+                'success'
+            );
+        }
+
+        // Función para cargar contactos
+        function loadContacts() {
+            const contactsList = document.getElementById('contacts-list');
+            
+            if (contacts.length === 0) {
+                contactsList.innerHTML = `
+                    <div class="bg-white rounded-xl p-8 text-center shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2">No hay contactos de emergencia</h3>
+                        <p class="text-gray-500 mb-4">Agrega al menos un contacto de confianza para situaciones de emergencia.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Ordenar contactos por prioridad
+            const priorityOrder = { alta: 1, media: 2, baja: 3 };
+            const sortedContacts = [...contacts].sort((a, b) => 
+                priorityOrder[a.priority] - priorityOrder[b.priority]
+            );
+
+            contactsList.innerHTML = sortedContacts.map(contact => `
+                <div class="contact-card bg-white rounded-xl p-6 shadow-md">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div class="flex-1">
+                            <div class="flex items-start justify-between mb-2">
+                                <div>
+                                    <h3 class="text-xl font-bold text-purple-700">${contact.name}</h3>
+                                    <div class="flex items-center gap-2 mt-1">
+                                        <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full 
+                                            ${contact.relationship === 'madre' || contact.relationship === 'padre' ? 'bg-blue-100 text-blue-800' : 
+                                              contact.relationship === 'hermana' || contact.relationship === 'hermano' ? 'bg-green-100 text-green-800' : 
+                                              contact.relationship === 'amigo' ? 'bg-yellow-100 text-yellow-800' : 
+                                              'bg-purple-100 text-purple-800'}">
+                                            ${getRelationshipText(contact.relationship)}
+                                        </span>
+                                        <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full 
+                                            ${contact.priority === 'alta' ? 'bg-red-100 text-red-800' : 
+                                              contact.priority === 'media' ? 'bg-orange-100 text-orange-800' : 
+                                              'bg-gray-100 text-gray-800'}">
+                                            ${contact.priority === 'alta' ? 'Alta prioridad' : 
+                                              contact.priority === 'media' ? 'Prioridad media' : 'Baja prioridad'}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+                                <div class="space-y-1">
+                                    <div class="flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                        </svg>
+                                        <span class="font-medium">${contact.phone}</span>
+                                    </div>
+                                    ${contact.phone2 ? `
+                                    <div class="flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                        </svg>
+                                        <span>${contact.phone2}</span>
+                                    </div>
+                                    ` : ''}
+                                    ${contact.email ? `
+                                    <div class="flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                        </svg>
+                                        <span>${contact.email}</span>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                                <div class="space-y-1">
+                                    <div class="flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        <span>Disponibilidad: ${getAvailabilityText(contact.availability)}</span>
+                                    </div>
+                                    ${contact.informed ? `
+                                    <div class="flex items-center text-green-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        <span class="text-sm">Contacto informado</span>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            
+                            ${contact.notes ? `
+                            <div class="mt-3 p-3 bg-gray-50 rounded-lg">
+                                <p class="text-sm text-gray-600"><strong>Notas:</strong> ${contact.notes}</p>
+                            </div>
+                            ` : ''}
+                        </div>
+                        
+                        <div class="flex gap-2">
+                            <button onclick="openModal('${contact.id}')" class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg transition-all duration-300 action-btn" title="Editar">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                            </button>
+                            <button onclick="deleteContact('${contact.id}')" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg transition-all duration-300 action-btn" title="Eliminar">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Función para eliminar contacto
+        function deleteContact(contactId) {
+            if (confirm('¿Estás segura de que quieres eliminar este contacto de emergencia?')) {
+                contacts = contacts.filter(contact => contact.id !== contactId);
+                localStorage.setItem('emergencyContacts', JSON.stringify(contacts));
+                loadContacts();
+                showNotification('Contacto eliminado correctamente', 'success');
+            }
+        }
+
+        // Función para obtener texto de relación
+        function getRelationshipText(relationship) {
+            const relationships = {
+                'madre': 'Madre',
+                'padre': 'Padre',
+                'hermana': 'Hermana',
+                'hermano': 'Hermano',
+                'hija': 'Hija',
+                'hijo': 'Hijo',
+                'esposo': 'Esposo',
+                'esposa': 'Esposa',
+                'pareja': 'Pareja',
+                'amigo': 'Amigo/a',
+                'vecino': 'Vecino/a',
+                'compañero': 'Compañero/a de trabajo',
+                'otro': 'Otro'
+            };
+            return relationships[relationship] || relationship;
+        }
+
+        // Función para obtener texto de disponibilidad
+        function getAvailabilityText(availability) {
+            const availabilities = {
+                '24/7': '24/7',
+                'diurno': 'Horario diurno',
+                'nocturno': 'Horario nocturno',
+                'fines_semana': 'Fines de semana'
+            };
+            return availabilities[availability] || availability;
+        }
+
+        // Función para mostrar notificaciones
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 transform transition-transform duration-300 ${
+                type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
