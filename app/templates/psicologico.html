@@ -168,11 +168,13 @@
         // Historia del chat para mantener el contexto de la conversación
         const chatHistory = [{
             role: "user",
-            parts: [{ text: "Actúa como un bot de apoyo compasivo y empático para mujeres que buscan ayuda por violencia o angustia emocional. Ofrece mensajes cortos y empoderadores con un tono suave y de apoyo. No des consejos médicos ni legales. Si una usuaria expresa una situación peligrosa, anímala encarecidamente a buscar ayuda profesional o a contactar un número de emergencia. Sé una fuente de luz y una presencia tranquila." }]
+            parts: [{ text: "Actúa como un bot de apoyo compasivo y empático para mujeres que buscan ayuda por violencia o angustia emocional. Ofrece mensajes cortos y empoderadores con un tono suave y de apoyo. No des consejos médicos ni legales. Si una usuaria expresa una situación peligrosa, anímala encarecidamente a buscar ayuda profesional o a contactar un número de emergencia. Sé una fuente de luz y una presencia tranquila. Si la pregunta o el comentario no está relacionado con el apoyo emocional o la angustia, responde amablemente que tu función es solo proporcionar apoyo emocional y que no puedes hablar de otros temas." }]
         }];
 
-        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=";
-        const apiKey = "AIzaSyBQh-3UL_tt9knMtTD0f8VmP2Zp0n2DxHc"; // <--- ¡AQUÍ DEBES PEGAR TU CLAVE DE API DE GOOGLE AI STUDIO!
+        // CONFIGURACIÓN DE LA API CORREGIDA
+        const MODEL_NAME = "gemini-2.5-flash"; // Modelo actualizado
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=`;
+        const apiKey = "AIzaSyARGCAKXL0X7LROQDWbas9sIIeBnOjhVv0"; // Clave proporcionada
 
         sendBtn.addEventListener('click', sendMessage);
         chatInput.addEventListener('keydown', (e) => {
@@ -205,11 +207,17 @@
                     },
                     body: JSON.stringify({
                         contents: chatHistory,
+                        // ⭐ CORRECCIÓN CLAVE: Usamos 'generationConfig' en lugar de 'config'
+                        generationConfig: { 
+                            temperature: 0.7, 
+                        }
                     })
                 });
 
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    const errorData = await response.json();
+                    console.error('API Error Response:', errorData);
+                    throw new Error(`Error ${response.status}: ${errorData.error?.message || 'Error al conectar con la API.'}`);
                 }
 
                 const result = await response.json();
@@ -223,22 +231,26 @@
                         parts: [{ text: botReply }]
                     });
                 } else {
-                    appendMessage("Lo siento, no pude generar una respuesta. Por favor, intenta de nuevo.", 'bot');
+                    const reason = result.promptFeedback?.blockReason || 'desconocido';
+                    const safetyMessage = `Lo siento, tu solicitud fue bloqueada por razones de seguridad (${reason}). Por favor, reformula tu pregunta.`;
+                    appendMessage(safetyMessage, 'bot');
                 }
 
             } catch (error) {
-                console.error('Error:', error);
-                appendMessage("Ocurrió un error. Por favor, revisa tu conexión a internet o intenta más tarde.", 'bot');
+                console.error('Error de red o de API:', error);
+                // Mensaje de error final para el usuario
+                appendMessage(`Ocurrió un error: ${error.message}. Por favor, revisa tu conexión a internet o intenta más tarde.`, 'bot');
             } finally {
                 loadingIndicator.classList.add('hidden');
                 sendBtn.disabled = false;
+                // Hace scroll al final del chat
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             }
         }
 
         function appendMessage(text, sender) {
             const messageElement = document.createElement('div');
-            messageElement.classList.add('p-3', 'rounded-xl', 'shadow-sm', 'max-w-[80%]');
+            messageElement.classList.add('p-3', 'rounded-xl', 'shadow-sm', 'max-w-[80%]', 'animate-fade');
             
             if (sender === 'user') {
                 messageElement.classList.add('bg-purple-200', 'self-end', 'text-right');
