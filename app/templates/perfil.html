@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Perfil - Luz Violeta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f7f1ff; /* Un lila muy claro */
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Card hover effect */
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Floating decorative elements */
+        .floating-element {
+            animation: float 15s ease-in-out infinite;
+            pointer-events: none; /* Esto permite hacer clic en elementos debajo de ellos */
+            z-index: -1; /* Asegura que estén detrás de todo el contenido principal */
+        }
+        
+        .floating-element-2 {
+            animation: float-alt 18s ease-in-out infinite;
+            pointer-events: none; /* Esto permite hacer clic en elementos debajo de ellos */
+            z-index: -1; /* Asegura que estén detrás de todo el contenido principal */
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.6; }
+            25% { transform: translateY(-20px) translateX(15px) rotate(8deg); opacity: 0.8; }
+            50% { transform: translateY(-40px) translateX(-15px) rotate(-8deg); opacity: 0.6; }
+            75% { transform: translateY(-20px) translateX(15px) rotate(8deg); opacity: 0.8; }
+        }
+
+        @keyframes float-alt {
+            0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.5; }
+            30% { transform: translateY(15px) translateX(-20px) rotate(-10deg); opacity: 0.7; }
+            60% { transform: translateY(30px) translateX(20px) rotate(10deg); opacity: 0.5; }
+        }
+
+        /* Estilos para el input de archivo personalizado */
+        .file-input {
+            display: none;
+        }
+
+        .file-label {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #8b5cf6;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-label:hover {
+            background-color: #7c3aed;
+            transform: scale(1.05);
+        }
+
+        /* Estilos para la previsualización de imagen */
+        .image-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #8b5cf6;
+            box-shadow: 0 4px 10px rgba(139, 92, 246, 0.3);
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 16px;
+            padding: 24px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="bg-white shadow-md rounded-b-2xl px-4 py-4 flex items-center justify-between relative z-10">
+        <a href="inicio.html" class="flex items-center space-x-2">
+            <img src="https://placehold.co/60x60/a78bfa/ffffff?text=LV" alt="Logo Luz Violeta" class="rounded-xl shadow-lg">
+            <span class="text-3xl font-extrabold text-purple-700 hidden md:block">Luz Violeta</span>
+        </a>
+
+        <nav class="flex items-center space-x-2 sm:space-x-4">
+            <a href="inicio.html#quienes-somos" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
+                Quiénes somos
+            </a>
+            <a href="albergues.html" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
+                Albergues
+            </a>
+            <a href="apoyo-legal.html" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
+                Apoyo legal
+            </a>
+            <a href="apoyo-psicologico.html" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
+                Apoyo psicológico
+            </a>
+            
+            <a href="index.html" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-lg text-sm sm:text-base transform hover:scale-105 ml-2 sm:ml-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                Salida
+            </a>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8 my-8">
+        <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden card-hover transition-all duration-300">
+            <div class="bg-gradient-to-r from-purple-600 to-purple-800 p-6 text-white text-center">
+                <h1 class="text-3xl font-bold">Editar Perfil</h1>
+                <p class="mt-2 opacity-90">Actualiza tu información personal</p>
+            </div>
+            
+            <div class="p-6 md:p-8">
+                <div class="flex flex-col items-center mb-8">
+                    <div class="relative">
+                        <img id="profile-preview" src="https://placehold.co/150x150/d7e3ff/674ee5?text=👤" alt="Foto de perfil" class="image-preview">
+                        <div class="absolute bottom-2 right-2 bg-purple-600 text-white rounded-full p-2 shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 flex flex-col sm:flex-row gap-3">
+                        <input type="file" id="profile-photo" class="file-input" accept="image/*">
+                        <label for="profile-photo" class="file-label text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                            </svg>
+                            Subir foto
+                        </label>
+                        
+                        <button type="button" id="remove-photo" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition-all duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            </svg>
+                            Eliminar
+                        </button>
+                    </div>
+                </div>
+                
+                <form id="profile-form" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                            <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300" placeholder="Tu nombre">
+                        </div>
+                        
+                        <div>
+                            <label for="lastname" class="block text-sm font-medium text-gray-700 mb-1">Apellidos</label>
+                            <input type="text" id="lastname" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300" placeholder="Tus apellidos">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Nombre de usuario</label>
+                        <input type="text" id="username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300" placeholder="Tu nombre de usuario">
+                    </div>
+                    
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
+                        <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300" placeholder="tu.correo@ejemplo.com">
+                    </div>
+                    
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Número de teléfono</label>
+                        <input type="tel" id="phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300" placeholder="+52 123 456 7890">
+                    </div>
+                    
+                    <div>
+                        <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Dirección</label>
+                        <textarea id="address" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300" placeholder="Tu dirección completa"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label for="blood-type" class="block text-sm font-medium text-gray-700 mb-1">Tipo de sangre</label>
+                        <select id="blood-type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300">
+                            <option value="">Selecciona tu tipo de sangre</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+                    
+                    <div class="pt-4 flex flex-col sm:flex-row gap-4 justify-end">
+                        <button type="button" id="cancel-button" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                            Guardar cambios
+                        </button>
+                    </div>
+                </form>
+
+                <div class="mt-8 pt-6 border-t border-gray-200 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <button id="change-password-btn" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                        </svg>
+                        Cambiar contraseña
+                    </button>
+                    
+                    <button id="add-emergency-contact-btn" class="bg-pink-100 hover:bg-pink-200 text-pink-800 font-semibold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                        </svg>
+                        Agregar contacto de emergencia
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="password-modal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-purple-700">Cambiar contraseña</h3>
+                <button id="close-password-modal" class="text-gray-500 hover:text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <form id="password-form" class="space-y-4">
+                <div>
+                    <label for="current-password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña actual</label>
+                    <input type="password" id="current-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500" required>
+                </div>
+                
+                <div>
+                    <label for="new-password" class="block text-sm font-medium text-gray-700 mb-1">Nueva contraseña</label>
+                    <input type="password" id="new-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500" required>
+                </div>
+                
+                <div>
+                    <label for="confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirmar nueva contraseña</label>
+                    <input type="password" id="confirm-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500" required>
+                </div>
+                
+                <div class="pt-2 flex justify-end gap-3">
+                    <button type="button" id="cancel-password" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition-all duration-300">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300">
+                        Cambiar contraseña
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="emergency-contact-modal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-pink-700">Agregar contacto de emergencia</h3>
+                <button id="close-emergency-modal" class="text-gray-500 hover:text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <form id="emergency-contact-form" class="space-y-4">
+                <div>
+                    <label for="contact-name" class="block text-sm font-medium text-gray-700 mb-1">Nombre completo</label>
+                    <input type="text" id="contact-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500" required>
+                </div>
+                
+                <div>
+                    <label for="contact-relationship" class="block text-sm font-medium text-gray-700 mb-1">Relación</label>
+                    <select id="contact-relationship" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500" required>
+                        <option value="">Selecciona una relación</option>
+                        <option value="familia">Familiar</option>
+                        <option value="amigo">Amigo/a</option>
+                        <option value="pareja">Pareja</option>
+                        <option value="vecino">Vecino/a</option>
+                        <option value="compañero">Compañero/a de trabajo</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="contact-phone" class="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+                    <input type="tel" id="contact-phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500" required>
+                </div>
+                
+                <div class="pt-2 flex justify-end gap-3">
+                    <button type="button" id="cancel-emergency" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition-all duration-300">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="bg-pink-600 hover:bg-pink-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300">
+                        Agregar contacto
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="bg-purple-900 text-white text-center py-6 mt-12 shadow-inner rounded-t-2xl">
+        <p>© 2024 Luz Violeta. Juntas somos invencibles.</p>
+        <p class="text-sm mt-1">Todos los derechos reservados.</p>
+    </footer>
+
+    <span class="floating-element absolute top-[10%] left-[20%] text-purple-300 text-7xl">✨</span>
+    <span class="floating-element-2 absolute top-[60%] left-[70%] text-pink-300 text-6xl" style="animation-delay: 2s;">💖</span>
+    <span class="floating-element absolute top-[80%] left-[30%] text-purple-400 text-5xl" style="animation-delay: 4s;">✨</span>
+    <span class="floating-element-2 absolute top-[40%] left-[5%] text-pink-400 text-8xl" style="animation-delay: 6s;">🌸</span>
+    <span class="floating-element absolute top-[25%] left-[85%] text-purple-300 text-5xl" style="animation-delay: 3s;">🦋</span>
+    <span class="floating-element-2 absolute top-[75%] left-[15%] text-pink-300 text-4xl" style="animation-delay: 5s;">✨</span>
+    <span class="floating-element absolute top-[50%] left-[50%] text-purple-400 text-6xl" style="animation-delay: 7s;">💖</span>
+    <span class="floating-element-2 absolute top-[90%] left-[60%] text-pink-400 text-7xl" style="animation-delay: 8s;">🌸</span>
+    <span class="floating-element absolute top-[35%] left-[65%] text-purple-300 text-4xl" style="animation-delay: 9s;">🦋</span>
+
+    <script>
+        // Funcionalidad para la foto de perfil
+        document.getElementById('profile-photo').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profile-preview').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Eliminar foto de perfil
+        document.getElementById('remove-photo').addEventListener('click', function() {
+            document.getElementById('profile-preview').src = 'https://placehold.co/150x150/d7e3ff/674ee5?text=👤';
+            document.getElementById('profile-photo').value = '';
+        });
+
+        // Manejo del formulario principal
+        document.getElementById('profile-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Recopilar datos del formulario
+            const formData = {
+                name: document.getElementById('name').value,
+                lastname: document.getElementById('lastname').value,
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                bloodType: document.getElementById('blood-type').value
+            };
+            
+            // Guardar en localStorage (simulación de guardado en base de datos)
+            localStorage.setItem('userProfile', JSON.stringify(formData));
+            
+            // Mostrar mensaje de éxito
+            showNotification('Perfil actualizado correctamente', 'success');
+        });
+
+        // Cargar datos guardados si existen
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedProfile = localStorage.getItem('userProfile');
+            if (savedProfile) {
+                const profileData = JSON.parse(savedProfile);
+                document.getElementById('name').value = profileData.name || '';
+                document.getElementById('lastname').value = profileData.lastname || '';
+                document.getElementById('username').value = profileData.username || '';
+                document.getElementById('email').value = profileData.email || '';
+                document.getElementById('phone').value = profileData.phone || '';
+                document.getElementById('address').value = profileData.address || '';
+                document.getElementById('blood-type').value = profileData.bloodType || '';
+            }
+        });
+
+        // Botón cancelar
+        document.getElementById('cancel-button').addEventListener('click', function() {
+            if(confirm('¿Estás segura de que quieres cancelar? Los cambios no guardados se perderán.')) {
+                window.location.href = 'inicio.html';
+            }
+        });
+
+        // Modal para cambiar contraseña
+        document.getElementById('change-password-btn').addEventListener('click', function() {
+            document.getElementById('password-modal').style.display = 'flex';
+        });
+
+        document.getElementById('close-password-modal').addEventListener('click', function() {
+            document.getElementById('password-modal').style.display = 'none';
+        });
+
+        document.getElementById('cancel-password').addEventListener('click', function() {
+            document.getElementById('password-modal').style.display = 'none';
+        });
+
+        document.getElementById('password-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const currentPassword = document.getElementById('current-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            if (newPassword !== confirmPassword) {
+                showNotification('Las contraseñas no coinciden', 'error');
+                return;
+            }
+            
+            if (newPassword.length < 6) {
+                showNotification('La contraseña debe tener al menos 6 caracteres', 'error');
+                return;
+            }
+            
+            // Aquí iría la lógica para cambiar la contraseña en el servidor
+            showNotification('Contraseña cambiada exitosamente', 'success');
+            document.getElementById('password-modal').style.display = 'none';
+            document.getElementById('password-form').reset();
+        });
+
+        // Modal para agregar contacto de emergencia
+        document.getElementById('add-emergency-contact-btn').addEventListener('click', function() {
+            document.getElementById('emergency-contact-modal').style.display = 'flex';
+        });
+
+        document.getElementById('close-emergency-modal').addEventListener('click', function() {
+            document.getElementById('emergency-contact-modal').style.display = 'none';
+        });
+
+        document.getElementById('cancel-emergency').addEventListener('click', function() {
+            document.getElementById('emergency-contact-modal').style.display = 'none';
+        });
+
+        document.getElementById('emergency-contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const contactData = {
+                name: document.getElementById('contact-name').value,
+                relationship: document.getElementById('contact-relationship').value,
+                phone: document.getElementById('contact-phone').value
+            };
+            
+            // Guardar contacto de emergencia
+            let emergencyContacts = JSON.parse(localStorage.getItem('emergencyContacts') || '[]');
+            emergencyContacts.push(contactData);
+            localStorage.setItem('emergencyContacts', JSON.stringify(emergencyContacts));
+            
+            showNotification('Contacto de emergencia agregado exitosamente', 'success');
+            document.getElementById('emergency-contact-modal').style.display = 'none';
+            document.getElementById('emergency-contact-form').reset();
+        });
+
+        // Función para mostrar notificaciones
+        function showNotification(message, type) {
+            // Crear elemento de notificación
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 transform transition-transform duration-300 ${
+                type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+            }`;
+            notification.textContent = message;
+            
+            // Agregar al documento
+            document.body.appendChild(notification);
+            
+            // Remover después de 3 segundos
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Cerrar modales al hacer clic fuera de ellos
+        window.addEventListener('click', function(e) {
+            if (e.target.id === 'password-modal') {
+                document.getElementById('password-modal').style.display = 'none';
+            }
+            if (e.target.id === 'emergency-contact-modal') {
+                document.getElementById('emergency-contact-modal').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
