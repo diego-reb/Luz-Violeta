@@ -72,7 +72,7 @@
         </a>
 
         <nav class="flex space-x-2 sm:space-x-4">
-            <a href="/" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
+            <a href="/Quienes_somos" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
                 Quiénes somos
             </a>
             <a href="/albergues" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
@@ -165,18 +165,16 @@
         const chatContainer = document.getElementById('chat-container');
         const loadingIndicator = document.getElementById('loading-indicator');
 
-        // Historia del chat con instrucciones estrictas para el bot (System Prompt)
+        // Historia del chat para mantener el contexto de la conversación
         const chatHistory = [{
             role: "user",
-            parts: [{ 
-                text: "Actúa exclusivamente como un asistente de apoyo emocional compasivo y empático para mujeres que buscan ayuda por violencia o angustia. **Tu única función es ofrecer mensajes de aliento, consuelo y validación.** Responde con un tono suave y de apoyo. **Bajo ninguna circunstancia debes responder preguntas sobre otros temas (como información general, noticias, recetas, matemáticas, etc.). Si te preguntan otra cosa, reitera tu rol de apoyo emocional y pregunta cómo pueden ayudarte con sus sentimientos.** No des consejos médicos ni legales. Si una usuaria expresa una situación peligrosa, anímala encarecidamente a buscar ayuda profesional o a contactar un número de emergencia. Sé una fuente de luz y una presencia tranquila." 
-            }]
+            parts: [{ text: "Actúa como un bot de apoyo compasivo y empático para mujeres que buscan ayuda por violencia o angustia emocional. Ofrece mensajes cortos y empoderadores con un tono suave y de apoyo. No des consejos médicos ni legales. Si una usuaria expresa una situación peligrosa, anímala encarecidamente a buscar ayuda profesional o a contactar un número de emergencia. Sé una fuente de luz y una presencia tranquila. Si la pregunta o el comentario no está relacionado con el apoyo emocional o la angustia, responde amablemente que tu función es solo proporcionar apoyo emocional y que no puedes hablar de otros temas." }]
         }];
 
-        const MODEL_NAME = "gemini-2.5-flash";
+        // CONFIGURACIÓN DE LA API CORREGIDA
+        const MODEL_NAME = "gemini-2.5-flash"; // Modelo actualizado
         const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=`;
-        // 🚨 IMPORTANTE: Reemplaza esta clave PLACEHOLDER con tu CLAVE DE API real de Google AI Studio para que funcione.
-        const apiKey = "AIzaSyBQh-3UL_tt9knMtTD0f8VmP2Zp0n2DxHc"; 
+        const apiKey = "AIzaSyARGCAKXL0X7LROQDWbas9sIIeBnOjhVv0"; // Clave proporcionada
 
         sendBtn.addEventListener('click', sendMessage);
         chatInput.addEventListener('keydown', (e) => {
@@ -209,16 +207,17 @@
                     },
                     body: JSON.stringify({
                         contents: chatHistory,
+                        // ⭐ CORRECCIÓN CLAVE: Usamos 'generationConfig' en lugar de 'config'
                         generationConfig: { 
-                            temperature: 0.8 // Ajustado para un tono más empático y menos robótico.
+                            temperature: 0.7, 
                         }
                     })
                 });
 
                 if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    console.error('Error de API:', errorData);
-                    throw new Error(`Error de red o API: ${response.status} - ${errorData.error?.message || response.statusText}`);
+                    const errorData = await response.json();
+                    console.error('API Error Response:', errorData);
+                    throw new Error(`Error ${response.status}: ${errorData.error?.message || 'Error al conectar con la API.'}`);
                 }
 
                 const result = await response.json();
@@ -232,22 +231,26 @@
                         parts: [{ text: botReply }]
                     });
                 } else {
-                    appendMessage("Lo siento, no pude generar una respuesta. La API devolvió un resultado vacío. Por favor, intenta de nuevo.", 'bot');
+                    const reason = result.promptFeedback?.blockReason || 'desconocido';
+                    const safetyMessage = `Lo siento, tu solicitud fue bloqueada por razones de seguridad (${reason}). Por favor, reformula tu pregunta.`;
+                    appendMessage(safetyMessage, 'bot');
                 }
 
             } catch (error) {
-                console.error('Error:', error);
-                appendMessage(`Ocurrió un error: ${error.message}. Por favor, verifica tu clave API y la consola.`, 'bot');
+                console.error('Error de red o de API:', error);
+                // Mensaje de error final para el usuario
+                appendMessage(`Ocurrió un error: ${error.message}. Por favor, revisa tu conexión a internet o intenta más tarde.`, 'bot');
             } finally {
                 loadingIndicator.classList.add('hidden');
                 sendBtn.disabled = false;
+                // Hace scroll al final del chat
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             }
         }
 
         function appendMessage(text, sender) {
             const messageElement = document.createElement('div');
-            messageElement.classList.add('p-3', 'rounded-xl', 'shadow-sm', 'max-w-[80%]','animate-fade');
+            messageElement.classList.add('p-3', 'rounded-xl', 'shadow-sm', 'max-w-[80%]', 'animate-fade');
             
             if (sender === 'user') {
                 messageElement.classList.add('bg-purple-200', 'self-end', 'text-right');
@@ -257,8 +260,6 @@
             
             messageElement.innerHTML = `<p class="text-gray-800">${text}</p>`;
             chatContainer.appendChild(messageElement);
-            // Asegura que el chat se desplace hacia abajo después de añadir un mensaje
-            chatContainer.scrollTop = chatContainer.scrollHeight; 
         }
     </script>
 
