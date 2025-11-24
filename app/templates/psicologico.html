@@ -165,18 +165,14 @@
         const chatContainer = document.getElementById('chat-container');
         const loadingIndicator = document.getElementById('loading-indicator');
 
-        // Historia del chat con instrucciones estrictas para el bot (System Prompt)
+        // Historia del chat para mantener el contexto de la conversación
         const chatHistory = [{
             role: "user",
-            parts: [{ 
-                text: "Actúa exclusivamente como un asistente de apoyo emocional compasivo y empático para mujeres que buscan ayuda por violencia o angustia. **Tu única función es ofrecer mensajes de aliento, consuelo y validación.** Responde con un tono suave y de apoyo. **Bajo ninguna circunstancia debes responder preguntas sobre otros temas (como información general, noticias, recetas, matemáticas, etc.). Si te preguntan otra cosa, reitera tu rol de apoyo emocional y pregunta cómo pueden ayudarte con sus sentimientos.** No des consejos médicos ni legales. Si una usuaria expresa una situación peligrosa, anímala encarecidamente a buscar ayuda profesional o a contactar un número de emergencia. Sé una fuente de luz y una presencia tranquila." 
-            }]
+            parts: [{ text: "Actúa como un bot de apoyo compasivo y empático para mujeres que buscan ayuda por violencia o angustia emocional. Ofrece mensajes cortos y empoderadores con un tono suave y de apoyo. No des consejos médicos ni legales. Si una usuaria expresa una situación peligrosa, anímala encarecidamente a buscar ayuda profesional o a contactar un número de emergencia. Sé una fuente de luz y una presencia tranquila." }]
         }];
 
-        const MODEL_NAME = "gemini-2.5-flash";
-        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=`;
-        // 🚨 IMPORTANTE: Reemplaza esta clave PLACEHOLDER con tu CLAVE DE API real de Google AI Studio para que funcione.
-        const apiKey = "AIzaSyBQh-3UL_tt9knMtTD0f8VmP2Zp0n2DxHc"; 
+        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=";
+        const apiKey = "AIzaSyBQh-3UL_tt9knMtTD0f8VmP2Zp0n2DxHc"; // <--- ¡AQUÍ DEBES PEGAR TU CLAVE DE API DE GOOGLE AI STUDIO!
 
         sendBtn.addEventListener('click', sendMessage);
         chatInput.addEventListener('keydown', (e) => {
@@ -209,16 +205,11 @@
                     },
                     body: JSON.stringify({
                         contents: chatHistory,
-                        generationConfig: { 
-                            temperature: 0.8 // Ajustado para un tono más empático y menos robótico.
-                        }
                     })
                 });
 
                 if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    console.error('Error de API:', errorData);
-                    throw new Error(`Error de red o API: ${response.status} - ${errorData.error?.message || response.statusText}`);
+                    throw new Error('Network response was not ok');
                 }
 
                 const result = await response.json();
@@ -232,12 +223,12 @@
                         parts: [{ text: botReply }]
                     });
                 } else {
-                    appendMessage("Lo siento, no pude generar una respuesta. La API devolvió un resultado vacío. Por favor, intenta de nuevo.", 'bot');
+                    appendMessage("Lo siento, no pude generar una respuesta. Por favor, intenta de nuevo.", 'bot');
                 }
 
             } catch (error) {
                 console.error('Error:', error);
-                appendMessage(`Ocurrió un error: ${error.message}. Por favor, verifica tu clave API y la consola.`, 'bot');
+                appendMessage("Ocurrió un error. Por favor, revisa tu conexión a internet o intenta más tarde.", 'bot');
             } finally {
                 loadingIndicator.classList.add('hidden');
                 sendBtn.disabled = false;
@@ -247,7 +238,7 @@
 
         function appendMessage(text, sender) {
             const messageElement = document.createElement('div');
-            messageElement.classList.add('p-3', 'rounded-xl', 'shadow-sm', 'max-w-[80%]','animate-fade');
+            messageElement.classList.add('p-3', 'rounded-xl', 'shadow-sm', 'max-w-[80%]');
             
             if (sender === 'user') {
                 messageElement.classList.add('bg-purple-200', 'self-end', 'text-right');
@@ -257,8 +248,6 @@
             
             messageElement.innerHTML = `<p class="text-gray-800">${text}</p>`;
             chatContainer.appendChild(messageElement);
-            // Asegura que el chat se desplace hacia abajo después de añadir un mensaje
-            chatContainer.scrollTop = chatContainer.scrollHeight; 
         }
     </script>
 
