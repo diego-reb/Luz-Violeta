@@ -8,10 +8,14 @@ main = Blueprint('main', __name__)
 def index():
     return render_template('index.html')
 
+@main.route('/apoyo_psicologico')
+def apoyo_psicologico():
+    return render_template('psicologico.html')
+
 @main.route('/boton_panico', methods=['POST'])
 def presionar_boton():
     try:
-        usuario_id = session.get("usuario_id")  
+        usuario_id = session.get("usuario_id") or 0  # 0 si no hay usuario
         evento = BotonPanico(usuario_id=usuario_id)
         db.session.add(evento)
         db.session.commit()
