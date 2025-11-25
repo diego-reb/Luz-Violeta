@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, jsonify
+from flask import Blueprint, render_template, jsonify, current_app
 from app.models.alcaldia import Alcaldia
 from app.models.albergue import Albergue
 from app.extensiones import db
@@ -10,7 +10,8 @@ def albergues():
     try:
         alcaldias = Alcaldia.query.all()
         albergues = Albergue.query.all()
-        return render_template('albergues.html', alcaldias=alcaldias, albergues=albergues)
+        api_key = current_app.config.get("MAPS_API_KEY")
+        return render_template('albergues.html', alcaldias=alcaldias, albergues=albergues, maps_api_key=api_key)
     except Exception as e:
         print(f"Error al cargar página de albergues: {e}")
         return render_template('error_generico.html', mensaje="Error al cargar los albergues")
