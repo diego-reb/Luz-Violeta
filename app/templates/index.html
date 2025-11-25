@@ -309,14 +309,6 @@
     <span class="floating-element absolute top-[35%] left-[65%] text-purple-300 text-4xl"
         style="animation-delay: 9s;">🦋</span>
 
-    <script src="{{ url_for('static', filename='JS/boton_panico.js') }}"></script>
-    <script src="{{ url_for('static', filename='JS/accesibilidad.js')}}"></script>
-    <script src="{{ url_for('static', filename='JS/menu_opciones.js')}}"></script>
-    <script src="{{ url_for('static', filename='JS/click_boton.js') }}"></script>
-    <script src="{{ url_for('static', filename='JS/menu_opciones.js') }}"></script>
-    <script src="{{ url_for('static', filename='JS/accesibilidad.js') }}"></script>
-
-
     <script>
         document.getElementById('phone-button').addEventListener('click', function () {
             var numbersDiv = document.getElementById('emergency-numbers');
@@ -354,6 +346,11 @@
         `;
         document.head.appendChild(styleSheet);
     </script>
+      <script src="{{ url_for('static', filename='JS/boton_panico.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/accesibilidad.js')}}"></script>
+    <script src="{{ url_for('static', filename='JS/menu_opciones.js')}}"></script>
+    <script src="{{ url_for('static', filename='JS/click_boton.js') }}"></script>
+
 </body>
 
 </html>
