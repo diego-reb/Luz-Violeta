@@ -160,108 +160,76 @@
     <span class="floating-element absolute top-[35%] left-[65%] text-purple-300 text-4xl" style="animation-delay: 9s;">🦋</span>
 
     <script>
-        const chatInput = document.getElementById('chat-input');
-        const sendBtn = document.getElementById('send-btn');
-        const chatContainer = document.getElementById('chat-container');
-        const loadingIndicator = document.getElementById('loading-indicator');
+const chatInput = document.getElementById('chat-input');
+const sendBtn = document.getElementById('send-btn');
+const chatContainer = document.getElementById('chat-container');
+const loadingIndicator = document.getElementById('loading-indicator');
 
-        // Historia del chat para mantener el contexto de la conversación
-        const chatHistory = [{
-            role: "user",
-            parts: [{ text: "Actúa como un bot de apoyo compasivo y empático para mujeres que buscan ayuda por violencia o angustia emocional. Ofrece mensajes cortos y empoderadores con un tono suave y de apoyo. No des consejos médicos ni legales. Si una usuaria expresa una situación peligrosa, anímala encarecidamente a buscar ayuda profesional o a contactar un número de emergencia. Sé una fuente de luz y una presencia tranquila. Si la pregunta o el comentario no está relacionado con el apoyo emocional o la angustia, responde amablemente que tu función es solo proporcionar apoyo emocional y que no puedes hablar de otros temas." }]
-        }];
+const chatHistory = [{
+    role: "user",
+    parts: [{
+        text: "Actúa como un bot de apoyo compasivo y empático para mujeres que buscan ayuda por violencia o angustia emocional. Ofrece mensajes cortos y empoderadores con un tono suave y de apoyo. No des consejos médicos ni legales. Si una usuaria expresa una situación peligrosa, anímala encarecidamente a buscar ayuda profesional o a contactar un número de emergencia. Sé una fuente de luz y una presencia tranquila. Si la pregunta o el comentario no está relacionado con la apoyo emocional, responde amablemente que tu función es solo proporcionar apoyo emocional."
+    }]
+}];
 
-        // CONFIGURACIÓN DE LA API CORREGIDA
-        const MODEL_NAME = "gemini-2.5-flash"; // Modelo actualizado
-        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=`;
-        const apiKey = "AIzaSyARGCAKXL0X7LROQDWbas9sIIeBnOjhVv0"; // Clave proporcionada
+sendBtn.addEventListener('click', sendMessage);
+chatInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') sendMessage();
+});
 
-        sendBtn.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
+async function sendMessage() {
+    const userMessage = chatInput.value.trim();
+    if (!userMessage) return;
+
+    appendMessage(userMessage, 'user');
+    chatInput.value = '';
+    loadingIndicator.classList.remove('hidden');
+    sendBtn.disabled = true;
+
+    chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
+
+    try {
+        // Llamada a tu backend Flask
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: userMessage, history: chatHistory })
         });
 
-        async function sendMessage() {
-            const userMessage = chatInput.value.trim();
-            if (userMessage === '') return;
+        const data = await response.json();
 
-            // Muestra el mensaje del usuario
-            appendMessage(userMessage, 'user');
-            chatInput.value = '';
-            loadingIndicator.classList.remove('hidden');
-            sendBtn.disabled = true;
-
-            // Añade el mensaje del usuario a la historia
-            chatHistory.push({
-                role: "user",
-                parts: [{ text: userMessage }]
-            });
-
-            try {
-                const response = await fetch(API_URL + apiKey, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        contents: chatHistory,
-                        // ⭐ CORRECCIÓN CLAVE: Usamos 'generationConfig' en lugar de 'config'
-                        generationConfig: { 
-                            temperature: 0.7, 
-                        }
-                    })
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('API Error Response:', errorData);
-                    throw new Error(`Error ${response.status}: ${errorData.error?.message || 'Error al conectar con la API.'}`);
-                }
-
-                const result = await response.json();
-                const botReply = result.candidates?.[0]?.content?.parts?.[0]?.text;
-
-                if (botReply) {
-                    appendMessage(botReply, 'bot');
-                    // Añade la respuesta del bot a la historia para mantener el contexto
-                    chatHistory.push({
-                        role: "model",
-                        parts: [{ text: botReply }]
-                    });
-                } else {
-                    const reason = result.promptFeedback?.blockReason || 'desconocido';
-                    const safetyMessage = `Lo siento, tu solicitud fue bloqueada por razones de seguridad (${reason}). Por favor, reformula tu pregunta.`;
-                    appendMessage(safetyMessage, 'bot');
-                }
-
-            } catch (error) {
-                console.error('Error de red o de API:', error);
-                // Mensaje de error final para el usuario
-                appendMessage(`Ocurrió un error: ${error.message}. Por favor, revisa tu conexión a internet o intenta más tarde.`, 'bot');
-            } finally {
-                loadingIndicator.classList.add('hidden');
-                sendBtn.disabled = false;
-                // Hace scroll al final del chat
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            }
+        if (data.reply) {
+            appendMessage(data.reply, 'bot');
+            chatHistory.push({ role: "model", parts: [{ text: data.reply }] });
+        } else {
+            appendMessage("Ocurrió un error: la respuesta está vacía.", 'bot');
         }
 
-        function appendMessage(text, sender) {
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('p-3', 'rounded-xl', 'shadow-sm', 'max-w-[80%]', 'animate-fade');
-            
-            if (sender === 'user') {
-                messageElement.classList.add('bg-purple-200', 'self-end', 'text-right');
-            } else {
-                messageElement.classList.add('bg-purple-100', 'self-start');
-            }
-            
-            messageElement.innerHTML = `<p class="text-gray-800">${text}</p>`;
-            chatContainer.appendChild(messageElement);
-        }
-    </script>
+    } catch (error) {
+        appendMessage(`Ocurrió un error: ${error.message}`, 'bot');
+        console.error(error);
+    } finally {
+        loadingIndicator.classList.add('hidden');
+        sendBtn.disabled = false;
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+}
+
+function appendMessage(text, sender) {
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('p-3', 'rounded-xl', 'shadow-sm', 'max-w-[80%]', 'animate-fade');
+
+    if (sender === 'user') {
+        messageElement.classList.add('bg-purple-200', 'self-end', 'text-right');
+    } else {
+        messageElement.classList.add('bg-purple-100', 'self-start');
+    }
+
+    messageElement.innerHTML = `<p class="text-gray-800">${text}</p>`;
+    chatContainer.appendChild(messageElement);
+}
+</script>
+
 
 </body>
 </html>
