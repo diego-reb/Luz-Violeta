@@ -16,3 +16,4 @@ class Config:
 
     INEGI_API_KEY = os.getenv("INEGI_API_KEY")
     MAPS_API_KEY = os.getenv("MAPS_API_KEY")
+    CLOUDINARY_URL = os.getenv("CLOUDINARY_URL")

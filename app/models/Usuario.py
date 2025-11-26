@@ -12,6 +12,10 @@ class Usuario(db.Model):
     nombre_usuario = db.Column(db.String(50), nullable = False, unique = True)
     activo = db.Column(db.Boolean, default = True)
     rol_id = db.Column(db.Integer, db.ForeignKey('roles.id'), nullable = False)
+    direccion = db.Column(db.Text, nullable=True)
+    telefono = db.Column(db.String(20), nullable=True)
+    tipo_sangre = db.Column(db.String(5), nullable=True)
+    foto_perfil = db.Column(db.String(250), nullable=True)
 
     rol = relationship('Rol', back_populates = 'usuarios')
 
