@@ -141,31 +141,31 @@
 <body class="text-gray-800">
 
     <header class="bg-white shadow-md rounded-b-2xl px-4 py-4 flex items-center justify-between relative z-10">
-        <a href="inicio.html" class="flex items-center space-x-2">
+        <a href="/" class="flex items-center space-x-2">
             <img src="https://placehold.co/60x60/a78bfa/ffffff?text=LV" alt="Logo Luz Violeta"
                 class="rounded-xl shadow-lg">
             <span class="text-3xl font-extrabold text-purple-700 hidden md:block">Luz Violeta</span>
         </a>
 
         <nav class="flex items-center space-x-2 sm:space-x-4">
-            <a href="inicio.html#quienes-somos"
+            <a href="/"
                 class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
                 Quiénes somos
             </a>
-            <a href="albergues.html"
+            <a href="/albergues"
                 class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
                 Albergues
             </a>
-            <a href="apoyo-legal.html"
+            <a href="/apoyo_legal"
                 class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
                 Apoyo legal
             </a>
-            <a href="apoyo-psicologico.html"
+            <a href="/apoyo_psicologico"
                 class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
                 Apoyo psicológico
             </a>
 
-            <a href="index.html"
+            <a href="/"
                 class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-lg text-sm sm:text-base transform hover:scale-105 ml-2 sm:ml-4 flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">
@@ -327,8 +327,7 @@
                 <button id="close-password-modal" class="text-gray-500 hover:text-gray-700">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
@@ -379,8 +378,7 @@
                 <button id="close-emergency-modal" class="text-gray-500 hover:text-gray-700">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
@@ -453,155 +451,155 @@
         style="animation-delay: 8s;">🌸</span>
     <span class="floating-element absolute top-[35%] left-[65%] text-purple-300 text-4xl"
         style="animation-delay: 9s;">🦋</span>
-<script>
-    // ======================
-// Previsualización de foto
-// ======================
-const profilePhotoInput = document.getElementById('profile-photo');
-const profilePreview = document.getElementById('profile-preview');
-const removePhotoBtn = document.getElementById('remove-photo');
+    <script>
+        // ======================
+        // Previsualización de foto
+        // ======================
+        const profilePhotoInput = document.getElementById('profile-photo');
+        const profilePreview = document.getElementById('profile-preview');
+        const removePhotoBtn = document.getElementById('remove-photo');
 
-profilePhotoInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            profilePreview.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-});
+        profilePhotoInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    profilePreview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
 
-removePhotoBtn.addEventListener('click', () => {
-    profilePreview.src = '/static/img/default-user.png'; // Imagen por defecto
-    profilePhotoInput.value = '';
-});
+        removePhotoBtn.addEventListener('click', () => {
+            profilePreview.src = '/static/img/default-user.png'; // Imagen por defecto
+            profilePhotoInput.value = '';
+        });
 
-// ======================
-// Actualizar perfil
-// ======================
-document.getElementById("profile-form").addEventListener("submit", function (e) {
-    e.preventDefault();
+        // ======================
+        // Actualizar perfil
+        // ======================
+        document.getElementById("profile-form").addEventListener("submit", function (e) {
+            e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("nombre", document.getElementById("name").value);
-    formData.append("nombre_usuario", document.getElementById("username").value);
-    formData.append("correo", document.getElementById("email").value);
-    formData.append("telefono", document.getElementById("phone").value);
-    formData.append("direccion", document.getElementById("address").value);
-    formData.append("tipo_sangre", document.getElementById("blood-type").value);
+            const formData = new FormData();
+            formData.append("nombre", document.getElementById("name").value);
+            formData.append("nombre_usuario", document.getElementById("username").value);
+            formData.append("correo", document.getElementById("email").value);
+            formData.append("telefono", document.getElementById("phone").value);
+            formData.append("direccion", document.getElementById("address").value);
+            formData.append("tipo_sangre", document.getElementById("blood-type").value);
 
-    const fileInput = document.getElementById("profile-photo");
-    if (fileInput.files[0]) {
-        formData.append("foto", fileInput.files[0]);
-    }
+            const fileInput = document.getElementById("profile-photo");
+            if (fileInput.files[0]) {
+                formData.append("foto", fileInput.files[0]);
+            }
 
-    fetch("/perfil/actualizar", {
-        method: "POST",
-        body: formData
-    })
-    .then(r => r.json())
-    .then(resp => {
-        alert("Datos actualizados");
-        if (resp.foto_url) {
-            document.getElementById("profile-preview").src = resp.foto_url;
-        }
-    })
-    .catch(err => console.error(err));
-});
+            fetch("/perfil/actualizar", {
+                method: "POST",
+                body: formData
+            })
+                .then(r => r.json())
+                .then(resp => {
+                    alert("Datos actualizados");
+                    if (resp.foto_url) {
+                        document.getElementById("profile-preview").src = resp.foto_url;
+                    }
+                })
+                .catch(err => console.error(err));
+        });
 
 
-// ======================
-// Modales de contraseña
-// ======================
-const passwordModal = document.getElementById('password-modal');
-document.getElementById('change-password-btn').addEventListener('click', () => passwordModal.style.display = 'flex');
-document.getElementById('close-password-modal').addEventListener('click', () => passwordModal.style.display = 'none');
-document.getElementById('cancel-password').addEventListener('click', () => passwordModal.style.display = 'none');
+        // ======================
+        // Modales de contraseña
+        // ======================
+        const passwordModal = document.getElementById('password-modal');
+        document.getElementById('change-password-btn').addEventListener('click', () => passwordModal.style.display = 'flex');
+        document.getElementById('close-password-modal').addEventListener('click', () => passwordModal.style.display = 'none');
+        document.getElementById('cancel-password').addEventListener('click', () => passwordModal.style.display = 'none');
 
-document.getElementById('password-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const newPassword = document.getElementById('new-password').value;
-    const confirmPassword = document.getElementById('confirm-password').value;
+        document.getElementById('password-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
 
-    if (newPassword !== confirmPassword) {
-        showNotification("Las contraseñas no coinciden", "error");
-        return;
-    }
+            if (newPassword !== confirmPassword) {
+                showNotification("Las contraseñas no coinciden", "error");
+                return;
+            }
 
-    const res = await fetch("/perfil/cambiar_password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            current_password: document.getElementById('current-password').value,
-            new_password: newPassword
-        })
-    });
+            const res = await fetch("/perfil/cambiar_password", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    current_password: document.getElementById('current-password').value,
+                    new_password: newPassword
+                })
+            });
 
-    const data = await res.json();
-    if (res.ok) {
-        showNotification("Contraseña actualizada", "success");
-        passwordModal.style.display = 'none';
-        document.getElementById('password-form').reset();
-    } else {
-        showNotification(data.error || "Error al cambiar contraseña", "error");
-    }
-});
+            const data = await res.json();
+            if (res.ok) {
+                showNotification("Contraseña actualizada", "success");
+                passwordModal.style.display = 'none';
+                document.getElementById('password-form').reset();
+            } else {
+                showNotification(data.error || "Error al cambiar contraseña", "error");
+            }
+        });
 
-// ======================
-// Modal contacto emergencia
-// ======================
-const emergencyModal = document.getElementById('emergency-contact-modal');
-document.getElementById('add-emergency-contact-btn').addEventListener('click', () => emergencyModal.style.display = 'flex');
-document.getElementById('close-emergency-modal').addEventListener('click', () => emergencyModal.style.display = 'none');
-document.getElementById('cancel-emergency').addEventListener('click', () => emergencyModal.style.display = 'none');
+        // ======================
+        // Modal contacto emergencia
+        // ======================
+        const emergencyModal = document.getElementById('emergency-contact-modal');
+        document.getElementById('add-emergency-contact-btn').addEventListener('click', () => emergencyModal.style.display = 'flex');
+        document.getElementById('close-emergency-modal').addEventListener('click', () => emergencyModal.style.display = 'none');
+        document.getElementById('cancel-emergency').addEventListener('click', () => emergencyModal.style.display = 'none');
 
-document.getElementById('emergency-contact-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const res = await fetch("/perfil/guardar_contacto", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            name: document.getElementById('contact-name').value,
-            relationship: document.getElementById('contact-relationship').value,
-            phone: document.getElementById('contact-phone').value
-        })
-    });
+        document.getElementById('emergency-contact-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const res = await fetch("/perfil/guardar_contacto", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: document.getElementById('contact-name').value,
+                    relationship: document.getElementById('contact-relationship').value,
+                    phone: document.getElementById('contact-phone').value
+                })
+            });
 
-    const data = await res.json();
-    if (res.ok) {
-        showNotification("Contacto agregado correctamente", "success");
-        emergencyModal.style.display = 'none';
-        document.getElementById('emergency-contact-form').reset();
-    } else {
-        showNotification(data.error || "No se pudo guardar contacto", "error");
-    }
-});
+            const data = await res.json();
+            if (res.ok) {
+                showNotification("Contacto agregado correctamente", "success");
+                emergencyModal.style.display = 'none';
+                document.getElementById('emergency-contact-form').reset();
+            } else {
+                showNotification(data.error || "No se pudo guardar contacto", "error");
+            }
+        });
 
-// ======================
-// Notificaciones
-// ======================
-function showNotification(message, type) {
-    const notification = document.createElement("div");
-    notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 transition-all 
+        // ======================
+        // Notificaciones
+        // ======================
+        function showNotification(message, type) {
+            const notification = document.createElement("div");
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 transition-all 
         ${type === "success" ? "bg-green-500 text-white" : "bg-red-500 text-white"}`;
-    notification.textContent = message;
-    document.body.appendChild(notification);
+            notification.textContent = message;
+            document.body.appendChild(notification);
 
-    setTimeout(() => {
-        notification.style.opacity = 0;
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
-}
+            setTimeout(() => {
+                notification.style.opacity = 0;
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
 
-// ======================
-// Cerrar modales al hacer clic fuera
-// ======================
-window.addEventListener('click', (e) => {
-    if (e.target === passwordModal) passwordModal.style.display = 'none';
-    if (e.target === emergencyModal) emergencyModal.style.display = 'none';
-});
-</script>
+        // ======================
+        // Cerrar modales al hacer clic fuera
+        // ======================
+        window.addEventListener('click', (e) => {
+            if (e.target === passwordModal) passwordModal.style.display = 'none';
+            if (e.target === emergencyModal) emergencyModal.style.display = 'none';
+        });
+    </script>
 
 </body>
 
