@@ -17,10 +17,25 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /* ========= CREAR BOTÓN ========= */
-    const toggleBtn = document.createElement("button");
-    toggleBtn.id = "accesibility-toggle";
-    toggleBtn.innerHTML = "♿";
-    document.body.appendChild(toggleBtn);
+const toggleBtn = document.createElement("button");
+toggleBtn.id = "accesibility-toggle";
+toggleBtn.innerHTML = `
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <!-- Brazo izquierdo extendido -->
+        <path d="M4 11h4v2H4z"/>
+        <!-- Cabeza -->
+        <circle cx="12" cy="5" r="2.5"/>
+        <!-- Torso -->
+        <path d="M10 8h4v7h-4z"/>
+        <!-- Brazo derecho extendido -->
+        <path d="M16 11h4v2h-4z"/>
+        <!-- Pierna izquierda -->
+        <path d="M10 15v4l2 1v-5z"/>
+        <!-- Pierna derecha -->
+        <path d="M14 15v4l-2 1v-5z"/>
+    </svg>
+`;
+document.body.appendChild(toggleBtn);
 
     /* ========= CREAR PANEL ========= */
     const panel = document.createElement("div");
