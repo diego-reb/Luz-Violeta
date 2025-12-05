@@ -95,7 +95,7 @@
     <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white shadow-xl rounded-xl py-2 border border-purple-200">
         {% if session.get('usuario_id') %}
             <a href="/perfil" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Perfil</a>
-            <a href="/seguridad" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Seguridad</a>
+            <!--<a href="/seguridad" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Seguridad</a> -->
             <div class="border-t border-gray-200 my-2"></div>
             <a href="{{ url_for('login_bp.logout') }}" class="block px-4 py-2 text-red-600 hover:bg-red-100 transition">Cerrar sesión</a>
         {% else %}
@@ -112,7 +112,7 @@
     <div id="hamburgerMenu" class="hidden absolute right-0 mt-2 w-48 bg-white shadow-xl rounded-xl py-2 border border-purple-200 md:hidden">
         {% if session.get('usuario_id') %}
             <a href="/perfil" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Perfil</a>
-            <a href="/seguridad" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Seguridad</a>
+           <!-- <a href="/seguridad" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Seguridad</a> -->
             <div class="border-t border-gray-200 my-2"></div>
             <a href="{{ url_for('login_bp.logout') }}" class="block px-4 py-2 text-red-600 hover:bg-red-100 transition">Cerrar sesión</a>
         {% else %}
