@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apoyo Psicológico - Luz Violeta</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='css/accesibilidad.css')}}">
     <script src="{{ url_for('static', filename='JS/accesibilidad.js')}}"></script>
     <script src="{{ url_for('static', filename='JS/menu_opciones.js')}}"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
         
@@ -16,21 +18,28 @@
             background-color: #f7f1ff; /* Un lila muy claro */
             position: relative;
             overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Card hover effect */
         .card-hover:hover {
-            transform: translateY(-8px);
+            transform: translateY(-5px);
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
         }
 
         /* Floating decorative elements */
         .floating-element {
             animation: float 15s ease-in-out infinite;
+            pointer-events: none; /* Crucial para móviles */
+            z-index: 0;
         }
         
         .floating-element-2 {
             animation: float-alt 18s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
         }
 
         @keyframes float {
@@ -45,43 +54,50 @@
             30% { transform: translateY(15px) translateX(-20px) rotate(-10deg); opacity: 0.7; }
             60% { transform: translateY(30px) translateX(20px) rotate(10deg); opacity: 0.5; }
         }
-         @keyframes fadeScale {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
 
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+        @keyframes fadeScale {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .animate-fade {
             animation: fadeScale 0.15s ease-out;
+        }
+
+        /* Scrollbar personalizada para el chat */
+        #chat-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        #chat-container::-webkit-scrollbar-track {
+            background: #f3e8ff;
+            border-radius: 4px;
+        }
+        #chat-container::-webkit-scrollbar-thumb {
+            background: #c084fc;
+            border-radius: 4px;
         }
     </style>
 </head>
 <body class="high-contrast">
     <div id="reading-guide" class="reading-guide-mask"></div>
 
-    <header class="bg-white shadow-md rounded-b-2xl px-4 py-4 flex items-center justify-between relative z-10">
-        <a href="/" class="flex items-center space-x-2">
-            <img src="https://placehold.co/60x60/a78bfa/ffffff?text=LV" alt="Logo Luz Violeta" class="rounded-xl shadow-lg">
-            <span class="text-3xl font-extrabold text-purple-700 hidden md:block">Luz Violeta</span>
+    <header class="bg-white shadow-md rounded-b-2xl px-4 py-3 flex items-center justify-between relative z-50">
+        <a href="/" class="flex items-center space-x-2 shrink-0">
+            <img src="https://placehold.co/60x60/a78bfa/ffffff?text=LV" alt="Logo Luz Violeta" class="rounded-xl shadow-lg w-10 h-10 md:w-14 md:h-14">
+            <span class="text-xl md:text-3xl font-extrabold text-purple-700">Luz Violeta</span>
         </a>
 
-        <nav class="flex space-x-2 sm:space-x-4">
-            <a href="/Quienes_somos" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
+        <nav class="hidden lg:flex space-x-2 items-center">
+            <a href="/Quienes_somos" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-4 rounded-full transition-all duration-300 shadow-md text-sm transform hover:scale-105">
                 Quiénes somos
             </a>
-            <a href="/albergues" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
+            <a href="/albergues" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-4 rounded-full transition-all duration-300 shadow-md text-sm transform hover:scale-105">
                 Albergues
             </a>
-            <a href="/apoyo_legal" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
+            <a href="/apoyo_legal" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-4 rounded-full transition-all duration-300 shadow-md text-sm transform hover:scale-105">
                 Apoyo legal
             </a>
-            <a href="/apoyo_psicologico" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
+            <a href="/apoyo_psicologico" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-full transition-all duration-300 shadow-md text-sm transform hover:scale-105">
                 Apoyo psicológico
             </a>
             <div class="relative z-50">
@@ -132,104 +148,190 @@
                     <p class="text-gray-800">¡Hola! Estoy aquí para escucharte y ofrecerte una palabra de aliento. ¿Qué necesitas?</p>
                 </div>
             </div>
-            <div class="flex space-x-2">
-                <input type="text" id="chat-input" placeholder="Escribe tu mensaje..." class="flex-1 p-3 border border-purple-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
-                <button id="send-btn" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 shadow-md">
-                    Enviar ✨
+        </nav>
+
+        <div class="lg:hidden relative z-50">
+            <button id="hamburgerBtn" class="flex items-center justify-center p-2 rounded-md bg-purple-600 text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 cursor-pointer shadow-md">
+                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+            
+            <div id="hamburgerMenu" class="hidden absolute right-0 mt-2 w-56 bg-white shadow-2xl rounded-xl py-2 border border-purple-200 animate-fade">
+                <div class="px-2 space-y-1 mb-2">
+                    <a href="/Quienes_somos" class="block px-4 py-2 text-purple-800 hover:bg-purple-50 rounded-lg">Quiénes somos</a>
+                    <a href="/albergues" class="block px-4 py-2 text-purple-800 hover:bg-purple-50 rounded-lg">Albergues</a>
+                    <a href="/apoyo_legal" class="block px-4 py-2 text-purple-800 hover:bg-purple-50 rounded-lg">Apoyo legal</a>
+                    <a href="/apoyo_psicologico" class="block px-4 py-2 font-bold text-purple-700 bg-purple-50 rounded-lg">Apoyo psicológico</a>
+                </div>
+                
+                <div class="border-t border-gray-200 my-1"></div>
+                
+                {% if session.get('usuario_id') %}
+                    <a href="/perfil" class="block px-4 py-2 text-gray-700 hover:bg-purple-100">👤 Mi Perfil</a>
+                    <a href="/seguridad" class="block px-4 py-2 text-gray-700 hover:bg-purple-100">🛡️ Seguridad</a>
+                    <div class="border-t border-gray-200 my-1"></div>
+                    <a href="{{ url_for('login_bp.logout') }}" class="block px-4 py-2 text-red-600 hover:bg-red-50">Cerrar sesión</a>
+                {% else %}
+                    <a href="{{ url_for('login_bp.login') }}" class="block px-4 py-2 text-purple-700 font-bold hover:bg-purple-50">Iniciar sesión</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8 flex-grow relative z-10 flex flex-col justify-center">
+        <div class="bg-white p-4 md:p-8 rounded-2xl shadow-xl mt-4 relative card-hover transition-all duration-300 w-full max-w-4xl mx-auto border border-purple-100">
+            
+            <div class="text-center mb-6">
+                <span class="text-4xl">✨</span>
+                <h2 class="text-2xl md:text-3xl font-bold text-purple-800 mt-2">Asistente de Apoyo Virtual</h2>
+                <p class="text-gray-500 text-sm md:text-base mt-1">Un espacio seguro para expresarte sin juicios.</p>
+            </div>
+
+            <div id="chat-container" class="h-[50vh] min-h-[300px] max-h-[600px] overflow-y-auto mb-4 p-4 border border-purple-200 rounded-xl bg-gray-50 flex flex-col space-y-4 shadow-inner">
+                <div class="p-4 rounded-2xl rounded-tl-none bg-purple-100 self-start max-w-[85%] shadow-sm">
+                    <p class="text-gray-800 text-sm md:text-base break-words">¡Hola! Estoy aquí para escucharte y ofrecerte una palabra de aliento. Recuerda que no estás sola. ¿Cómo te sientes hoy?</p>
+                </div>
+            </div>
+
+            <div class="flex flex-row gap-2 items-center">
+                <input type="text" id="chat-input" placeholder="Escribe tu mensaje aquí..." class="flex-1 p-3 md:p-4 border border-purple-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white shadow-sm text-sm md:text-base transition-shadow min-w-0">
+                <button id="send-btn" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 md:px-6 rounded-xl transition duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-2 shrink-0">
+                    <span class="hidden sm:inline">Enviar</span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                    </svg>
                 </button>
             </div>
-            <div id="loading-indicator" class="mt-2 text-purple-600 text-center hidden">
-                ...Cargando
+
+            <div id="loading-indicator" class="mt-3 text-purple-600 text-center text-sm font-semibold hidden flex justify-center items-center gap-2">
+                <svg class="animate-spin h-5 w-5 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Escribiendo una respuesta con cariño...
             </div>
         </div>
     </main>
 
-    <footer class="bg-purple-900 text-white text-center py-6 mt-12 shadow-inner rounded-t-2xl">
-        <p>© 2024 Luz Violeta. Juntas somos invencibles.</p>
-        <p class="text-sm mt-1">Todos los derechos reservados.</p>
+    <footer class="bg-purple-900 text-white text-center py-6 mt-8 shadow-inner rounded-t-2xl z-20">
+        <p class="font-medium">© 2025 Luz Violeta. Juntas somos invencibles.</p>
+        <p class="text-xs text-purple-200 mt-1">Todos los derechos reservados.</p>
     </footer>
 
-    <span class="floating-element absolute top-[10%] left-[20%] text-purple-300 text-7xl">✨</span>
-    <span class="floating-element-2 absolute top-[60%] left-[70%] text-pink-300 text-6xl" style="animation-delay: 2s;">💖</span>
-    <span class="floating-element absolute top-[80%] left-[30%] text-purple-400 text-5xl" style="animation-delay: 4s;">✨</span>
-    <span class="floating-element-2 absolute top-[40%] left-[5%] text-pink-400 text-8xl" style="animation-delay: 6s;">🌸</span>
-    <span class="floating-element absolute top-[25%] left-[85%] text-purple-300 text-5xl" style="animation-delay: 3s;">🦋</span>
-    <span class="floating-element-2 absolute top-[75%] left-[15%] text-pink-300 text-4xl" style="animation-delay: 5s;">✨</span>
-    <span class="floating-element absolute top-[50%] left-[50%] text-purple-400 text-6xl" style="animation-delay: 7s;">💖</span>
-    <span class="floating-element-2 absolute top-[90%] left-[60%] text-pink-400 text-7xl" style="animation-delay: 8s;">🌸</span>
-    <span class="floating-element absolute top-[35%] left-[65%] text-purple-300 text-4xl" style="animation-delay: 9s;">🦋</span>
+    <span class="floating-element absolute top-[10%] left-[5%] md:left-[20%] text-purple-300 text-5xl md:text-7xl">✨</span>
+    <span class="floating-element-2 absolute top-[60%] right-[5%] md:left-[70%] text-pink-300 text-4xl md:text-6xl" style="animation-delay: 2s;">💖</span>
+    <span class="floating-element absolute top-[80%] left-[10%] md:left-[30%] text-purple-400 text-4xl md:text-5xl" style="animation-delay: 4s;">✨</span>
+    <span class="floating-element-2 absolute top-[40%] left-[5%] text-pink-400 text-6xl md:text-8xl" style="animation-delay: 6s;">🌸</span>
+    <span class="floating-element absolute top-[25%] right-[10%] md:left-[85%] text-purple-300 text-4xl md:text-5xl" style="animation-delay: 3s;">🦋</span>
+    <span class="floating-element absolute top-[50%] left-[50%] text-purple-400 text-5xl md:text-6xl transform -translate-x-1/2" style="animation-delay: 7s;">💖</span>
 
     <script>
-const chatInput = document.getElementById('chat-input');
-const sendBtn = document.getElementById('send-btn');
-const chatContainer = document.getElementById('chat-container');
-const loadingIndicator = document.getElementById('loading-indicator');
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        const userMenuBtn = document.getElementById('userMenuBtn');
+        const userMenu = document.getElementById('userMenu');
 
-const chatHistory = [{
-    role: "user",
-    parts: [{
-        text: "Actúa como un bot de apoyo compasivo y empático para mujeres que buscan ayuda por violencia o angustia emocional. Ofrece mensajes cortos y empoderadores con un tono suave y de apoyo. No des consejos médicos ni legales. Si una usuaria expresa una situación peligrosa, anímala encarecidamente a buscar ayuda profesional o a contactar un número de emergencia. Sé una fuente de luz y una presencia tranquila. Si la pregunta o el comentario no está relacionado con la apoyo emocional, responde amablemente que tu función es solo proporcionar apoyo emocional."
-    }]
-}];
-
-sendBtn.addEventListener('click', sendMessage);
-chatInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') sendMessage();
-});
-
-async function sendMessage() {
-    const userMessage = chatInput.value.trim();
-    if (!userMessage) return;
-
-    appendMessage(userMessage, 'user');
-    chatInput.value = '';
-    loadingIndicator.classList.remove('hidden');
-    sendBtn.disabled = true;
-
-    chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
-
-    try {
-        // Llamada a tu backend Flask
-        const response = await fetch('/api/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: userMessage, history: chatHistory })
-        });
-
-        const data = await response.json();
-
-        if (data.reply) {
-            appendMessage(data.reply, 'bot');
-            chatHistory.push({ role: "model", parts: [{ text: data.reply }] });
-        } else {
-            appendMessage("Ocurrió un error: la respuesta está vacía.", 'bot');
+        if(hamburgerBtn && hamburgerMenu) {
+            hamburgerBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                hamburgerMenu.classList.toggle('hidden');
+            });
         }
 
-    } catch (error) {
-        appendMessage(`Ocurrió un error: ${error.message}`, 'bot');
-        console.error(error);
-    } finally {
-        loadingIndicator.classList.add('hidden');
-        sendBtn.disabled = false;
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
-}
+        if(userMenuBtn && userMenu) {
+            userMenuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                userMenu.classList.toggle('hidden');
+            });
+        }
 
-function appendMessage(text, sender) {
-    const messageElement = document.createElement('div');
-    messageElement.classList.add('p-3', 'rounded-xl', 'shadow-sm', 'max-w-[80%]', 'animate-fade');
+        document.addEventListener('click', (e) => {
+            if(hamburgerMenu && !hamburgerMenu.classList.contains('hidden') && !hamburgerBtn.contains(e.target) && !hamburgerMenu.contains(e.target)) {
+                hamburgerMenu.classList.add('hidden');
+            }
+            if(userMenu && !userMenu.classList.contains('hidden') && !userMenuBtn.contains(e.target) && !userMenu.contains(e.target)) {
+                userMenu.classList.add('hidden');
+            }
+        });
 
-    if (sender === 'user') {
-        messageElement.classList.add('bg-purple-200', 'self-end', 'text-right');
-    } else {
-        messageElement.classList.add('bg-purple-100', 'self-start');
-    }
+        // LÓGICA DEL CHAT
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+        const chatContainer = document.getElementById('chat-container');
+        const loadingIndicator = document.getElementById('loading-indicator');
 
-    messageElement.innerHTML = `<p class="text-gray-800">${text}</p>`;
-    chatContainer.appendChild(messageElement);
-}
-</script>
+        const chatHistory = [{
+            role: "user",
+            parts: [{
+                text: "Actúa como un bot de apoyo compasivo y empático para mujeres que buscan ayuda por violencia o angustia emocional..."
+            }]
+        }];
 
+        sendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
 
+        async function sendMessage() {
+            const userMessage = chatInput.value.trim();
+            if (!userMessage) return;
+
+            appendMessage(userMessage, 'user');
+            chatInput.value = '';
+            loadingIndicator.classList.remove('hidden');
+            sendBtn.disabled = true;
+            sendBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: userMessage, history: chatHistory })
+                });
+
+                const data = await response.json();
+
+                if (data.reply) {
+                    appendMessage(data.reply, 'bot');
+                    chatHistory.push({ role: "model", parts: [{ text: data.reply }] });
+                } else {
+                    appendMessage("Lo siento, tuve un pequeño problema al pensar mi respuesta. ¿Podrías intentar de nuevo?", 'bot');
+                }
+
+            } catch (error) {
+                appendMessage(`Lo siento, ocurrió un error de conexión. Por favor verifica tu internet.`, 'bot');
+                console.error(error);
+            } finally {
+                loadingIndicator.classList.add('hidden');
+                sendBtn.disabled = false;
+                sendBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                chatInput.focus();
+                setTimeout(() => {
+                    chatContainer.scrollTo({ top: chatContainer.scrollHeight, behavior: 'smooth' });
+                }, 100);
+            }
+        }
+
+        function appendMessage(text, sender) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('p-3', 'md:p-4', 'rounded-2xl', 'shadow-sm', 'max-w-[85%]', 'animate-fade', 'text-sm', 'md:text-base');
+
+            if (sender === 'user') {
+                messageElement.classList.add('bg-purple-200', 'self-end', 'text-right', 'rounded-tr-none');
+            } else {
+                messageElement.classList.add('bg-purple-100', 'self-start', 'rounded-tl-none');
+            }
+
+            const p = document.createElement('p');
+            p.classList.add('text-gray-800', 'break-words'); // break-words importante
+            p.textContent = text; 
+            messageElement.appendChild(p);
+
+            chatContainer.appendChild(messageElement);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    </script>
 </body>
 </html>

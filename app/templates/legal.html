@@ -13,25 +13,21 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f7f1ff; /* Un lila muy claro */
+            background-color: #f7f1ff;
             position: relative;
             overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Card hover effect */
         .card-hover:hover {
-            transform: translateY(-8px);
+            transform: translateY(-5px);
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
         }
 
-        /* Floating decorative elements */
-        .floating-element {
-            animation: float 15s ease-in-out infinite;
-        }
-        
-        .floating-element-2 {
-            animation: float-alt 18s ease-in-out infinite;
-        }
+        .floating-element { animation: float 15s ease-in-out infinite; pointer-events: none; z-index: 0; }
+        .floating-element-2 { animation: float-alt 18s ease-in-out infinite; pointer-events: none; z-index: 0; }
 
         @keyframes float {
             0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.6; }
@@ -46,90 +42,116 @@
             60% { transform: translateY(30px) translateX(20px) rotate(10deg); opacity: 0.5; }
         }
 
-        /* Estilo para la tabla de abogados */
-        #abogados-table-container {
-            margin-top: 1.5rem;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
+        /* --- ESTILOS DE LA TABLA RESPONSIVA (Técnica "Card View") --- */
         #abogados-table {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0 8px;
         }
 
-        #abogados-table th, #abogados-table td {
+        #abogados-table th {
+            background-color: #ede9fe;
+            color: #4c1d95;
+            font-weight: 700;
             padding: 1rem;
             text-align: left;
         }
+        
+        /* Bordes redondeados para header en escritorio */
+        #abogados-table th:first-child { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+        #abogados-table th:last-child { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
 
-        #abogados-table th {
-            background-color: #ede9fe; /* Lila claro */
-            color: #4c1d95; /* Morado oscuro */
-            font-weight: 700;
+        #abogados-table td {
+            padding: 1rem;
+            background-color: #f3f4f6;
+            color: #1f2937;
         }
 
-        #abogados-table th:first-child {
-            border-top-left-radius: 8px;
-            border-bottom-left-radius: 8px;
+        /* Estilos específicos para escritorio */
+        @media (min-width: 769px) {
+            #abogados-table tbody tr {
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+                transition: transform 0.2s;
+            }
+            #abogados-table tbody tr:hover {
+                transform: scale(1.01);
+                background-color: #e5e7eb;
+            }
+            #abogados-table td:first-child { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+            #abogados-table td:last-child { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
         }
 
-        #abogados-table th:last-child {
-            border-top-right-radius: 8px;
-            border-bottom-right-radius: 8px;
-        }
-
-        #abogados-table tbody tr {
-            background-color: #f3f4f6; /* Gris claro */
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            transition: all 0.2s ease-in-out;
-        }
-
-        #abogados-table tbody tr:hover {
-            background-color: #e5e7eb;
-            transform: scale(1.01);
-        }
-
-        #abogados-table td a {
-            color: #7c3aed;
-            font-weight: 600;
-        }
-
-        #abogados-table td:first-child {
-            border-top-left-radius: 8px;
-            border-bottom-left-radius: 8px;
-        }
-
-        #abogados-table td:last-child {
-            border-top-right-radius: 8px;
-            border-bottom-right-radius: 8px;
-        }
-        @keyframes fadeScale {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
+        /* --- MÓVIL: Transformar tabla en Tarjetas --- */
+        @media (max-width: 768px) {
+            /* Ocultar encabezados de la tabla original */
+            #abogados-table thead {
+                display: none;
             }
 
-            to {
-                opacity: 1;
-                transform: scale(1);
+            /* Convertir la tabla en bloques */
+            #abogados-table, #abogados-table tbody, #abogados-table tr, #abogados-table td {
+                display: block;
+                width: 100%;
+            }
+
+            /* Estilo de la "Tarjeta" (cada fila tr) */
+            #abogados-table tr {
+                margin-bottom: 1.5rem;
+                background-color: white;
+                border-radius: 12px;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                border: 1px solid #e9d5ff; /* Borde lila suave */
+                overflow: hidden;
+            }
+
+            /* Estilo de cada celda dentro de la tarjeta */
+            #abogados-table td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                text-align: right;
+                padding: 12px 16px;
+                border-bottom: 1px solid #f3f4f6;
+                font-size: 0.95rem;
+                min-height: 50px; /* Altura mínima para facilitar el toque */
+            }
+
+            #abogados-table td:last-child {
+                border-bottom: none;
+            }
+
+            /* Pseudo-elemento para poner la etiqueta (Nombre, Correo, etc.) a la izquierda */
+            #abogados-table td::before {
+                content: attr(data-label);
+                font-weight: 700;
+                color: #6b21a8; /* Morado */
+                text-transform: uppercase;
+                font-size: 0.75rem;
+                text-align: left;
+                margin-right: 1rem;
+                flex-shrink: 0; /* Evita que la etiqueta se aplaste */
+            }
+            
+            /* Ajuste para direcciones largas */
+            #abogados-table td[data-label="Dirección"] {
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: left;
+                gap: 0.5rem;
             }
         }
 
-        .animate-fade {
-            animation: fadeScale 0.15s ease-out;
-        }
+        @keyframes fadeScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .animate-fade { animation: fadeScale 0.15s ease-out; }
     </style>
 </head>
 <body class="high-contrast">
     <div id="reading-guide" class="reading-guide-mask"></div>
 
-    <header class="bg-white shadow-md rounded-b-2xl px-4 py-4 flex items-center justify-between relative z-10">
-        <a href="/" class="flex items-center space-x-2">
-            <img src="https://placehold.co/60x60/a78bfa/ffffff?text=LV" alt="Logo Luz Violeta" class="rounded-xl shadow-lg">
-            <span class="text-3xl font-extrabold text-purple-700 hidden md:block">Luz Violeta</span>
+    <header class="bg-white shadow-md rounded-b-2xl px-4 py-3 flex items-center justify-between relative z-50">
+        <a href="/" class="flex items-center space-x-2 shrink-0">
+            <img src="https://placehold.co/60x60/a78bfa/ffffff?text=LV" alt="Logo Luz Violeta" class="rounded-xl shadow-lg w-10 h-10 md:w-14 md:h-14">
+            <span class="text-xl md:text-3xl font-extrabold text-purple-700">Luz Violeta</span>
         </a>
 
         <nav class="flex space-x-2 sm:space-x-4">
@@ -182,99 +204,157 @@
     </div>
 </div>
         </nav>
+
+        <div class="lg:hidden relative z-50">
+            <button id="hamburgerBtn" class="flex items-center justify-center p-2 rounded-md bg-purple-600 text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 cursor-pointer shadow-md">
+                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+            <div id="hamburgerMenu" class="hidden absolute right-0 mt-2 w-56 bg-white shadow-2xl rounded-xl py-2 border border-purple-200 animate-fade">
+                <div class="px-2 space-y-1 mb-2">
+                    <a href="/Quienes_somos" class="block px-4 py-2 text-purple-800 hover:bg-purple-50 rounded-lg">Quiénes somos</a>
+                    <a href="/albergues" class="block px-4 py-2 text-purple-800 hover:bg-purple-50 rounded-lg">Albergues</a>
+                    <a href="/apoyo_legal" class="block px-4 py-2 font-bold text-purple-700 bg-purple-50 rounded-lg">Apoyo legal</a>
+                    <a href="/apoyo_psicologico" class="block px-4 py-2 text-purple-800 hover:bg-purple-50 rounded-lg">Apoyo psicológico</a>
+                </div>
+                <div class="border-t border-gray-200 my-1"></div>
+                {% if session.get('usuario_id') %}
+                    <a href="/perfil" class="block px-4 py-2 text-gray-700 hover:bg-purple-100">👤 Mi Perfil</a>
+                    <a href="/seguridad" class="block px-4 py-2 text-gray-700 hover:bg-purple-100">🛡️ Seguridad</a>
+                    <div class="border-t border-gray-200 my-1"></div>
+                    <a href="{{ url_for('login_bp.logout') }}" class="block px-4 py-2 text-red-600 hover:bg-red-50">Cerrar sesión</a>
+                {% else %}
+                    <a href="{{ url_for('login_bp.login') }}" class="block px-4 py-2 text-purple-700 font-bold hover:bg-purple-50">Iniciar sesión</a>
+                {% endif %}
+            </div>
+        </div>
     </header>
 
-    <main class="container mx-auto p-4 md:p-8 relative">
-        <div class="bg-white p-6 md:p-10 rounded-xl shadow-lg relative card-hover transition-all duration-300">
+    <main class="container mx-auto p-4 md:p-8 flex-grow relative z-10">
+        <div class="bg-white p-4 md:p-10 rounded-xl shadow-lg relative card-hover transition-all duration-300 w-full">
             <h2 class="text-2xl sm:text-3xl font-bold text-center text-purple-800 mb-6">Apoyo Legal Especializado</h2>
-            <p class="text-center text-gray-600 mb-8">
-                Nuestro equipo de abogados voluntarios está listo para ayudarte. Aquí puedes encontrar información de contacto por alcaldía y especialidad.
+            <p class="text-center text-gray-600 mb-8 text-sm md:text-base">
+                Nuestro equipo de abogados voluntarios está listo para ayudarte. <br class="hidden md:block"> Encuentra contacto por alcaldía y especialidad.
             </p>
 
             <div class="flex justify-center mb-6">
-    <select id="alcaldia-select" class="p-3 border border-purple-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 w-full md:w-1/2 bg-white text-gray-800 shadow-sm">
-        <option value="">Todas las alcaldías</option>
-        {% for al in alcaldias %}
-            <option value="{{ al.nombre }}">{{ al.nombre }}</option>
-        {% endfor %}
-    </select>
-</div>
+                <div class="w-full md:w-1/2 relative">
+                    <select id="alcaldia-select" class="appearance-none p-3 px-4 border border-purple-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 w-full bg-white text-gray-800 shadow-sm">
+                        <option value="">🏛️ Ver todas las alcaldías</option>
+                        {% for al in alcaldias %}
+                            <option value="{{ al.nombre }}">{{ al.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-purple-600">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </div>
+                </div>
+            </div>
 
-            
             <div id="abogados-table-container">
-    {% if abogados %}
-        <table id="abogados-table">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Correo</th>
-                    <th>Teléfono</th>
-                    <th>Costo</th>
-                    <th>Dirección</th>
-                    <th>Alcaldía</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for a in abogados %}
-                    <tr>
-                        <td>{{ a.nombre }}</td>
-                        <td>{{ a.correo }}</td>
-                        <td>
-                            <a href="tel:{{ a.telefono }}">{{ a.telefono }}</a>
-                        </td>
-                        <td>{{ a.costo }}</td>
-                        <td>{{ a.direccion }}</td>
-                        <td>{{ a.alcaldia.nombre if a.alcaldia else 'Sin asignar' }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p class="text-center text-gray-500 mt-4">No hay abogados registrados.</p>
-    {% endif %}
-</div>
-
-            
-           
+                {% if abogados %}
+                    <table id="abogados-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Teléfono</th>
+                                <th>Costo</th>
+                                <th>Dirección</th>
+                                <th>Alcaldía</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for a in abogados %}
+                                <tr>
+                                    <td data-label="Nombre">{{ a.nombre }}</td>
+                                    <td data-label="Correo">{{ a.correo }}</td>
+                                    <td data-label="Teléfono">
+                                        <a href="tel:{{ a.telefono }}" class="text-purple-600 font-bold underline">{{ a.telefono }}</a>
+                                    </td>
+                                    <td data-label="Costo">
+                                        <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full 
+                                            {% if a.costo == 'Gratuito' %} bg-green-100 text-green-800 {% else %} bg-yellow-100 text-yellow-800 {% endif %}">
+                                            {{ a.costo }}
+                                        </span>
+                                    </td>
+                                    <td data-label="Dirección">{{ a.direccion }}</td>
+                                    <td data-label="Alcaldía">{{ a.alcaldia.nombre if a.alcaldia else 'Sin asignar' }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="text-center text-gray-500 mt-4">No hay abogados registrados.</p>
+                {% endif %}
+            </div>
         </div>
     </main>
 
-    <footer class="bg-purple-900 text-white text-center py-6 mt-12 shadow-inner rounded-t-2xl">
+    <footer class="bg-purple-900 text-white text-center py-6 mt-12 shadow-inner rounded-t-2xl z-20">
         <p>© 2024 Luz Violeta. Juntas somos invencibles.</p>
         <p class="text-sm mt-1">Todos los derechos reservados.</p>
     </footer>
 
-    <span class="floating-element absolute top-[10%] left-[20%] text-purple-300 text-7xl">✨</span>
-    <span class="floating-element-2 absolute top-[60%] left-[70%] text-pink-300 text-6xl" style="animation-delay: 2s;">💖</span>
+    <span class="floating-element absolute top-[10%] left-[20%] text-purple-300 text-6xl">✨</span>
+    <span class="floating-element-2 absolute top-[60%] left-[70%] text-pink-300 text-5xl" style="animation-delay: 2s;">💖</span>
     <span class="floating-element absolute top-[80%] left-[30%] text-purple-400 text-5xl" style="animation-delay: 4s;">✨</span>
-    <span class="floating-element-2 absolute top-[40%] left-[5%] text-pink-400 text-8xl" style="animation-delay: 6s;">🌸</span>
-    <span class="floating-element absolute top-[25%] left-[85%] text-purple-300 text-5xl" style="animation-delay: 3s;">🦋</span>
-    <span class="floating-element-2 absolute top-[75%] left-[15%] text-pink-300 text-4xl" style="animation-delay: 5s;">✨</span>
-    <span class="floating-element absolute top-[50%] left-[50%] text-purple-400 text-6xl" style="animation-delay: 7s;">💖</span>
-    <span class="floating-element-2 absolute top-[90%] left-[60%] text-pink-400 text-7xl" style="animation-delay: 8s;">🌸</span>
-    <span class="floating-element absolute top-[35%] left-[65%] text-purple-300 text-4xl" style="animation-delay: 9s;">🦋</span>
+    <span class="floating-element-2 absolute top-[40%] left-[5%] text-pink-400 text-7xl" style="animation-delay: 6s;">🌸</span>
 
-   <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const select = document.getElementById("alcaldia-select");
-    const filas = document.querySelectorAll("#abogados-table tbody tr");
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Lógica del filtro (Sin cambios)
+            const select = document.getElementById("alcaldia-select");
+            const tabla = document.getElementById("abogados-table");
+            
+            if (select && tabla) {
+                const filas = tabla.querySelectorAll("tbody tr");
+                select.addEventListener("change", function () {
+                    const filtro = this.value.trim();
+                    filas.forEach(fila => {
+                        // En la vista móvil también funciona porque el dato sigue estando en el DOM
+                        const celdaAlcaldia = fila.querySelector("td[data-label='Alcaldía']"); 
+                        // Ojo: Si usaste el HTML original, sería nth-child(6), pero con data-label es más seguro buscarlo así si es que coincide.
+                        // Para ser 100% fiel a tu lógica original basada en posición:
+                        const alcaldia = fila.querySelector("td:nth-child(6)").textContent.trim();
 
-    select.addEventListener("change", function () {
-        const filtro = this.value.trim();
-
-        filas.forEach(fila => {
-            const alcaldia = fila.querySelector("td:nth-child(6)").textContent.trim();
-
-            if (filtro === "" || alcaldia === filtro) {
-                fila.style.display = "";
-            } else {
-                fila.style.display = "none";
+                        if (filtro === "" || alcaldia === filtro) {
+                            fila.style.display = ""; // Vuelve a mostrar (block en móvil, table-row en desktop)
+                        } else {
+                            fila.style.display = "none";
+                        }
+                    });
+                });
             }
+
+            // Lógica Menú Hamburguesa
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const hamburgerMenu = document.getElementById('hamburgerMenu');
+            const userMenuBtn = document.getElementById('userMenuBtn');
+            const userMenu = document.getElementById('userMenu');
+
+            if(hamburgerBtn && hamburgerMenu) {
+                hamburgerBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    hamburgerMenu.classList.toggle('hidden');
+                });
+            }
+            if(userMenuBtn && userMenu) {
+                userMenuBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    userMenu.classList.toggle('hidden');
+                });
+            }
+            document.addEventListener('click', (e) => {
+                if(hamburgerMenu && !hamburgerMenu.classList.contains('hidden') && !hamburgerBtn.contains(e.target) && !hamburgerMenu.contains(e.target)) {
+                    hamburgerMenu.classList.add('hidden');
+                }
+                if(userMenu && !userMenu.classList.contains('hidden') && !userMenuBtn.contains(e.target) && !userMenu.contains(e.target)) {
+                    userMenu.classList.add('hidden');
+                }
+            });
         });
-    });
-});
-</script>
-
-
+    </script>
 </body>
 </html>
