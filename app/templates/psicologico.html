@@ -8,14 +8,13 @@
     
     <link rel="stylesheet" href="{{ url_for('static', filename='css/accesibilidad.css')}}">
     <script src="{{ url_for('static', filename='JS/accesibilidad.js')}}"></script>
-    <script src="{{ url_for('static', filename='JS/menu_opciones.js')}}"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
         
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f7f1ff; /* Un lila muy claro */
+            background-color: #f7f1ff;
             position: relative;
             overflow-x: hidden;
             min-height: 100vh;
@@ -23,16 +22,14 @@
             flex-direction: column;
         }
 
-        /* Card hover effect */
         .card-hover:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
         }
 
-        /* Floating decorative elements */
         .floating-element {
             animation: float 15s ease-in-out infinite;
-            pointer-events: none; /* Crucial para móviles */
+            pointer-events: none;
             z-index: 0;
         }
         
@@ -64,7 +61,6 @@
             animation: fadeScale 0.15s ease-out;
         }
 
-        /* Scrollbar personalizada para el chat */
         #chat-container::-webkit-scrollbar {
             width: 8px;
         }
@@ -87,6 +83,7 @@
             <span class="text-xl md:text-3xl font-extrabold text-purple-700">Luz Violeta</span>
         </a>
 
+        <!-- Navegación desktop -->
         <nav class="hidden lg:flex space-x-2 items-center">
             <a href="/Quienes_somos" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-4 rounded-full transition-all duration-300 shadow-md text-sm transform hover:scale-105">
                 Quiénes somos
@@ -100,77 +97,78 @@
             <a href="/apoyo_psicologico" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-full transition-all duration-300 shadow-md text-sm transform hover:scale-105">
                 Apoyo psicológico
             </a>
-            <div class="relative z-50">
-    <button id="userMenuBtn" class="hidden md:flex items-center bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-full transition duration-300 shadow-md cursor-pointer">
-        <span>Cuenta</span>
-        <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M19 9l-7 7-7-7"></path>
-        </svg>
-    </button>
-
-    <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white shadow-xl rounded-xl py-2 border border-purple-200">
-        {% if session.get('usuario_id') %}
-            <a href="/perfil" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Perfil</a>
-            <!--<a href="/seguridad" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Seguridad</a> -->
-            <div class="border-t border-gray-200 my-2"></div>
-            <a href="{{ url_for('login_bp.logout') }}" class="block px-4 py-2 text-red-600 hover:bg-red-100 transition">Cerrar sesión</a>
-        {% else %}
-            <a href="{{ url_for('login_bp.login') }}" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Iniciar sesión</a>
-        {% endif %}
-    </div>
-
-    <button id="hamburgerBtn" class="md:hidden flex items-center justify-center p-2 rounded-md bg-purple-600 text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 cursor-pointer">
-        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-    </button>
-
-    <div id="hamburgerMenu" class="hidden absolute right-0 mt-2 w-48 bg-white shadow-xl rounded-xl py-2 border border-purple-200 md:hidden">
-        {% if session.get('usuario_id') %}
-            <a href="/perfil" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Perfil</a>
-           <!-- <a href="/seguridad" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Seguridad</a> -->
-            <div class="border-t border-gray-200 my-2"></div>
-            <a href="{{ url_for('login_bp.logout') }}" class="block px-4 py-2 text-red-600 hover:bg-red-100 transition">Cerrar sesión</a>
-        {% else %}
-            <a href="{{ url_for('login_bp.login') }}" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Iniciar sesión</a>
-        {% endif %}
-    </div>
-</div>
-
-        </nav>
-    </header>
-
-    <main class="container mx-auto p-4 md:p-8 relative">
-        
-
-        <div class="lg:hidden relative z-50">
-            <button id="hamburgerBtn" class="flex items-center justify-center p-2 rounded-md bg-purple-600 text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 cursor-pointer shadow-md">
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                </svg>
-            </button>
             
-            <div id="hamburgerMenu" class="hidden absolute right-0 mt-2 w-56 bg-white shadow-2xl rounded-xl py-2 border border-purple-200 animate-fade">
-                <div class="px-2 space-y-1 mb-2">
-                    <a href="/Quienes_somos" class="block px-4 py-2 text-purple-800 hover:bg-purple-50 rounded-lg">Quiénes somos</a>
-                    <a href="/albergues" class="block px-4 py-2 text-purple-800 hover:bg-purple-50 rounded-lg">Albergues</a>
-                    <a href="/apoyo_legal" class="block px-4 py-2 text-purple-800 hover:bg-purple-50 rounded-lg">Apoyo legal</a>
-                    <a href="/apoyo_psicologico" class="block px-4 py-2 font-bold text-purple-700 bg-purple-50 rounded-lg">Apoyo psicológico</a>
+            <!-- Botón de cuenta para desktop -->
+            <div class="relative">
+                <button id="userMenuBtnDesktop" class="flex items-center bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-full transition duration-300 shadow-md cursor-pointer">
+                    <span>Cuenta</span>
+                    <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+
+                <div id="userMenuDesktop" class="hidden absolute right-0 mt-2 w-48 bg-white shadow-xl rounded-xl py-2 border border-purple-200 animate-fade z-50">
+                    {% if session.get('usuario_id') %}
+                        <a href="/perfil" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Perfil</a>
+                        <div class="border-t border-gray-200 my-2"></div>
+                        <a href="{{ url_for('login_bp.logout') }}" class="block px-4 py-2 text-red-600 hover:bg-red-100 transition">Cerrar sesión</a>
+                    {% else %}
+                        <a href="{{ url_for('login_bp.login') }}" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Iniciar sesión</a>
+                    {% endif %}
                 </div>
-                
-                <div class="border-t border-gray-200 my-1"></div>
-                
-                {% if session.get('usuario_id') %}
-                    <a href="/perfil" class="block px-4 py-2 text-gray-700 hover:bg-purple-100">👤 Mi Perfil</a>
-                    <a href="/seguridad" class="block px-4 py-2 text-gray-700 hover:bg-purple-100">🛡️ Seguridad</a>
-                    <div class="border-t border-gray-200 my-1"></div>
-                    <a href="{{ url_for('login_bp.logout') }}" class="block px-4 py-2 text-red-600 hover:bg-red-50">Cerrar sesión</a>
-                {% else %}
-                    <a href="{{ url_for('login_bp.login') }}" class="block px-4 py-2 text-purple-700 font-bold hover:bg-purple-50">Iniciar sesión</a>
-                {% endif %}
             </div>
-        </div>
+        </nav>
+
+        <!-- Botón de hamburguesa para móvil -->
+        <button id="hamburgerBtn" class="lg:hidden flex items-center justify-center p-2 rounded-md bg-purple-600 text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 cursor-pointer shadow-md">
+            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+        </button>
     </header>
+
+    <!-- Menú hamburguesa para móvil -->
+    <div id="mobileMenu" class="hidden lg:hidden fixed inset-x-4 top-20 bg-white shadow-2xl rounded-xl py-4 border border-purple-200 animate-fade z-50 max-h-[80vh] overflow-y-auto">
+        <div class="px-4 space-y-2 mb-4">
+            <h3 class="text-purple-700 font-bold text-lg mb-2 px-2">Navegación</h3>
+            <a href="/Quienes_somos" class="flex items-center px-4 py-3 text-purple-800 hover:bg-purple-50 rounded-lg">
+                <span class="mr-3">👥</span>
+                <span>Quiénes somos</span>
+            </a>
+            <a href="/albergues" class="flex items-center px-4 py-3 text-purple-800 hover:bg-purple-50 rounded-lg">
+                <span class="mr-3">🏠</span>
+                <span>Albergues</span>
+            </a>
+            <a href="/apoyo_legal" class="flex items-center px-4 py-3 text-purple-800 hover:bg-purple-50 rounded-lg">
+                <span class="mr-3">⚖️</span>
+                <span>Apoyo legal</span>
+            </a>
+            <a href="/apoyo_psicologico" class="flex items-center px-4 py-3 font-bold text-purple-700 bg-purple-50 rounded-lg">
+                <span class="mr-3">💜</span>
+                <span>Apoyo psicológico</span>
+            </a>
+        </div>
+        
+        <div class="border-t border-gray-200 pt-4 px-4">
+            <h3 class="text-purple-700 font-bold text-lg mb-2 px-2">Mi cuenta</h3>
+            {% if session.get('usuario_id') %}
+                <a href="/perfil" class="flex items-center px-4 py-3 text-gray-700 hover:bg-purple-100 rounded-lg">
+                    <span class="mr-3">👤</span>
+                    <span>Mi Perfil</span>
+                </a>
+                <div class="border-t border-gray-200 my-2"></div>
+                <a href="{{ url_for('login_bp.logout') }}" class="flex items-center px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg">
+                    <span class="mr-3">🚪</span>
+                    <span>Cerrar sesión</span>
+                </a>
+            {% else %}
+                <a href="{{ url_for('login_bp.login') }}" class="flex items-center px-4 py-3 text-purple-700 font-bold hover:bg-purple-50 rounded-lg">
+                    <span class="mr-3">🔐</span>
+                    <span>Iniciar sesión</span>
+                </a>
+            {% endif %}
+        </div>
+    </div>
 
     <main class="container mx-auto p-4 md:p-8 flex-grow relative z-10 flex flex-col justify-center">
         <div class="bg-white p-4 md:p-8 rounded-2xl shadow-xl mt-4 relative card-hover transition-all duration-300 w-full max-w-4xl mx-auto border border-purple-100">
@@ -190,7 +188,8 @@
             <div class="flex flex-row gap-2 items-center">
                 <input type="text" id="chat-input" placeholder="Escribe tu mensaje aquí..." class="flex-1 p-3 md:p-4 border border-purple-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white shadow-sm text-sm md:text-base transition-shadow min-w-0">
                 <button id="send-btn" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 md:px-6 rounded-xl transition duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-2 shrink-0">
-                    <span class="hidden sm:inline">Enviar</span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <span class="hidden sm:inline">Enviar</span> 
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
                     </svg>
                 </button>
@@ -211,6 +210,7 @@
         <p class="text-xs text-purple-200 mt-1">Todos los derechos reservados.</p>
     </footer>
 
+    <!-- Elementos decorativos flotantes -->
     <span class="floating-element absolute top-[10%] left-[5%] md:left-[20%] text-purple-300 text-5xl md:text-7xl">✨</span>
     <span class="floating-element-2 absolute top-[60%] right-[5%] md:left-[70%] text-pink-300 text-4xl md:text-6xl" style="animation-delay: 2s;">💖</span>
     <span class="floating-element absolute top-[80%] left-[10%] md:left-[30%] text-purple-400 text-4xl md:text-5xl" style="animation-delay: 4s;">✨</span>
@@ -219,40 +219,74 @@
     <span class="floating-element absolute top-[50%] left-[50%] text-purple-400 text-5xl md:text-6xl transform -translate-x-1/2" style="animation-delay: 7s;">💖</span>
 
     <script>
+        // Menú de usuario para DESKTOP
+        const userMenuBtnDesktop = document.getElementById('userMenuBtnDesktop');
+        const userMenuDesktop = document.getElementById('userMenuDesktop');
+        
+        // Menú hamburguesa para MÓVIL
         const hamburgerBtn = document.getElementById('hamburgerBtn');
-        const hamburgerMenu = document.getElementById('hamburgerMenu');
-        const userMenuBtn = document.getElementById('userMenuBtn');
-        const userMenu = document.getElementById('userMenu');
+        const mobileMenu = document.getElementById('mobileMenu');
 
-        if(hamburgerBtn && hamburgerMenu) {
-            hamburgerBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                hamburgerMenu.classList.toggle('hidden');
-            });
-        }
-
-        if(userMenuBtn && userMenu) {
-            userMenuBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                userMenu.classList.toggle('hidden');
-            });
-        }
-
-        document.addEventListener('click', (e) => {
-            if(hamburgerMenu && !hamburgerMenu.classList.contains('hidden') && !hamburgerBtn.contains(e.target) && !hamburgerMenu.contains(e.target)) {
-                hamburgerMenu.classList.add('hidden');
-            }
-            if(userMenu && !userMenu.classList.contains('hidden') && !userMenuBtn.contains(e.target) && !userMenu.contains(e.target)) {
-                userMenu.classList.add('hidden');
-            }
-        });
-
-        // LÓGICA DEL CHAT
+        // Elementos del chat
         const chatInput = document.getElementById('chat-input');
         const sendBtn = document.getElementById('send-btn');
         const chatContainer = document.getElementById('chat-container');
         const loadingIndicator = document.getElementById('loading-indicator');
 
+        // ========== CONTROL DE MENÚS ==========
+
+        // Menú de usuario (DESKTOP)
+        if(userMenuBtnDesktop && userMenuDesktop) {
+            userMenuBtnDesktop.addEventListener('click', (e) => {
+                e.stopPropagation();
+                userMenuDesktop.classList.toggle('hidden');
+                // Cierra el menú móvil si está abierto
+                if(mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        }
+
+        // Menú hamburguesa (MÓVIL)
+        if(hamburgerBtn && mobileMenu) {
+            hamburgerBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                mobileMenu.classList.toggle('hidden');
+                // Cierra el menú desktop si está abierto
+                if(userMenuDesktop && !userMenuDesktop.classList.contains('hidden')) {
+                    userMenuDesktop.classList.add('hidden');
+                }
+            });
+        }
+
+        // Cerrar menús al hacer clic fuera
+        document.addEventListener('click', (e) => {
+            // Cerrar menú desktop
+            if(userMenuDesktop && !userMenuDesktop.classList.contains('hidden') && 
+               !userMenuBtnDesktop.contains(e.target) && !userMenuDesktop.contains(e.target)) {
+                userMenuDesktop.classList.add('hidden');
+            }
+            
+            // Cerrar menú móvil
+            if(mobileMenu && !mobileMenu.classList.contains('hidden') && 
+               !hamburgerBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+        // Cerrar menús al presionar ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if(userMenuDesktop && !userMenuDesktop.classList.contains('hidden')) {
+                    userMenuDesktop.classList.add('hidden');
+                }
+                if(mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            }
+        });
+
+        // ========== LÓGICA DEL CHAT ==========
         const chatHistory = [{
             role: "user",
             parts: [{
@@ -318,7 +352,7 @@
             }
 
             const p = document.createElement('p');
-            p.classList.add('text-gray-800', 'break-words'); // break-words importante
+            p.classList.add('text-gray-800', 'break-words');
             p.textContent = text; 
             messageElement.appendChild(p);
 

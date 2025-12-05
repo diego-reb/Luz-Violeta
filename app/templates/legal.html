@@ -100,7 +100,7 @@
                 background-color: white;
                 border-radius: 12px;
                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-                border: 1px solid #e9d5ff; /* Borde lila suave */
+                border: 1px solid #e9d5ff;
                 overflow: hidden;
             }
 
@@ -113,7 +113,7 @@
                 padding: 12px 16px;
                 border-bottom: 1px solid #f3f4f6;
                 font-size: 0.95rem;
-                min-height: 50px; /* Altura mínima para facilitar el toque */
+                min-height: 50px;
             }
 
             #abogados-table td:last-child {
@@ -124,12 +124,12 @@
             #abogados-table td::before {
                 content: attr(data-label);
                 font-weight: 700;
-                color: #6b21a8; /* Morado */
+                color: #6b21a8;
                 text-transform: uppercase;
                 font-size: 0.75rem;
                 text-align: left;
                 margin-right: 1rem;
-                flex-shrink: 0; /* Evita que la etiqueta se aplaste */
+                flex-shrink: 0;
             }
             
             /* Ajuste para direcciones largas */
@@ -154,8 +154,9 @@
             <span class="text-xl md:text-3xl font-extrabold text-purple-700">Luz Violeta</span>
         </a>
 
-        <nav class="flex space-x-2 sm:space-x-4">
-            <a href="/" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
+        <!-- Navegación para desktop -->
+        <nav class="hidden lg:flex space-x-2 sm:space-x-4 items-center">
+            <a href="/Quienes_somos" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
                 Quiénes somos
             </a>
             <a href="/albergues" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
@@ -167,69 +168,78 @@
             <a href="/apoyo_psicologico" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-semibold py-2 px-3 sm:px-5 rounded-full transition-all duration-300 shadow-md text-sm sm:text-base transform hover:scale-105">
                 Apoyo psicológico
             </a>
-             <div class="relative z-50">
-    <button id="userMenuBtn" class="hidden md:flex items-center bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-full transition duration-300 shadow-md cursor-pointer">
-        <span>Cuenta</span>
-        <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M19 9l-7 7-7-7"></path>
-        </svg>
-    </button>
+            
+            <!-- Menú de usuario para desktop -->
+            <div class="relative z-50 ml-2">
+                <button id="userMenuBtn" class="flex items-center bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-full transition duration-300 shadow-md cursor-pointer">
+                    <span>Cuenta</span>
+                    <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
 
-    <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white shadow-xl rounded-xl py-2 border border-purple-200">
-        {% if session.get('usuario_id') %}
-            <a href="/perfil" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Perfil</a>
-            <!--<a href="/seguridad" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Seguridad</a>-->
-            <div class="border-t border-gray-200 my-2"></div>
-            <a href="{{ url_for('login_bp.logout') }}" class="block px-4 py-2 text-red-600 hover:bg-red-100 transition">Cerrar sesión</a>
-        {% else %}
-            <a href="{{ url_for('login_bp.login') }}" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Iniciar sesión</a>
-        {% endif %}
-    </div>
-
-    <button id="hamburgerBtn" class="md:hidden flex items-center justify-center p-2 rounded-md bg-purple-600 text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 cursor-pointer">
-        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-    </button>
-
-    <div id="hamburgerMenu" class="hidden absolute right-0 mt-2 w-48 bg-white shadow-xl rounded-xl py-2 border border-purple-200 md:hidden">
-        {% if session.get('usuario_id') %}
-            <a href="/perfil" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Perfil</a>
-           <!-- <a href="/seguridad" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Seguridad</a>-->
-            <div class="border-t border-gray-200 my-2"></div>
-            <a href="{{ url_for('login_bp.logout') }}" class="block px-4 py-2 text-red-600 hover:bg-red-100 transition">Cerrar sesión</a>
-        {% else %}
-            <a href="{{ url_for('login_bp.login') }}" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Iniciar sesión</a>
-        {% endif %}
-    </div>
-</div>
+                <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white shadow-xl rounded-xl py-2 border border-purple-200">
+                    {% if session.get('usuario_id') %}
+                        <a href="/perfil" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Perfil</a>
+                        <div class="border-t border-gray-200 my-2"></div>
+                        <a href="{{ url_for('login_bp.logout') }}" class="block px-4 py-2 text-red-600 hover:bg-red-100 transition">Cerrar sesión</a>
+                    {% else %}
+                        <a href="{{ url_for('login_bp.login') }}" class="block px-4 py-2 text-gray-700 hover:bg-purple-100 transition">Iniciar sesión</a>
+                    {% endif %}
+                </div>
+            </div>
         </nav>
 
-        <div class="lg:hidden relative z-50">
-            <button id="hamburgerBtn" class="flex items-center justify-center p-2 rounded-md bg-purple-600 text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 cursor-pointer shadow-md">
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                </svg>
-            </button>
-            <div id="hamburgerMenu" class="hidden absolute right-0 mt-2 w-56 bg-white shadow-2xl rounded-xl py-2 border border-purple-200 animate-fade">
-                <div class="px-2 space-y-1 mb-2">
-                    <a href="/Quienes_somos" class="block px-4 py-2 text-purple-800 hover:bg-purple-50 rounded-lg">Quiénes somos</a>
-                    <a href="/albergues" class="block px-4 py-2 text-purple-800 hover:bg-purple-50 rounded-lg">Albergues</a>
-                    <a href="/apoyo_legal" class="block px-4 py-2 font-bold text-purple-700 bg-purple-50 rounded-lg">Apoyo legal</a>
-                    <a href="/apoyo_psicologico" class="block px-4 py-2 text-purple-800 hover:bg-purple-50 rounded-lg">Apoyo psicológico</a>
-                </div>
-                <div class="border-t border-gray-200 my-1"></div>
-                {% if session.get('usuario_id') %}
-                    <a href="/perfil" class="block px-4 py-2 text-gray-700 hover:bg-purple-100">👤 Mi Perfil</a>
-                    <a href="/seguridad" class="block px-4 py-2 text-gray-700 hover:bg-purple-100">🛡️ Seguridad</a>
-                    <div class="border-t border-gray-200 my-1"></div>
-                    <a href="{{ url_for('login_bp.logout') }}" class="block px-4 py-2 text-red-600 hover:bg-red-50">Cerrar sesión</a>
-                {% else %}
-                    <a href="{{ url_for('login_bp.login') }}" class="block px-4 py-2 text-purple-700 font-bold hover:bg-purple-50">Iniciar sesión</a>
-                {% endif %}
-            </div>
-        </div>
+        <!-- Botón de hamburguesa para móvil (SOLO UNO) -->
+        <button id="hamburgerBtn" class="lg:hidden flex items-center justify-center p-2 rounded-md bg-purple-600 text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 cursor-pointer shadow-md">
+            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+        </button>
     </header>
+
+    <!-- Menú hamburguesa para móvil (fuera del header) -->
+    <div id="mobileMenu" class="hidden lg:hidden fixed inset-x-4 top-20 bg-white shadow-2xl rounded-xl py-4 border border-purple-200 animate-fade z-50 max-h-[80vh] overflow-y-auto">
+        <div class="px-4 space-y-2 mb-4">
+            <h3 class="text-purple-700 font-bold text-lg mb-2 px-2">Navegación</h3>
+            <a href="/Quienes_somos" class="flex items-center px-4 py-3 text-purple-800 hover:bg-purple-50 rounded-lg">
+                <span class="mr-3">👥</span>
+                <span>Quiénes somos</span>
+            </a>
+            <a href="/albergues" class="flex items-center px-4 py-3 text-purple-800 hover:bg-purple-50 rounded-lg">
+                <span class="mr-3">🏠</span>
+                <span>Albergues</span>
+            </a>
+            <a href="/apoyo_legal" class="flex items-center px-4 py-3 font-bold text-purple-700 bg-purple-50 rounded-lg">
+                <span class="mr-3">⚖️</span>
+                <span>Apoyo legal</span>
+            </a>
+            <a href="/apoyo_psicologico" class="flex items-center px-4 py-3 text-purple-800 hover:bg-purple-50 rounded-lg">
+                <span class="mr-3">💜</span>
+                <span>Apoyo psicológico</span>
+            </a>
+        </div>
+        
+        <div class="border-t border-gray-200 pt-4 px-4">
+            <h3 class="text-purple-700 font-bold text-lg mb-2 px-2">Mi cuenta</h3>
+            {% if session.get('usuario_id') %}
+                <a href="/perfil" class="flex items-center px-4 py-3 text-gray-700 hover:bg-purple-100 rounded-lg">
+                    <span class="mr-3">👤</span>
+                    <span>Mi Perfil</span>
+                </a>
+                <div class="border-t border-gray-200 my-2"></div>
+                <a href="{{ url_for('login_bp.logout') }}" class="flex items-center px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg">
+                    <span class="mr-3">🚪</span>
+                    <span>Cerrar sesión</span>
+                </a>
+            {% else %}
+                <a href="{{ url_for('login_bp.login') }}" class="flex items-center px-4 py-3 text-purple-700 font-bold hover:bg-purple-50 rounded-lg">
+                    <span class="mr-3">🔐</span>
+                    <span>Iniciar sesión</span>
+                </a>
+            {% endif %}
+        </div>
+    </div>
 
     <main class="container mx-auto p-4 md:p-8 flex-grow relative z-10">
         <div class="bg-white p-4 md:p-10 rounded-xl shadow-lg relative card-hover transition-all duration-300 w-full">
@@ -304,23 +314,86 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Lógica del filtro (Sin cambios)
+            // Control del menú hamburguesa (MÓVIL)
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            // Control del menú de usuario (DESKTOP)
+            const userMenuBtn = document.getElementById('userMenuBtn');
+            const userMenu = document.getElementById('userMenu');
+
+            // Lógica del filtro de alcaldías
             const select = document.getElementById("alcaldia-select");
             const tabla = document.getElementById("abogados-table");
             
+            // ========== CONTROL DE MENÚS ==========
+            
+            // Menú hamburguesa (MÓVIL)
+            if(hamburgerBtn && mobileMenu) {
+                hamburgerBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    mobileMenu.classList.toggle('hidden');
+                    // Cierra el menú de usuario si está abierto
+                    if(userMenu && !userMenu.classList.contains('hidden')) {
+                        userMenu.classList.add('hidden');
+                    }
+                });
+            }
+
+            // Menú de usuario (DESKTOP)
+            if(userMenuBtn && userMenu) {
+                userMenuBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    userMenu.classList.toggle('hidden');
+                    // Cierra el menú móvil si está abierto
+                    if(mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            }
+
+            // Cerrar menús al hacer clic fuera
+            document.addEventListener('click', (e) => {
+                // Cerrar menú móvil
+                if(mobileMenu && !mobileMenu.classList.contains('hidden') && 
+                   !hamburgerBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+                    mobileMenu.classList.add('hidden');
+                }
+                
+                // Cerrar menú de usuario
+                if(userMenu && !userMenu.classList.contains('hidden') && 
+                   !userMenuBtn.contains(e.target) && !userMenu.contains(e.target)) {
+                    userMenu.classList.add('hidden');
+                }
+            });
+
+            // Cerrar menús al presionar ESC
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    if(mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                    if(userMenu && !userMenu.classList.contains('hidden')) {
+                        userMenu.classList.add('hidden');
+                    }
+                }
+            });
+
+            // ========== FILTRO DE ALCALDÍAS ==========
             if (select && tabla) {
                 const filas = tabla.querySelectorAll("tbody tr");
                 select.addEventListener("change", function () {
                     const filtro = this.value.trim();
                     filas.forEach(fila => {
-                        // En la vista móvil también funciona porque el dato sigue estando en el DOM
-                        const celdaAlcaldia = fila.querySelector("td[data-label='Alcaldía']"); 
-                        // Ojo: Si usaste el HTML original, sería nth-child(6), pero con data-label es más seguro buscarlo así si es que coincide.
-                        // Para ser 100% fiel a tu lógica original basada en posición:
                         const alcaldia = fila.querySelector("td:nth-child(6)").textContent.trim();
 
                         if (filtro === "" || alcaldia === filtro) {
-                            fila.style.display = ""; // Vuelve a mostrar (block en móvil, table-row en desktop)
+                            // Mostrar fila según el dispositivo
+                            if (window.innerWidth <= 768) {
+                                fila.style.display = "block"; // Para móvil
+                            } else {
+                                fila.style.display = ""; // Para desktop
+                            }
                         } else {
                             fila.style.display = "none";
                         }
@@ -328,30 +401,27 @@
                 });
             }
 
-            // Lógica Menú Hamburguesa
-            const hamburgerBtn = document.getElementById('hamburgerBtn');
-            const hamburgerMenu = document.getElementById('hamburgerMenu');
-            const userMenuBtn = document.getElementById('userMenuBtn');
-            const userMenu = document.getElementById('userMenu');
-
-            if(hamburgerBtn && hamburgerMenu) {
-                hamburgerBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    hamburgerMenu.classList.toggle('hidden');
-                });
-            }
-            if(userMenuBtn && userMenu) {
-                userMenuBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    userMenu.classList.toggle('hidden');
-                });
-            }
-            document.addEventListener('click', (e) => {
-                if(hamburgerMenu && !hamburgerMenu.classList.contains('hidden') && !hamburgerBtn.contains(e.target) && !hamburgerMenu.contains(e.target)) {
-                    hamburgerMenu.classList.add('hidden');
-                }
-                if(userMenu && !userMenu.classList.contains('hidden') && !userMenuBtn.contains(e.target) && !userMenu.contains(e.target)) {
-                    userMenu.classList.add('hidden');
+            // Manejar cambios de tamaño de ventana para asegurar que las filas
+            // se muestren correctamente después de filtrar
+            window.addEventListener('resize', function() {
+                if (select && tabla) {
+                    const filtro = select.value.trim();
+                    const filas = tabla.querySelectorAll("tbody tr");
+                    
+                    filas.forEach(fila => {
+                        const alcaldia = fila.querySelector("td:nth-child(6)").textContent.trim();
+                        const debeMostrar = filtro === "" || alcaldia === filtro;
+                        
+                        if (debeMostrar) {
+                            if (window.innerWidth <= 768) {
+                                fila.style.display = "block";
+                            } else {
+                                fila.style.display = "";
+                            }
+                        } else {
+                            fila.style.display = "none";
+                        }
+                    });
                 }
             });
         });
