@@ -13,19 +13,16 @@
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f7f1ff;
-            /* Un lila muy claro */
             position: relative;
             overflow-x: hidden;
         }
 
-        /* Hero section background with image */
         .hero-bg {
             background-size: cover;
             background-position: center;
             position: relative;
         }
 
-        /* Overlay para mejorar la legibilidad del texto sobre la imagen */
         .hero-bg::before {
             content: '';
             position: absolute;
@@ -43,13 +40,11 @@
             z-index: 2;
         }
 
-        /* Card hover effect */
         .card-hover:hover {
             transform: translateY(-8px);
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
         }
 
-        /* Floating decorative elements */
         .floating-element {
             animation: float 15s ease-in-out infinite;
             pointer-events: none;
