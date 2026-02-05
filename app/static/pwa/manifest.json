@@ -1,21 +1,27 @@
 {
-  "name": "Luz Violeta",
-  "short_name": "LuzVioleta",
-  "description": "App de apoyo para mujeres",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#8B008B",
-  "theme_color": "#8B008B",
-  "icons": [
-    {
-      "src": "/static/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "/static/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+    "name": "Luz Violeta - Juntas somos invencibles",
+    "short_name": "Luz Violeta",
+    "description": "Un faro de esperanza para mujeres y niñas que enfrentan la violencia",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#f7f1ff",
+    "theme_color": "#a78bfa",
+    "icons": [
+        {
+            "src": "/static/images/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/static/images/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": ["social", "lifestyle", "education"],
+    "orientation": "portrait",
+    "lang": "es",
+    "dir": "ltr"
 }

@@ -50,14 +50,15 @@ def Luzvioleta():
     @app.route('/manifest.json')
     def serve_manifest():
         """Sirve el archivo manifest.json para PWA"""
-        return send_from_directory('static', 'manifest.json')
+        return send_from_directory('static', 'pwa/manifest.json')
     
     @app.route('/service-worker.js')
     def serve_service_worker():
         """Sirve el service worker con headers correctos"""
-        response = send_from_directory('static', 'service-worker.js')
+        response = send_from_directory('static', 'JS/service-worker.js')
         response.headers['Content-Type'] = 'application/javascript'
         response.headers['Service-Worker-Allowed'] = '/'
+        response.headers['Cache-Control'] = 'no-cache'
         return response
     
     configurar_logging(app)
