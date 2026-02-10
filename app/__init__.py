@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
 from .config import Config
 from app.extensiones import db, migrate
 import traceback
@@ -18,6 +18,7 @@ from app.controllers.perfilController import perfil_bp
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+import os
 
 def Luzvioleta():
     app = Flask(__name__)
@@ -46,7 +47,20 @@ def Luzvioleta():
     app.register_blueprint(admin_albergues_bp)
     app.register_blueprint(perfil_bp)
 
-
+    @app.route('/manifest.json')
+    def serve_manifest():
+        """Sirve el archivo manifest.json para PWA"""
+        return send_from_directory('static', 'pwa/manifest.json')
+    
+    @app.route('/service-worker.js')
+    def serve_service_worker():
+        """Sirve el service worker con headers correctos"""
+        response = send_from_directory('static', 'JS/service-worker.js')
+        response.headers['Content-Type'] = 'application/javascript'
+        response.headers['Service-Worker-Allowed'] = '/'
+        response.headers['Cache-Control'] = 'no-cache'
+        return response
+    
     configurar_logging(app)
 
     @app.errorhandler(Exception)
@@ -59,7 +73,5 @@ def Luzvioleta():
             return render_template(f"{code}.html"), code
         except:
             print("Error al cargar página de abogados:", e)
-            return render_template("error_generico.html", code=code), code
-
-
+            return render_template("error_generico.html", code=code), code    
     return app
