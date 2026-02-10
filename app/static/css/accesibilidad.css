@@ -169,169 +169,94 @@ body.reading-guide-active .reading-guide-mask {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 56px;
-    height: 56px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
     background: linear-gradient(135deg, #dd8dfd, #8800f8);
     color: white;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     border: none;
     cursor: pointer;
     box-shadow: 0 6px 16px rgba(0,0,0,.35);
     z-index: 10001;
-    transition: transform 0.2s ease, background 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.2s ease;
 }
 
-#accesibility-toggle:hover,
-#accesibility-toggle:focus {
-    transform: scale(1.1);
-    background: linear-gradient(135deg, #8800f8, #6b21a8);
+#accesibility-toggle:hover {
+    transform: scale(1.08);
 }
 
-#accesibility-toggle:active {
-    transform: scale(0.95);
-}
-
-#accesibility-toggle svg {
-    width: 28px;
-    height: 28px;
-}
-
-/* Panel de accesibilidad */
 #accesibility-panel {
     position: fixed;
-    bottom: 85px;
-    right: 16px;
-    background: rgba(15,23,42,.98);
-    border: 1px solid rgba(255,255,255,.2);
-    border-radius: 16px;
-    padding: 16px;
-    box-shadow: 0 15px 35px rgba(0,0,0,.5);
+    bottom: 80px;
+    right: 20px;
+    background: rgba(15,23,42,.95);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,.4);
     z-index: 10000;
     display: none;
     flex-direction: column;
-    gap: 10px;
-    width: calc(100vw - 32px);
-    max-width: 320px;
-    animation: slideUp 0.25s ease;
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    gap: 8px;
+    width: 240px;
 }
 
 #accesibility-panel.active {
     display: flex;
+    animation: fadeIn .25s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 #accesibility-panel button {
-    background: rgba(255,255,255,.1);
+    background: rgba(255,255,255,.08);
     border: none;
-    border-radius: 12px;
-    padding: 14px 16px;
+    border-radius: 8px;
+    padding: 8px 10px;
     color: white;
     cursor: pointer;
-    transition: background .2s, transform .2s;
-    font-size: 1rem;
+    transition: background .2s;
+    font-size: 0.9rem;
     text-align: left;
-    min-height: 48px;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
 }
 
-#accesibility-panel button:hover,
-#accesibility-panel button:focus {
+#accesibility-panel button:hover {
     background: rgba(255,255,255,.25);
-    transform: scale(1.02);
-}
-
-#accesibility-panel button:active {
-    transform: scale(0.98);
 }
 
 .active-acc {
     background: #8800f8 !important;
     color: white !important;
 }
-
-/* ========== MEDIA QUERIES PARA MÓVILES ========== */
-
-/* Pantallas pequeñas (hasta 480px) */
-@media (max-width: 480px) {
-    #accesibility-toggle {
-        bottom: 16px;
-        right: 16px;
-        width: 52px;
-        height: 52px;
-        font-size: 1.3rem;
-    }
-    
-    #accesibility-toggle svg {
-        width: 24px;
-        height: 24px;
-    }
-    
-    #accesibility-panel {
-        bottom: 80px;
-        right: 12px;
-        left: 12px;
-        width: auto;
-        padding: 14px;
-        gap: 8px;
-    }
-    
-    #accesibility-panel button {
-        padding: 12px 14px;
-        font-size: 0.95rem;
-        min-height: 44px;
-    }
+#accesibility-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
 }
 
-/* Pantallas medianas (481px - 768px) */
-@media (min-width: 481px) and (max-width: 768px) {
-    #accesibility-toggle {
-        bottom: 20px;
-        right: 20px;
-        width: 54px;
-        height: 54px;
-    }
-    
-    #accesibility-panel {
-        bottom: 85px;
-        right: 20px;
-        width: 280px;
-    }
+#accesibility-toggle:hover {
+    background-color: #3498db;
+    transform: scale(1.1);
 }
 
-/* Pantallas grandes (mayor a 768px) */
-@media (min-width: 769px) {
-    #accesibility-panel {
-        width: 260px;
-    }
-}
-
-/* Modo landscape en móviles */
-@media (max-width: 768px) and (orientation: landscape) {
-    #accesibility-toggle {
-        bottom: 12px;
-        right: 12px;
-    }
-    
-    #accesibility-panel {
-        bottom: 70px;
-        max-height: 70vh;
-        overflow-y: auto;
-    }
+#accesibility-toggle svg {
+    width: 24px;
+    height: 24px;
 }

@@ -5,12 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luz Violeta - Juntas somos invencibles</title>
-    <link rel="manifest" href="{{ url_for('static', filename='pwa/manifest.json') }}">
-    <meta name="theme-color" content="#a78bfa">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Luz Violeta">
-    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/icon-192.png') }}">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -347,25 +341,10 @@
         `;
         document.head.appendChild(styleSheet);
     </script>
-    <script>
-    // Iniciar PWA
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-            navigator.serviceWorker.register("{{ url_for('static', filename='JS/service-worker.js') }}")
-                .then(registration => {
-                    console.log('Service Worker listo');
-                })
-                .catch(err => {
-                    console.log('Error Service Worker:', err);
-                });
-        });
-    }
-</script> 
     <script src="{{ url_for('static', filename='JS/boton_panico.js') }}"></script>
     <script src="{{ url_for('static', filename='JS/accesibilidad.js')}}"></script>
     <script src="{{ url_for('static', filename='JS/menu_opciones.js')}}"></script>
     <script src="{{ url_for('static', filename='JS/click_boton.js') }}"></script>
-    <script src="{{url_for ('static', filename='JS/app.js')}}"></script>
 
 </body>
 
