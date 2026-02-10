@@ -47,8 +47,8 @@ document.body.appendChild(toggleBtn);
         <button id="toggle-grayscale">Escala de grises</button>
         <button id="toggle-font">Cambio tipografía</button>
 
-        <button id="text-minus">A- Reducir</button>
-        <button id="text-plus">A+ Aumentar</button>
+        <button id="text-minus">A+ Aumentar</button>
+        <button id="text-plus">A- Disminuir</button>
 
         <button id="toggle-guide">Guía de lectura</button>
 
