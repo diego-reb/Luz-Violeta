@@ -1,0 +1,745 @@
+/* ==========================================
+   ESTILOS GLOBALES DE RESPONSIVIDAD
+   Luz Violeta - Juntas somos invencibles
+   ========================================== */
+
+/* Prevenir overflow horizontal */
+html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
+/* ==========================================
+   BREAKPOINTS PRINCIPALES
+   ========================================== */
+
+/* Móviles pequeños (320px - 480px) */
+@media screen and (max-width: 480px) {
+    .container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    h1 {
+        font-size: 1.75rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+    }
+
+    .btn {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+
+    .card {
+        padding: 16px;
+    }
+
+    .form-input {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Móviles medianos (481px - 768px) */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    .container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.75rem;
+    }
+
+    .card {
+        padding: 20px;
+    }
+}
+
+/* Tablets (769px - 1024px) */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+}
+
+/* Escritorio (1025px - 1440px) */
+@media screen and (min-width: 1025px) and (max-width: 1440px) {
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+}
+
+/* Pantallas grandes (>1440px) */
+@media screen and (min-width: 1441px) {
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+}
+
+/* ==========================================
+   HEADER Y NAVEGACIÓN
+   ========================================== */
+
+/* Header móvil */
+@media screen and (max-width: 768px) {
+    header {
+        padding: 12px 16px;
+    }
+
+    header .logo-text {
+        font-size: 1.25rem;
+    }
+
+    header nav {
+        gap: 8px;
+    }
+
+    header nav a {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+
+    .hamburger-menu {
+        display: flex;
+    }
+
+    .desktop-menu {
+        display: none;
+    }
+}
+
+/* Header tablet y desktop */
+@media screen and (min-width: 769px) {
+    .hamburger-menu {
+        display: none;
+    }
+
+    .desktop-menu {
+        display: flex;
+    }
+}
+
+/* ==========================================
+   TARJETAS Y CONTENEDORES
+   ========================================== */
+
+.card {
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Grid responsivo */
+.grid-responsive {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 1fr;
+}
+
+@media screen and (min-width: 640px) {
+    .grid-responsive {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .grid-responsive {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    .grid-responsive {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* ==========================================
+   FORMULARIOS
+   ========================================== */
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+}
+
+.form-error {
+    color: #dc2626;
+    font-size: 0.8rem;
+    margin-top: 4px;
+}
+
+/* ==========================================
+   BOTONES
+   ========================================== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+}
+
+.btn-secondary {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.btn-secondary:hover {
+    background: #e5e7eb;
+}
+
+.btn-danger {
+    background: #dc2626;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #b91c1c;
+}
+
+/* ==========================================
+   FOOTER
+   ========================================== */
+
+footer {
+    padding: 24px 16px;
+    text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+    footer {
+        padding: 32px 24px;
+    }
+}
+
+/* ==========================================
+   ELEMENTOS FLOTANTES (Prevenir overflow)
+   ========================================== */
+
+.floating-element,
+.floating-element-2 {
+    position: fixed;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.5;
+    user-select: none;
+}
+
+/* Ajustar elementos flotantes para móviles */
+@media screen and (max-width: 768px) {
+    .floating-element,
+    .floating-element-2 {
+        font-size: 2rem !important;
+    }
+}
+
+/* ==========================================
+   MODALES
+   ========================================== */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 16px;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 480px) {
+    .modal-content {
+        padding: 16px;
+        margin: 8px;
+    }
+}
+
+/* ==========================================
+   TABLAS
+   ========================================== */
+
+.table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+/* ==========================================
+   UTILIDADES DE VISIBILIDAD
+   ========================================== */
+
+.hidden-mobile {
+    display: none;
+}
+
+@media screen and (min-width: 769px) {
+    .hidden-mobile {
+        display: inherit;
+    }
+
+    .hidden-desktop {
+        display: none;
+    }
+}
+
+/* ==========================================
+   ACcesibilidad y Modo Alto Contraste
+   ========================================== */
+
+/* Ajustes para modo alto contraste en móviles */
+@media screen and (max-width: 768px) {
+    body.high-contrast .card,
+    body.high-contrast .form-panel {
+        border-width: 2px;
+    }
+
+    body.high-contrast a {
+        padding: 4px 8px;
+    }
+}
+
+/* ==========================================
+   MAPAS Y CONTENIDO EMPOTRADO
+   ========================================== */
+
+.embed-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+}
+
+.embed-container iframe,
+.embed-container object,
+.embed-container embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* ==========================================
+   MENSAJES FLASH
+   ========================================== */
+
+.flash-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    max-width: 90%;
+    width: 400px;
+}
+
+@media screen and (max-width: 480px) {
+    .flash-container {
+        left: 10px;
+        right: 10px;
+        width: auto;
+    }
+}
+
+/* ==========================================
+   LOADING Y ESTADOS
+   ========================================== */
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e5e7eb;
+    border-top-color: #8b5cf6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ==========================================
+   SECCIÓN HERO
+   ========================================== */
+
+.hero-section {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 16px;
+}
+
+@media screen and (min-width: 768px) {
+    .hero-section {
+        min-height: 70vh;
+        padding: 60px 24px;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .hero-section {
+        min-height: 80vh;
+    }
+}
+
+/* ==========================================
+   LISTAS Y NAVEGACIÓN MÓVIL
+   ========================================== */
+
+.mobile-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: none;
+}
+
+.mobile-nav.active {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+}
+
+.mobile-nav-menu {
+    background: white;
+    width: 85%;
+    max-width: 320px;
+    height: 100%;
+    padding: 24px;
+    box-shadow: -4px 0 6px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+@media screen and (max-width: 768px) {
+    .mobile-nav {
+        display: none;
+    }
+
+    .mobile-nav.active {
+        display: flex;
+    }
+}
+
+/* ==========================================
+   CHAT Y CAJAS DE MENSAJES
+   ========================================== */
+
+.chat-container {
+    height: 60vh;
+    min-height: 300px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 16px;
+    border-radius: 12px;
+}
+
+@media screen and (max-width: 480px) {
+    .chat-container {
+        height: 50vh;
+        min-height: 250px;
+        padding: 12px;
+    }
+}
+
+.chat-message {
+    max-width: 85%;
+    padding: 12px 16px;
+    border-radius: 16px;
+    margin-bottom: 8px;
+}
+
+.chat-message.user {
+    margin-left: auto;
+    background: #8b5cf6;
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.chat-message.bot {
+    background: #f3f4f6;
+    color: #1f2937;
+    border-bottom-left-radius: 4px;
+}
+
+/* ==========================================
+   SELECTS Y DROPDOWNS
+   ========================================== */
+
+.select-container {
+    position: relative;
+}
+
+.select-input {
+    width: 100%;
+    padding: 12px 40px 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    appearance: none;
+    background: white;
+    cursor: pointer;
+}
+
+.select-input:focus {
+    outline: none;
+    border-color: #8b5cf6;
+}
+
+.select-arrow {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+/* ==========================================
+   CHECKBOX Y RADIOS
+   ========================================== */
+
+.checkbox-wrapper,
+.radio-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.checkbox-input,
+.radio-input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #8b5cf6;
+}
+
+/* ==========================================
+   PADDING Y MARGINS RESPONSIVOS
+   ========================================== */
+
+.section-padding {
+    padding: 24px 16px;
+}
+
+@media screen and (min-width: 768px) {
+    .section-padding {
+        padding: 40px 24px;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .section-padding {
+        padding: 60px 32px;
+    }
+}
+
+/* ==========================================
+   IMÁGENES RESPONSIVAS
+   ========================================== */
+
+.img-responsive {
+    max-width: 100%;
+    height: auto;
+}
+
+.img-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.img-thumbnail {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ==========================================
+   VIDEOS RESPONSIVOS
+   ========================================== */
+
+.video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.video-container iframe,
+.video-container video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* ==========================================
+   TEXTOS Y TIPOGRAFÍA
+   ========================================== */
+
+.text-responsive {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+@media screen and (max-width: 480px) {
+    .text-responsive {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+}
+
+/* ==========================================
+   SCROLLBARS PERSONALIZADAS
+   ========================================== */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c7c7c7;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* ==========================================
+   ANIMACIONES DE ENTRADA
+   ========================================== */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+.animate-fade-in-delay {
+    animation: fadeInUp 0.5s ease 0.2s forwards;
+    opacity: 0;
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
