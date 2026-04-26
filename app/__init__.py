@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from .config import Config
 from app.extensiones import db, migrate
 import traceback
@@ -9,12 +9,13 @@ from app.controllers.registro_controllers import registro_bp
 from app.controllers.telefono_controllers import telefono_bp
 from app.controllers.admin.usuarios_controllers import gestion_usuarios_bp
 from app.utils.logging_config import configurar_logging
-from app.controllers.albergues_controller import albergues_bp 
+from app.controllers.albergues_controller import albergues_bp
 from app.controllers.abogados_controller import abogados_bp
 from app.controllers.psicologos_controller import psicologo_bp
 from app.controllers.admin.registroadmin_controller import registroadmin_bp
 from app.controllers.admin.Albergues_controllers import admin_albergues_bp
 from app.controllers.perfilController import perfil_bp
+from app.controllers.api.mobile_api import mobile_api_bp
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
@@ -45,6 +46,25 @@ def Luzvioleta():
     app.register_blueprint(registroadmin_bp)
     app.register_blueprint(admin_albergues_bp)
     app.register_blueprint(perfil_bp)
+    app.register_blueprint(mobile_api_bp)
+
+    @app.after_request
+    def add_cors_headers(response):
+        # Permite peticiones de la app móvil desde cualquier red.
+        if request.path.startswith('/api/'):
+            response.headers['Access-Control-Allow-Origin'] = '*'
+            response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+            response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, PATCH, DELETE, OPTIONS'
+        return response
+
+    @app.before_request
+    def handle_options():
+        if request.method == 'OPTIONS' and request.path.startswith('/api/'):
+            response = app.make_default_options_response()
+            response.headers['Access-Control-Allow-Origin'] = '*'
+            response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+            response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, PATCH, DELETE, OPTIONS'
+            return response
 
 
     configurar_logging(app)
